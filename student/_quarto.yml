@@ -7,7 +7,6 @@ lang: ko
 book:
   title: "컴퓨팅적사고와논리적문제해결"
   author: "신기홍"
-  date: "2026"
 
   sidebar:
     search: true
