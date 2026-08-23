@@ -1,0 +1,157 @@
+/* ==========================================================
+   컴퓨팅적 사고와 논리적 문제해결 · Reveal.js 슬라이드 스타일
+   (완전한 순백색 슬라이드 배경 & Mermaid 내부 투명 처리)
+   ========================================================== */
+
+/* 전체 슬라이드 배경 순백색 */
+html, body, .reveal, .reveal .slides, .reveal section {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.reveal {
+  font-size: 26px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+/* 상단 제목 밑줄: 사용자 지정 포인트 컬러 (#1AB18B) */
+.reveal h2 {
+  font-size: 1.55em;
+  margin-bottom: 0.8em;
+  border-bottom: 4px solid #1AB18B !important;
+  padding-bottom: 0.35em;
+}
+
+.reveal h3 {
+  font-size: 1.2em;
+  color: #1AB18B !important;
+}
+
+/* Mermaid 슬라이드 크기 및 가독성 (내부 텍스트/div는 100% 투명 처리) */
+.reveal .cell-output-display svg,
+.reveal pre.mermaid svg,
+.reveal div.mermaid svg {
+  display: block;
+  margin: 1.5rem auto !important;
+  max-width: 95% !important;
+  max-height: 480px !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Mermaid 노드 내부 텍스트 박스에 흰색 딱지 배경이 들어가는 버그 완전 해결 */
+.reveal .mermaid *,
+.reveal .mermaid div,
+.reveal .mermaid span,
+.reveal .mermaid p,
+.reveal .mermaid foreignObject div,
+.reveal .mermaid .nodeLabel,
+.reveal .mermaid .edgeLabel,
+.reveal .mermaid .label,
+.reveal .mermaid .label div {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.reveal .mermaid .cluster rect,
+.reveal .mermaid .cluster path,
+.reveal .mermaid rect.outer {
+  fill: none !important;
+  stroke: none !important;
+}
+
+.reveal .mermaid text,
+.reveal .mermaid .nodeLabel,
+.reveal .mermaid .edgeLabel {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+}
+
+/* 핵심 강조 박스: 순백색 배경 + #1AB18B 좌측 포인트 선 */
+.reveal .keybox {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-left: 6px solid #1AB18B !important;
+  padding: 16px 24px;
+  margin: 20px 0;
+  border-radius: 6px;
+  color: #0f172a !important;
+  font-size: 1em;
+}
+
+.reveal .keybox h3 {
+  color: #1AB18B !important;
+  margin-top: 0;
+}
+
+/* 인용구: 순백색 배경 + #1AB18B 테두리 */
+.reveal blockquote {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-left: 6px solid #1AB18B !important;
+  padding: 14px 22px;
+  color: #0f172a !important;
+  border-radius: 0 6px 6px 0;
+  width: 95%;
+  margin: 20px auto;
+  font-style: normal;
+}
+
+/* 콜아웃 박스: 순백색 배경 + #1AB18B 테두리 */
+.reveal .callout,
+.reveal .callout-note,
+.reveal .callout-tip,
+.reveal .callout-important {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-left: 6px solid #1AB18B !important;
+}
+
+.reveal .callout-header {
+  background-color: #ffffff !important;
+}
+
+/* 표 스타일 */
+.reveal table {
+  font-size: 0.85em;
+  margin: 1.5em auto;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #ffffff !important;
+}
+
+.reveal thead th {
+  background-color: #ffffff !important;
+  color: #1AB18B !important;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-top: 2px solid #1AB18B;
+  border-bottom: 2px solid #1AB18B;
+}
+
+.reveal tbody td {
+  background-color: #ffffff !important;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* 코드 블록 */
+.reveal pre.sourceCode {
+  font-size: 0.85em;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff !important;
+}
+
+.reveal pre.sourceCode code {
+  background-color: #ffffff !important;
+}

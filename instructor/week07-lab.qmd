@@ -1,0 +1,72 @@
+# 7주차 코딩 실습 {#sec-ch7-lab}
+
+이 실습은 파이썬의 핵심 자료구조인 리스트, 튜플, 딕셔너리를 활용하여 대용량 정형 데이터를 조직화하고 처리하는 과정입니다.
+
+---
+
+## 예제 코드
+
+### 예제 1: 학생 성적 통계 분석기
+
+```python
+scores = [88, 92, 75, 64, 98, 82, 91, 79, 85, 100]
+
+total = sum(scores)
+count = len(scores)
+avg = total / count
+highest = max(scores)
+lowest = min(scores)
+
+print(f"응시자: {count}명, 총점: {total}점, 평균: {avg:.2f}점")
+print(f"최고점: {highest}점, 최저점: {lowest}점")
+```
+
+---
+
+## 실습 과제 및 모범 답안
+
+### 문제 1. 카페 키오스크 주문 정산 및 영수증 출력
+
+메뉴 단가 딕셔너리와 고객의 주문 목록 리스트를 바탕으로 영수증을 출력하고 총 결제 금액을 계산하시오.
+
+```python
+menu_prices = {
+    "아메리카노": 4500,
+    "카페라떼": 5000,
+    "바닐라라떼": 5500,
+    "자몽에이드": 6000
+}
+
+orders = ["아메리카노", "바닐라라떼", "아메리카노", "자몽에이드"]
+
+# [모범 답안]
+total_bill = 0
+print("--- [영수증] ---")
+for item in orders:
+    price = menu_prices.get(item, 0)
+    total_bill += price
+    print(f"• {item}: {price:,}원")
+
+print("----------------")
+print(f"총 청구 금액: {total_bill:,}원")  # 20,500원
+```
+
+---
+
+### 문제 2. 리스트 조작 및 데이터 필터링
+
+10명의 시험 점수 중 80점 이상인 우수 학생의 점수만 추출하여 새로운 리스트에 내림차순으로 정렬하시오.
+
+```python
+raw_scores = [72, 85, 96, 64, 88, 79, 92, 58, 81, 90]
+
+# [모범 답안]
+honor_scores = []
+for s in raw_scores:
+    if s >= 80:
+        honor_scores.append(s)
+
+honor_scores.sort(reverse=True)  # 내림차순 정렬
+
+print(f"80점 이상 우수 학생 점수 (내림차순): {honor_scores}")
+```

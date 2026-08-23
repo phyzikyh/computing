@@ -1,0 +1,92 @@
+/*-- scss:rules --*/
+/* ==========================================================
+   AI 모델링 실습 · Quarto Book 스타일
+   ========================================================== */
+
+body {
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+/* 본문 폭을 조금 넓혀 수식/그림이 여유 있게 보이도록 */
+.page-columns {
+  --mermaid-max-width: 900px;
+}
+
+/* mermaid 다이어그램 가운데 정렬 및 폭 제어 */
+.cell-output-display svg,
+pre.mermaid svg,
+div.mermaid svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+figure.quarto-float-fig,
+div.quarto-figure {
+  text-align: center;
+}
+
+/* 표 가독성 */
+table {
+  font-size: 0.95rem;
+}
+thead th {
+  background: #eef4fb;
+}
+
+/* 정의·핵심 콜아웃 느낌의 인용구 */
+blockquote {
+  border-left: 5px solid #2c7be5;
+  background: #f6f9fe;
+  padding: 12px 18px;
+  color: #23303a;
+}
+
+/* 코드블록 */
+pre.sourceCode {
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* 연습문제/실습 섹션 구분용 수평선 강조 */
+hr {
+  border-top: 2px solid #d5dde5;
+}
+
+/* 수식 번호가 오른쪽에 잘 붙도록 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* 중요 강조 (사용자 지정 색 #1AB18B) */
+.key {
+  color: #1AB18B;
+  font-weight: 700;
+}
+/* 핵심 요약 박스 */
+.keybox {
+  border-left: 5px solid #1AB18B;
+  background: #eafaf4;
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 6px;
+}
+.keybox p { margin: 0; }
+:root:not([data-theme="light"]) .keybox { background: #10261f; }
+
+/* 수동 그림 캡션 (MIT vision book 스타일: 설명형·가운데·작게) */
+.figcap {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #57606a;
+  margin: 8px auto 22px;
+  max-width: 94%;
+  line-height: 1.55;
+}
+.figcap strong, .figcap b { color: #1f2328; }
+/* 본문 그림 가운데 정렬·여백 */
+.figbody { text-align: center; margin-top: 6px; }
+.figbody img { max-width: 100%; height: auto; border-radius: 6px; }

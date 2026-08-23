@@ -1,0 +1,278 @@
+# 4주차 연습문제 {#sec-ch4-quiz}
+
+---
+
+**1.** 컴퓨터 메모리(RAM) 관점에서 변수(Variable)의 본질을 가장 정확하게 설명한 것은?
+
+① 데이터를 직접 저장하고 있는 CPU의 하드웨어 레지스터  
+② 메모리에 할당된 데이터 객체를 가리키는 이름표(참조 포인터)  
+③ 모니터 화면에 글자를 출력하는 함수  
+④ 컴퓨터의 보조기억장치(SSD) 파일 이름
+
+::: {.callout-note collapse="false"}
+정답 ②. 파이썬에서 변수는 메모리 상의 객체를 가리키는 이름표(Object Reference) 역할을 합니다.
+:::
+
+---
+
+**2.** 파이썬의 변수 명명 규칙으로 문법 오류(SyntaxError)가 발생하는 것은?
+
+① `user_age = 20`  
+② `_count = 5`  
+③ `2nd_score = 90`  
+④ `totalPrice = 1500`
+
+::: {.callout-note collapse="false"}
+정답 ③. 변수 이름은 숫자로 시작할 수 없습니다.
+:::
+
+---
+
+**3.** 파이썬의 변수 표기 관례로 권장되는 '스네이크 케이스(snake_case)'의 올바른 예시는?
+
+① `student_total_score`  
+② `StudentTotalScore`  
+③ `studentTotalScore`  
+④ `STUDENT-TOTAL-SCORE`
+
+::: {.callout-note collapse="false"}
+정답 ①. 단어와 단어 사이를 밑줄(`_`)로 연결하는 소문자 표기법이 스네이크 케이스입니다.
+:::
+
+---
+
+**4.** 다음 값들의 자료형(Data Type)이 올바르게 짝지어진 것은?
+
+`a = 10`, `b = 3.14`, `c = "파이썬"`, `d = True`
+
+① `int`, `float`, `str`, `bool`  
+② `float`, `int`, `str`, `bool`  
+③ `int`, `float`, `char`, `boolean`  
+④ `number`, `decimal`, `text`, `logic`
+
+::: {.callout-note collapse="false"}
+정답 ①. 파이썬의 4대 기본 자료형 키워드는 `int`(정수), `float`(실수), `str`(문자열), `bool`(불리언)입니다.
+:::
+
+---
+
+**5.** 키보드로부터 입력을 받는 `input()` 함수가 항상 반환하는 데이터의 기본 자료형은?
+
+① `int`  
+② `float`  
+③ `str`  
+④ `bool`
+
+::: {.callout-note collapse="false"}
+정답 ③. `input()` 함수는 숫자를 입력하더라도 항상 문자열(`str`)로 반환합니다.
+:::
+
+---
+
+**6.** 아래 코드의 출력 결과로 옳은 것은?
+
+```python
+x = "30"
+y = "20"
+print(x + y)
+```
+
+① 50  
+② 3020  
+③ 10  
+④ SyntaxError
+
+::: {.callout-note collapse="false"}
+정답 ②. 문자열 간의 `+` 연산은 두 문자열을 이어붙이므로 `"3020"`이 됩니다.
+:::
+
+---
+
+**7.** 산술 연산자 중 **나눗셈의 몫(소수점 이하 버림)**을 구하는 연산자는?
+
+① `/`  
+② `//`  
+③ `%`  
+④ `**`
+
+::: {.callout-note collapse="false"}
+정답 ②. `//`는 정수 몫 연산자입니다. (`/`는 실수 나눗셈, `%`는 나머지)
+:::
+
+---
+
+**8.** 산술 연산자 중 **나머지(Modulo)**를 구하는 연산자는?
+
+① `%`  
+② `//`  
+③ `/`  
+④ `^`
+
+::: {.callout-note collapse="false"}
+정답 ①. `%`는 나눗셈 후의 나머지를 구하는 모듈로 연산자입니다.
+:::
+
+---
+
+**9.** 거듭제곱을 계산하는 파이썬 연산자는? (예: $2^3 = 8$)
+
+① `2 ^ 3`  
+② `2 ** 3`  
+③ `2 * 3`  
+④ `2 ^^ 3`
+
+::: {.callout-note collapse="false"}
+정답 ②. 파이썬에서 거듭제곱은 `**` 연산자를 사용합니다. (`^`는 비트 XOR 연산자임)
+:::
+
+---
+
+**10.** 다음 수식의 계산 결과로 옳은 것은?
+
+```python
+result = 17 % 5 + 2 ** 3
+```
+
+① 9  
+② 10  
+③ 11  
+④ 12
+
+::: {.callout-note collapse="false"}
+정답 ②. `17 % 5`는 2이고, `2 ** 3`은 8이므로, `2 + 8 = 10`입니다.
+:::
+
+---
+
+**11.** 어떤 정수 `n`이 짝수인지 판별하기 위한 조건식으로 옳은 것은?
+
+① `n / 2 == 0`  
+② `n % 2 == 0`  
+③ `n // 2 == 0`  
+④ `n % 2 == 1`
+
+::: {.callout-note collapse="false"}
+정답 ②. 2로 나눈 나머지가 0(`n % 2 == 0`)이면 짝수입니다.
+:::
+
+---
+
+**12.** 초(seconds) 단위의 시간 `total_sec = 3670`을 분(minutes)과 초로 환산할 때 올바른 식은?
+
+① `min = total_sec // 60`, `sec = total_sec % 60`  
+② `min = total_sec % 60`, `sec = total_sec // 60`  
+③ `min = total_sec / 60`, `sec = total_sec - 60`  
+④ `min = total_sec * 60`, `sec = total_sec / 60`
+
+::: {.callout-note collapse="false"}
+정답 ①. 60으로 나눈 몫이 분(`// 60`), 나머지가 초(`% 60`)가 됩니다.
+:::
+
+---
+
+**13.** 논리 연산자 `and`의 특성으로 옳은 것은?
+
+① 양쪽 조건 중 하나만 참이어도 결과는 `True`이다  
+② 양쪽 조건이 모두 참일 때만 결과가 `True`이다  
+③ 양쪽 조건이 모두 거짓일 때만 결과가 `True`이다  
+④ 앞의 조건이 참이면 뒤의 조건은 무조건 `False`이다
+
+::: {.callout-note collapse="false"}
+정답 ②. `and` 연산은 피연산자 모두가 `True`일 때만 `True`를 반환합니다.
+:::
+
+---
+
+**14.** 논리 연산자 `or`의 특성으로 옳은 것은?
+
+① 양쪽 조건 중 하나라도 참이면 결과는 `True`이다  
+② 양쪽 조건이 모두 참이어야만 `True`이다  
+③ 참과 거짓을 뒤바꾼다  
+④ 나눗셈을 수행한다
+
+::: {.callout-note collapse="false"}
+정답 ①. `or` 연산은 최소 하나 이상의 조건이 `True`이면 `True`가 됩니다.
+:::
+
+---
+
+**15.** 아래 식의 불리언 결과값으로 옳은 것은?
+
+```python
+score = 85
+result = (score >= 80) and (score < 90)
+```
+
+① `True`  
+② `False`  
+③ `None`  
+④ `85`
+
+::: {.callout-note collapse="false"}
+정답 ①. 85는 80 이상이고(True), 90 미만(True)이므로 `True and True`는 `True`입니다.
+:::
+
+---
+
+**16.** 파이썬에서 `type(10 / 2)`를 실행했을 때 도출되는 자료형은?
+
+① `<class 'int'>`  
+② `<class 'float'>`  
+③ `<class 'str'>`  
+④ `<class 'bool'>`
+
+::: {.callout-note collapse="false"}
+정답 ②. 일반 나눗셈 연산자 `/`의 결과는 정수로 나누어떨어져도 항상 실수형(`float`, `5.0`)입니다.
+:::
+
+---
+
+**17.** 복합 대입 연산자 `count += 1`과 완전히 동일한 의미의 식은?
+
+① `count = count + 1`  
+② `count = 1`  
+③ `count == 1`  
+④ `count + 1`
+
+::: {.callout-note collapse="false"}
+정답 ①. `+=`는 기존 변수 값에 우변을 더한 후 다시 변수에 대입하는 축약 연산자입니다.
+:::
+
+---
+
+**18.** 변수 `a = 10`, `b = 20`일 때 두 변수의 값을 서로 교환(Swap)하는 가장 파이썬다운(Pythonic) 방법은?
+
+① `a, b = b, a`  
+② `a = b; b = a`  
+③ `a = b`  
+④ `b = a`
+
+::: {.callout-note collapse="false"}
+정답 ①. 파이썬은 튜플 패킹/언패킹을 이용한 다중 대입 `a, b = b, a`로 임시 변수 없이 값을 즉시 맞바꿉니다.
+:::
+
+---
+
+**19.** `int("100")`을 실행했을 때 일어나는 현상은?
+
+① 문자열 `"100"`이 정수 숫자 `100`으로 형변환된다  
+② 문법 에러가 발생한다  
+③ 실수 `100.0`이 된다  
+④ 불리언 `True`가 된다
+
+::: {.callout-note collapse="false"}
+정답 ①. 숫자로 구성된 문자열에 `int()`를 적용하면 정수형으로 형변환(Type Casting)됩니다.
+:::
+
+---
+
+**20.** 파이썬의 f-string 포맷팅에서 천 단위 쉼표를 찍어 출력하는 올바른 문법은?
+
+① `f"{price:,}원"`  
+② `f"{price:%}원"`  
+③ `f"{price:#}원"`  
+④ `f"{price:@}원"`
+
+::: {.callout-note collapse="false"}
+정답 ①. f-string에서 `{변수:,}` 포맷 지정자를 사용하면 $10,000$처럼 천 단위 구분 쉼표가 자동 삽입됩니다.
+:::

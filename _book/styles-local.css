@@ -1,0 +1,94 @@
+/*-- scss:rules --*/
+/* ==========================================================
+   컴퓨팅적사고와논리적문제해결 · Quarto Book 스타일
+   ========================================================== */
+
+body {
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+/* 본문 폭 */
+.page-columns {
+  --mermaid-max-width: 900px;
+}
+
+/* mermaid 다이어그램 가운데 정렬 */
+.cell-output-display svg,
+pre.mermaid svg,
+div.mermaid svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+figure.quarto-float-fig,
+div.quarto-figure {
+  text-align: center;
+}
+
+/* 표 가독성 */
+table {
+  font-size: 0.95rem;
+}
+thead th {
+  background: #eef4fb;
+}
+
+/* 인용구 */
+blockquote {
+  border-left: 5px solid #2c7be5;
+  background: #f6f9fe;
+  padding: 12px 18px;
+  color: #23303a;
+}
+
+/* 코드블록 */
+pre.sourceCode {
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* 수평선 */
+hr {
+  border-top: 2px solid #d5dde5;
+}
+
+/* 수식 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* 키워드 강조 */
+.key {
+  color: #1AB18B;
+  font-weight: 700;
+}
+
+/* 핵심 요약 박스 — 항상 흰 배경 (다크모드 무관) */
+.keybox {
+  border-left: 5px solid #1AB18B;
+  background: #eafaf4 !important;
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 6px;
+  color: #1a1a1a !important;
+}
+.keybox p { margin: 0; }
+
+/* 그림 캡션 */
+.figcap {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #57606a;
+  margin: 8px auto 22px;
+  max-width: 94%;
+  line-height: 1.55;
+}
+.figcap strong, .figcap b { color: #1f2328; }
+
+/* 본문 그림 정렬 */
+.figbody { text-align: center; margin-top: 6px; }
+.figbody img { max-width: 100%; height: auto; border-radius: 6px; }

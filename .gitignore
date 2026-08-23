@@ -1,0 +1,9 @@
+*.pdf
+*.zip
+*.pptx
+*.ppt
+*.docx
+IT CookBook*
+.tempmediaStorage/
+.user_uploaded/
+.quarto/

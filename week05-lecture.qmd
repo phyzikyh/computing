@@ -1,0 +1,211 @@
+# 선택 구조를 이용한 논리적 판단 {#sec-ch5}
+
+> 이 장에서는 불리언 논리(Boolean Logic)를 바탕으로 프로그램의 실행 흐름을 분기하는 **선택 구조(Selection)**를 학습합니다. `if`, `if-else`, `if-elif-else` 문의 문법과 파이썬의 핵심 특징인 **들여쓰기(Indentation) 블록** 규칙을 체득하고, 복합 논리 연산자와 단락 평가를 적용하여 학점 계산 및 맞춤형 요금 정산 프로그램을 구현합니다.
+
+## 선택 구조의 본질과 조건 분기 {#sec-conditionals-intro}
+
+컴퓨터가 단순한 계산기를 넘어 상황에 맞추어 지능적인 판단을 내릴 수 있는 이유는 조건식의 참(`True`) 또는 거짓(`False`)에 따라 **실행 흐름을 능동적으로 전환(Branching)**할 수 있기 때문입니다[@dijkstra1972humble; @resnick2009scratch].
+
+```{mermaid}
+flowchart TD
+    START(["시작"]) --> COND{"조건식 판별<br/>(True / False)"}
+    COND -- "참 (True)" --> ACT_TRUE["참 실행 블록<br/>(True Action)"]
+    COND -- "거짓 (False)" --> ACT_FALSE["거짓 실행 블록<br/>(False Action)"]
+    ACT_TRUE --> MERGE["합류 지점"]
+    ACT_FALSE --> MERGE
+    MERGE --> NEXT["이후 명령문 실행"]
+
+    style START fill:#f1f5f9
+    style COND fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style ACT_TRUE fill:#dcfce7,stroke:#16a34a
+    style ACT_FALSE fill:#fee2e2,stroke:#dc2626
+    style MERGE fill:#f1f5f9
+```
+
+------------------------------------------------------------------------
+
+## 조건문의 3가지 기본 형태 {#sec-3-types-conditionals}
+
+### 1. 단일 조건문 (`if`)
+조건이 참일 때만 특정 명령을 실행하고, 거짓이면 아무것도 하지 않고 건너뜁니다.
+
+``` python
+temperature = 31
+
+if temperature >= 30:
+    print("폭염 주의보: 야외 활동을 자제하세요.")
+
+print("날씨 안내 종료")
+```
+
+---
+
+### 2. 양자택일 조건문 (`if-else`)
+조건이 참일 때 실행할 블록과, 거짓일 때 실행할 블록이 명확하게 양분되는 구조입니다.
+
+```{mermaid}
+flowchart TD
+    C_AGE{"나이 >= 20 ?"}
+    C_AGE -- "True" --> ADULT["성인 요금 적용<br/>fee = 15000"]
+    C_AGE -- "False" --> CHILD["청소년/어린이 요금<br/>fee = 9000"]
+    ADULT --> JOIN["최종 결제"]
+    CHILD --> JOIN
+
+    style C_AGE fill:#fef3c7,stroke:#d97706
+    style ADULT fill:#dbeafe
+    style CHILD fill:#dcfce7
+```
+
+``` python
+age = 18
+
+if age >= 20:
+    fee = 15000
+    category = "성인"
+else:
+    fee = 9000
+    category = "청소년/어린이"
+
+print(f"고객 분류: {category}, 입장료: {fee:,}원")
+```
+
+---
+
+### 3. 다중 조건문 (`if-elif-else`)
+$3$가지 이상의 상호 배타적인 조건들을 순차적으로 검사할 때 사용합니다. 위에서부터 순서대로 검사하며, **가장 먼저 만족하는 단 하나의 블록만 실행하고 나머지 조건문은 즉시 탈출**합니다.
+
+```{mermaid}
+flowchart TD
+    S1{"점수 >= 90 ?"}
+    S1 -- "True" --> G_A["학점 A"]
+    S1 -- "False" --> S2{"점수 >= 80 ?"}
+    
+    S2 -- "True" --> G_B["학점 B"]
+    S2 -- "False" --> S3{"점수 >= 70 ?"}
+    
+    S3 -- "True" --> G_C["학점 C"]
+    S3 -- "False" --> S4{"점수 >= 60 ?"}
+    
+    S4 -- "True" --> G_D["학점 D"]
+    S4 -- "False" --> G_F["학점 F"]
+
+    style S1 fill:#fef3c7,stroke:#d97706
+    style S2 fill:#fef3c7,stroke:#d97706
+    style S3 fill:#fef3c7,stroke:#d97706
+    style S4 fill:#fef3c7,stroke:#d97706
+    style G_A fill:#dcfce7
+    style G_B fill:#dcfce7
+    style G_C fill:#dcfce7
+    style G_D fill:#dcfce7
+    style G_F fill:#fee2e2
+```
+
+``` python
+score = 87
+
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(f"최종 취득 점수: {score}점 -> 부여 학점: {grade}")
+```
+
+::: callout-important
+## 파이썬의 문법 생명선: 들여쓰기(Indentation) 규칙
+
+파이썬은 C/Java처럼 중괄호(`{}`)를 쓰지 않고 **오직 들여쓰기(공백 4칸 권장)**로 코드 블록의 종속 관계를 구분합니다. 들여쓰기 깊이가 다르면 `IndentationError`가 발생하므로 탭과 공백을 혼용하지 않아야 합니다.
+:::
+
+------------------------------------------------------------------------
+
+## 논리 연산자와 복합 조건식 설계 {#sec-logical-operators}
+
+여러 개의 조건을 조합하여 복잡한 비즈니스 로직을 판별할 때는 논리 연산자(`and`, `or`, `not`)를 사용합니다.
+
+### 논리 진리표 (Truth Table)
+
+| 조건 $A$ | 조건 $B$ | $A\text{ and }B$ | $A\text{ or }B$ | $\text{not }A$ |
+|:---:|:---:|:---:|:---:|:---:|
+| `True` | `True` | **`True`** | `True` | `False` |
+| `True` | `False` | `False` | **`True`** | `False` |
+| `False` | `True` | `False` | **`True`** | `True` |
+| `False` | `False` | `False` | `False` | `True` |
+
+### 단락 평가 (Short-Circuit Evaluation)
+
+파이썬은 불필요한 연산을 방지하기 위해 다음과 같이 조건을 조기 평가합니다.
+- `A and B`: $A$가 `False`이면 $B$는 검사조차 하지 않고 즉시 `False` 확정
+- `A or B`: $A$가 `True`이면 $B$는 검사하지 않고 즉시 `True` 확정
+
+------------------------------------------------------------------------
+
+## 실전 응용 예제 2선 {#sec-practical-conditionals}
+
+### 예제 1: 테마파크 종합 요금 계산기
+나이, 입장 시간(야간 여부), 우대 할인 카드 소지 여부를 종합 판별합니다.
+
+``` python
+age = 15
+is_night = True           # 야간 입장 (17시 이후)
+has_discount_card = True  # 제휴 할인 카드
+
+# 기본 요금 책정
+if age >= 65 or age <= 7:
+    base_fee = 10000     # 경로 / 유아 우대
+elif age >= 20:
+    base_fee = 40000     # 성인
+else:
+    base_fee = 25000     # 청소년 (8~19세)
+
+# 야간 할인 20% 적용
+if is_night:
+    base_fee = int(base_fee * 0.8)
+
+# 제휴 카드 추가 10% 할인
+if has_discount_card:
+    base_fee = int(base_fee * 0.9)
+
+print(f"최종 결제 입장료: {base_fee:,}원")
+```
+
+---
+
+### 예제 2: 그레고리력 윤년 판별 알고리즘
+1. 연도가 $4$의 배수이면 윤년이다.
+2. 하지만 $100$의 배수이면 평년이다.
+3. 그렇지만 $400$의 배수이면 다시 윤년이다.
+
+``` python
+year = 2024
+
+# 복합 논리 조건식
+is_leap = (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+
+if is_leap:
+    print(f"{year}년은 2월 29일까지 있는 '윤년(Leap Year)'입니다.")
+else:
+    print(f"{year}년은 2월 28일까지 있는 '평년(Common Year)'입니다.")
+```
+
+------------------------------------------------------------------------
+
+## 요약 및 핵심 정리 {.unnumbered}
+
+1. **선택 구조**는 조건식의 진위(`bool`)에 따라 프로그램의 분기 경로를 제어하는 핵심 메커니즘입니다.
+2. `if-elif-else` 문은 위에서부터 순차 판별하며 가장 먼저 만족하는 하나의 블록만 실행합니다.
+3. 파이썬의 **들여쓰기(Indentation)**는 단순한 스타일이 아닌 문법적 코드 블록을 정의합니다.
+4. `and`, `or`, `not` **논리 연산자**를 적절히 조합하면 다차원의 복합 비즈니스 규칙을 명료하게 코드로 옮길 수 있습니다.
+
+------------------------------------------------------------------------
+
+## 참고문헌 {.unnumbered}
+
+::: {#refs}
+:::

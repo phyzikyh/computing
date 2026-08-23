@@ -1,0 +1,58 @@
+# 6주차 코딩 실습 {#sec-ch6-lab}
+
+이 실습은 `for` 문, `while` 문, `range()`, `break`, `continue`를 활용한 반복 자동화 프로그램을 구현하는 과정입니다.
+
+---
+
+## 예제 코드
+
+### 예제 1: 구구단 2~4단 중첩 루프 출력
+
+```python
+for dan in range(2, 5):
+    print(f"\n--- [{dan}단] ---")
+    for i in range(1, 10):
+        print(f"{dan} x {i} = {dan * i:2d}")
+```
+
+---
+
+## 실습 과제
+
+다음 요구사항을 만족하도록 `# TODO`를 채워 코드를 완성하시오.
+
+### 문제 1. 은행 ATM 비밀번호 3회 인증 시뮬레이터
+
+비밀번호(`"1234"`)를 검증하고, 3회 연속 실패 시 계좌를 잠그는 `while` 루프 프로그램을 작성하시오.
+
+```python
+correct_pin = "1234"
+attempts = 0
+max_attempts = 3
+is_auth = False
+
+simulated_inputs = ["0000", "5678", "1234"]
+
+while attempts < max_attempts:
+    # TODO: attempts를 1 증가시키고 입력 비밀번호가 일치하면 is_auth를 True로 설정 후 break 하시오
+    pass
+
+if not is_auth:
+    print("계좌가 잠금 처리되었습니다.")
+```
+
+---
+
+### 문제 2. 1부터 50까지 3의 배수 합계 (`continue` 활용)
+
+1부터 50까지의 정수 중 3의 배수만 누적합을 구하시오. (3의 배수가 아니면 `continue`로 건너뛰기)
+
+```python
+total = 0
+
+for i in range(1, 51):
+    # TODO: i가 3의 배수가 아니면 continue로 건너뛰고, 3의 배수이면 total에 더하시오
+    pass
+
+print(f"1부터 50까지 3의 배수 합: {total}")
+```

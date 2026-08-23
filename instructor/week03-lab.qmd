@@ -1,0 +1,81 @@
+# 3주차 코딩 실습 {#sec-ch3-lab}
+
+이 실습은 3장에서 학습한 추상화와 의사코드, 순서도 모델을 파이썬 코드로 직접 구현하는 과정입니다.
+
+---
+
+## 예제 코드
+
+### 예제 1: 스마트 냉장고 유통기한 분류 알고리즘
+
+```python
+food_days = [5, -2, 0, 12, 2, -1, 7, 1]
+
+discard_count = 0
+urgent_count = 0
+safe_count = 0
+
+for d in food_days:
+    if d < 0:
+        discard_count += 1
+    elif d <= 3:
+        urgent_count += 1
+    else:
+        safe_count += 1
+
+print(f"즉시 폐기: {discard_count}개, 긴급 소비: {urgent_count}개, 안전 보관: {safe_count}개")
+```
+
+---
+
+## 실습 과제 및 모범 답안
+
+### 문제 1. 대중교통 최적 환승 요금 추상화 모델
+
+기본요금 1,400원에 이동 거리가 10km를 초과할 경우 매 5km마다 100원의 추가 요금이 붙는 알고리즘을 파이썬으로 구현하시오.
+
+```python
+distance_km = 28  # 이동 거리
+
+# [모범 답안]
+base_fee = 1400
+extra_fee = 0
+
+if distance_km > 10:
+    excess = distance_km - 10
+    # 5km 단위 올림 계산 ((초과거리 + 4) // 5)
+    intervals = (excess + 4) // 5
+    extra_fee = intervals * 100
+
+total_fee = base_fee + extra_fee
+
+print(f"이동 거리: {distance_km}km")
+print(f"최종 교통 요금: {total_fee:,}원")  # 출력: 1,800원
+```
+
+---
+
+### 문제 2. 점수별 합격/과락 판별 알고리즘 (의사코드 구현)
+
+3과목의 점수가 주어졌을 때, **평균이 60점 이상이고 모든 과목이 40점 이상(과락 없음)**이어야 합격으로 판정하는 프로그램을 작성하시오.
+
+```python
+scores = [75, 80, 35]  # 세 과목 점수
+
+# [모범 답안]
+avg = sum(scores) / len(scores)
+has_failed_subject = False
+
+for s in scores:
+    if s < 40:
+        has_failed_subject = True
+        break
+
+if avg >= 60 and not has_failed_subject:
+    result = "최종 합격"
+else:
+    result = "불합격 (평균 미달 또는 과락 발생)"
+
+print(f"평균 점수: {avg:.1f}점")
+print(f"판정 결과: {result}")
+```

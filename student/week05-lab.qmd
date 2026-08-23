@@ -1,0 +1,78 @@
+# 5주차 코딩 실습 {#sec-ch5-lab}
+
+이 실습은 `if`, `elif`, `else` 조건문과 논리 연산자를 활용하여 상황별 조건 분기 프로그램을 구현하는 과정입니다.
+
+---
+
+## 예제 코드
+
+### 예제 1: 테마파크 복합 요금 계산기
+
+```python
+age = 16
+is_night = True
+has_discount_card = True
+
+# 연령별 기본 요금
+if age >= 65 or age <= 7:
+    fee = 10000
+elif age >= 20:
+    fee = 40000
+else:
+    fee = 25000
+
+# 야간 할인 (20%) 및 제휴 카드 할인 (10%)
+if is_night:
+    fee = int(fee * 0.8)
+if has_discount_card:
+    fee = int(fee * 0.9)
+
+print(f"최종 입장료: {fee:,}원")
+```
+
+---
+
+## 실습 과제
+
+다음 요구사항을 만족하도록 `# TODO`를 채워 코드를 완성하시오.
+
+### 문제 1. 대학 학점 및 평점 자동 산출기
+
+중간고사 점수(`score`)에 따라 학점(A~F)을 부여하고 장학금 대상 여부(95점 이상)를 출력하시오.
+
+```python
+score = 96
+grade = ""
+
+# TODO: score에 따라 grade를 "A", "B", "C", "D", "F"로 결정하는 다중 조건문을 작성하시오
+
+
+is_scholarship = score >= 95
+
+print(f"취득 점수: {score}점")
+print(f"부여 학점: {grade}")
+print(f"성적 우수 장학금 대상: {is_scholarship}")
+```
+
+---
+
+### 문제 2. 윤년 판별 및 일수 계산
+
+입력된 연도(`year = 2026`)가 윤년인지 평년인지 판별하고 2월의 마지막 일수를 출력하시오.
+
+```python
+year = 2026
+
+# TODO: 윤년 판별 조건식을 작성하여 is_leap 변수에 저장하시오 (True 또는 False)
+is_leap = False
+
+
+if is_leap:
+    days_in_feb = 29
+    status = "윤년"
+else:
+    days_in_feb = 28
+    status = "평년"
+
+print(f"{year}년은 {status}이며, 2월은 {days_in_feb}일까지 있습니다.")
+```

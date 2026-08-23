@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; 추상화와 알고리즘 표현 – 컴퓨팅적사고와논리적문제해결</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./week03-quiz.html" rel="next">
+<link href="./week02-lab.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-77d2b90c99eeff80c5837adab8b96ac7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<meta name="mermaid-theme" content="default">
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./week03-lecture.html">3주차 · 추상화와 알고리즘 표현</a></li><li class="breadcrumb-item"><a href="./week03-lecture.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">추상화와 알고리즘 표현</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">컴퓨팅적사고와논리적문제해결</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">머리말</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">1주차 · 컴퓨팅 사고와 디지털 문제해결</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week01-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">컴퓨팅 사고와 디지털 문제해결</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week01-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">1주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week01-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">1주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">2주차 · 문제 분해와 패턴 인식</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week02-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">문제 분해와 패턴 인식</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week02-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">2주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week02-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">3주차 · 추상화와 알고리즘 표현</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week03-lecture.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">추상화와 알고리즘 표현</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week03-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">3주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week03-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">3주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">4주차 · 변수와 연산자</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week04-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">파이썬과 데이터 표현: 변수와 연산자</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week04-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">4주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week04-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">4주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">5주차 · 선택 구조와 조건문</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week05-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">선택 구조를 이용한 논리적 판단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week05-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">5주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week05-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">5주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">6주차 · 반복 구조와 자동화</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week06-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">반복 구조를 이용한 자동화</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week06-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">6주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week06-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">6주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">7주차 · 복합 자료구조</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week07-lecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">자료구조를 활용한 복합 데이터 처리</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week07-quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">7주차 연습문제</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./week07-lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">7주차 코딩 실습</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#sec-abstraction-concept" id="toc-sec-abstraction-concept" class="nav-link active" data-scroll-target="#sec-abstraction-concept"><span class="header-section-number">7.1</span> 복잡성을 제어하는 도구: 추상화</a>
+  <ul class="collapse">
+  <li><a href="#블랙박스black-box-모델과-정보-은닉" id="toc-블랙박스black-box-모델과-정보-은닉" class="nav-link" data-scroll-target="#블랙박스black-box-모델과-정보-은닉">블랙박스(Black Box) 모델과 정보 은닉</a></li>
+  <li><a href="#실전-시나리오-지하철-노선도와-지도-내비게이션의-추상화" id="toc-실전-시나리오-지하철-노선도와-지도-내비게이션의-추상화" class="nav-link" data-scroll-target="#실전-시나리오-지하철-노선도와-지도-내비게이션의-추상화">실전 시나리오: 지하철 노선도와 지도 내비게이션의 추상화</a></li>
+  </ul></li>
+  <li><a href="#sec-algorithm-representation" id="toc-sec-algorithm-representation" class="nav-link" data-scroll-target="#sec-algorithm-representation"><span class="header-section-number">7.2</span> 알고리즘을 표현하는 3가지 방법</a></li>
+  <li><a href="#sec-flowchart-basics" id="toc-sec-flowchart-basics" class="nav-link" data-scroll-target="#sec-flowchart-basics"><span class="header-section-number">7.3</span> 순서도(Flowchart)의 기본 기호와 3대 제어 구조</a>
+  <ul class="collapse">
+  <li><a href="#표준-순서도-기호" id="toc-표준-순서도-기호" class="nav-link" data-scroll-target="#표준-순서도-기호">표준 순서도 기호</a></li>
+  <li><a href="#모든-프로그램을-구성하는-3대-기본-제어-구조" id="toc-모든-프로그램을-구성하는-3대-기본-제어-구조" class="nav-link" data-scroll-target="#모든-프로그램을-구성하는-3대-기본-제어-구조">모든 프로그램을 구성하는 3대 기본 제어 구조</a></li>
+  </ul></li>
+  <li><a href="#sec-integrated-fridge-case" id="toc-sec-integrated-fridge-case" class="nav-link" data-scroll-target="#sec-integrated-fridge-case"><span class="header-section-number">7.4</span> 실전 종합 사례: 스마트 냉장고 유통기한 판별 시스템</a>
+  <ul class="collapse">
+  <li><a href="#문제-시나리오" id="toc-문제-시나리오" class="nav-link" data-scroll-target="#문제-시나리오">1. 문제 시나리오</a></li>
+  <li><a href="#의사코드-pseudocode" id="toc-의사코드-pseudocode" class="nav-link" data-scroll-target="#의사코드-pseudocode">2. 의사코드 (Pseudocode)</a></li>
+  <li><a href="#순서도-flowchart" id="toc-순서도-flowchart" class="nav-link" data-scroll-target="#순서도-flowchart">3. 순서도 (Flowchart)</a></li>
+  <li><a href="#파이썬-코드-구현" id="toc-파이썬-코드-구현" class="nav-link" data-scroll-target="#파이썬-코드-구현">4. 파이썬 코드 구현</a></li>
+  </ul></li>
+  <li><a href="#요약-및-핵심-정리" id="toc-요약-및-핵심-정리" class="nav-link" data-scroll-target="#요약-및-핵심-정리">요약 및 핵심 정리</a></li>
+  <li><a href="#참고문헌" id="toc-참고문헌" class="nav-link" data-scroll-target="#참고문헌">참고문헌</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./week03-lecture.html">3주차 · 추상화와 알고리즘 표현</a></li><li class="breadcrumb-item"><a href="./week03-lecture.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">추상화와 알고리즘 표현</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ch3" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">추상화와 알고리즘 표현</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>이 장에서는 복잡성을 제어하고 본질에 집중하는 <strong>추상화(Abstraction)</strong>와 정보 은닉(Information Hiding)의 원리를 다룹니다. 자연어, 의사코드(Pseudocode), 순서도(Flowchart)를 활용하여 알고리즘을 명확하게 표현하는 방법을 익히고, 모든 컴퓨터 프로그램의 3대 기본 제어 구조인 <strong>순차·선택·반복</strong>을 시각화하여 파이썬 코드로 구현합니다.</p>
+</blockquote>
+<section id="sec-abstraction-concept" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-abstraction-concept"><span class="header-section-number">7.1</span> 복잡성을 제어하는 도구: 추상화</h2>
+<p>컴퓨터 과학 역사상 가장 위대한 튜링상 수상자 중 한 명인 <strong>에츠허르 데이크스트라(Edsger W. Dijkstra)</strong>는 <em>“추상화의 목적은 모호해지는 것이 아니라, 정확하게 생각할 수 있는 새로운 의미론적 단계를 창조하는 것”</em>이라고 역설했습니다<span class="citation" data-cites="dijkstra1972humble">(<a href="week01-lecture.html#ref-dijkstra1972humble" role="doc-biblioref">Dijkstra 1972년</a>)</span>.</p>
+<p><span class="key">추상화(Abstraction)</span>란 문제 해결에 <strong>불필요한 세부 사항(Noise)을 의도적으로 감추고, 본질적인 핵심 속성과 기능(Signal)만을 추출하여 단순한 모델로 만드는 지적 작업</strong>입니다<span class="citation" data-cites="wing2008computational sorva2013notional">(<a href="week01-lecture.html#ref-wing2008computational" role="doc-biblioref">Wing 2008년</a>; <a href="week01-lecture.html#ref-sorva2013notional" role="doc-biblioref">Sorva 2013년</a>)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["복잡하고 방대한&lt;br/&gt;현실 세계 데이터"] --&gt;|"추상화 필터&lt;br/&gt;(불필요한 세부사항 제거)"| B["핵심 속성 모델&lt;br/&gt;(단순화된 표현)"]
+    B --&gt;|"일반화 및 규칙화"| C["재사용 가능한&lt;br/&gt;컴퓨터 프로그램"]
+
+    style A fill:#fee2e2,stroke:#dc2626
+    style B fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style C fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<section id="블랙박스black-box-모델과-정보-은닉" class="level3">
+<h3 class="anchored" data-anchor-id="블랙박스black-box-모델과-정보-은닉">블랙박스(Black Box) 모델과 정보 은닉</h3>
+<p>추상화의 가장 대표적인 형태가 바로 <strong>블랙박스 모델(Black Box Model)</strong>입니다<span class="citation" data-cites="abelson1996structure">(<a href="week01-lecture.html#ref-abelson1996structure" role="doc-biblioref">Abelson 기타 1996년</a>)</span>. 사용자는 내부의 복잡한 기계적 메커니즘을 몰라도, <strong>입력(Input)과 출력(Output), 그리고 인터페이스(Interface)</strong>만 알면 기능을 완벽하게 활용할 수 있습니다.</p>
+<ul>
+<li><strong>자동차 운전</strong>: 운전자는 엔진의 연료 분사 타이밍이나 변속기 기어비를 몰라도, 가속 페달과 핸들(인터페이스)만으로 자동차를 제어합니다.</li>
+<li><strong>파이썬 내장 함수 <code>sum()</code></strong>: 사용자는 내부적으로 C 언어로 어떻게 메모리를 순회하며 덧셈하는지 몰라도, <code>sum([10, 20, 30])</code>을 호출하면 정확히 <span class="math inline">\(60\)</span>을 얻습니다.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    IN["입력 (Input)&lt;br/&gt;[10, 20, 30]"] --&gt; BB["추상화된 블랙박스&lt;br/&gt;sum() 함수&lt;br/&gt;(내부 구현은 은닉됨)"]
+    BB --&gt; OUT["출력 (Output)&lt;br/&gt;60"]
+
+    style IN fill:#eff6ff,stroke:#3b82f6
+    style BB fill:#1e293b,stroke:#0f172a,color:#ffffff
+    style OUT fill:#f0fdf4,stroke:#22c55e
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="실전-시나리오-지하철-노선도와-지도-내비게이션의-추상화" class="level3">
+<h3 class="anchored" data-anchor-id="실전-시나리오-지하철-노선도와-지도-내비게이션의-추상화">실전 시나리오: 지하철 노선도와 지도 내비게이션의 추상화</h3>
+<p>실제 지리 정보를 담은 위성 사진과 지하철 노선도를 비교해 보면 추상화의 강력함을 즉시 체감할 수 있습니다.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">비교 항목</th>
+<th style="text-align: left;">위성 사진 지도 (구체적 표현)</th>
+<th style="text-align: left;">지하철 노선도 (추상화된 표현)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>포함된 정보</strong></td>
+<td style="text-align: left;">실제 지형, 산과 강, 도로의 곡률, 건물 높이</td>
+<td style="text-align: left;">역과 역 사이의 연결 관계, 환승역, 소요 시간</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>장점</strong></td>
+<td style="text-align: left;">실제 지리적 위치 파악에 유리</td>
+<td style="text-align: left;">이동 경로와 환승 계획을 한눈에 파악하기에 압도적으로 유리</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>컴퓨터 모델</strong></td>
+<td style="text-align: left;">대용량 래스터 이미지 파일</td>
+<td style="text-align: left;"><strong>그래프(Graph) 자료구조</strong> (노드와 간선)</td>
+</tr>
+</tbody>
+</table>
+<div class="keybox">
+<p><strong>추상화의 핵심 가치:</strong> 모든 정보를 다 담으려 하면 복잡성 때문에 문제를 풀 수 없습니다. 해결하려는 목적에 꼭 필요한 정보만 남기는 것이 추상화의 정수입니다.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-algorithm-representation" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-algorithm-representation"><span class="header-section-number">7.2</span> 알고리즘을 표현하는 3가지 방법</h2>
+<p>문제를 해결하기 위한 논리적 절차인 <strong>알고리즘(Algorithm)</strong>은 다음 3가지 방법으로 표현할 수 있습니다<span class="citation" data-cites="cormen2022introduction sedgewick2016intro">(<a href="week01-lecture.html#ref-cormen2022introduction" role="doc-biblioref">Cormen 기타 2022년</a>; <a href="week01-lecture.html#ref-sedgewick2016intro" role="doc-biblioref">Sedgewick 기타 2016년</a>)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    ALG["알고리즘 표현 방식"] --&gt; M1["1. 자연어 (Natural Language)&lt;br/&gt;인간의 일상 언어로 서술"]
+    ALG --&gt; M2["2. 의사코드 (Pseudocode)&lt;br/&gt;프로그래밍 문법과 유사한 중간 표현"]
+    ALG --&gt; M3["3. 순서도 (Flowchart)&lt;br/&gt;표준 도형 기호를 사용한 시각적 흐름도"]
+
+    style ALG fill:#fef3c7,stroke:#d97706
+    style M1 fill:#f1f5f9
+    style M2 fill:#dbeafe
+    style M3 fill:#dcfce7
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">표현 방식</th>
+<th style="text-align: left;">주요 장점</th>
+<th style="text-align: left;">한계 및 단점</th>
+<th style="text-align: left;">적합한 활용 상황</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>자연어</strong></td>
+<td style="text-align: left;">누구나 쉽게 읽고 이해할 수 있음</td>
+<td style="text-align: left;">문장의 모호성(Ambiguity)으로 인해 컴퓨터 로직으로 직결되기 어려움</td>
+<td style="text-align: left;">초기 아이디어 스케치, 기획 회의</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>의사코드</strong></td>
+<td style="text-align: left;">프로그래밍 언어 문법에 얽매이지 않고 논리 골격에만 집중 가능</td>
+<td style="text-align: left;">표준화된 문법 규칙이 없어 작성자마다 표현이 조금씩 다를 수 있음</td>
+<td style="text-align: left;">복잡한 알고리즘 논문 발표, 팀 내 로직 검토</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>순서도</strong></td>
+<td style="text-align: left;">제어 흐름(조건 분기, 루프)이 시각적으로 명확하게 드러남</td>
+<td style="text-align: left;">로직이 매우 길어지면 도면이 복잡해져 관리가 어려움</td>
+<td style="text-align: left;">알고리즘 교육, 업무 프로세스 명세화</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="sec-flowchart-basics" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-flowchart-basics"><span class="header-section-number">7.3</span> 순서도(Flowchart)의 기본 기호와 3대 제어 구조</h2>
+<p>순서도는 국제표준화기구(ISO)와 ANSI 표준 규격에 정의된 도형을 사용합니다.</p>
+<section id="표준-순서도-기호" class="level3">
+<h3 class="anchored" data-anchor-id="표준-순서도-기호">표준 순서도 기호</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 38%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">기호 명칭</th>
+<th style="text-align: center;">도형 모양</th>
+<th style="text-align: left;">기능 및 역할</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>단말 (Terminal)</strong></td>
+<td style="text-align: center;">타원 / 둥근 사각형</td>
+<td style="text-align: left;">알고리즘의 <strong>시작(Start)</strong>과 <strong>종료(End)</strong>를 나타냄</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>준비 / 초기화 (Preparation)</strong></td>
+<td style="text-align: center;">육각형</td>
+<td style="text-align: left;">변수의 선언 및 초기값 설정</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>처리 (Process)</strong></td>
+<td style="text-align: center;">직사각형</td>
+<td style="text-align: left;">산술 연산, 데이터 할당, 값의 변경</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>판단 / 조건 (Decision)</strong></td>
+<td style="text-align: center;">마름모</td>
+<td style="text-align: left;">조건식의 참(True) / 거짓(False)에 따라 실행 경로를 분기</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>입출력 (Input/Output)</strong></td>
+<td style="text-align: center;">평행사변형</td>
+<td style="text-align: left;">외부 데이터 입력 받기, 화면에 결과 출력하기</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>흐름선 (Flowline)</strong></td>
+<td style="text-align: center;">화살표 (<span class="math inline">\(\rightarrow\)</span>)</td>
+<td style="text-align: left;">제어의 이동 방향 및 실행 순서 표시</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="모든-프로그램을-구성하는-3대-기본-제어-구조" class="level3">
+<h3 class="anchored" data-anchor-id="모든-프로그램을-구성하는-3대-기본-제어-구조">모든 프로그램을 구성하는 3대 기본 제어 구조</h3>
+<p>1966년 컴퓨터과학자 보엠(Böhm)과 자코피니(Jacopini)는 <strong>구조적 프로그래밍 정리(Structured Program Theorem)</strong>를 통해, 아무리 복잡한 프로그램이라도 오직 <strong>순차, 선택, 반복</strong>의 3가지 기본 제어 구조만으로 완벽하게 표현할 수 있음을 수학적으로 증명하였습니다.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    subgraph S1["1. 순차 구조 (Sequence)"]
+        direction TB
+        A1["명령문 A"] --&gt; A2["명령문 B"] --&gt; A3["명령문 C"]
+    end
+
+    subgraph S2["2. 선택 구조 (Selection)"]
+        direction TB
+        C1{"조건식 판별"}
+        C1 -- "참 (True)" --&gt; T1["명령문 T"]
+        C1 -- "거짓 (False)" --&gt; F1["명령문 F"]
+        T1 --&gt; M_JOIN["합류"]
+        F1 --&gt; M_JOIN
+    end
+
+    subgraph S3["3. 반복 구조 (Iteration)"]
+        direction TB
+        L_COND{"반복 조건 만족?"}
+        L_COND -- "예 (Loop)" --&gt; L_BODY["반복 실행문"]
+        L_BODY --&gt; L_COND
+        L_COND -- "아니오 (Exit)" --&gt; L_EXIT["루프 탈출"]
+    end
+
+    style S1 fill:#eff6ff,stroke:#3b82f6
+    style S2 fill:#fef3c7,stroke:#d97706
+    style S3 fill:#f0fdf4,stroke:#22c55e
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-integrated-fridge-case" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-integrated-fridge-case"><span class="header-section-number">7.4</span> 실전 종합 사례: 스마트 냉장고 유통기한 판별 시스템</h2>
+<section id="문제-시나리오" class="level3">
+<h3 class="anchored" data-anchor-id="문제-시나리오">1. 문제 시나리오</h3>
+<p>스마트 냉장고에 보관 중인 식자재들의 남은 유통기한(일수) 리스트가 주어졌을 때, <strong>유통기한이 지난 상품(음수)은 ‘폐기 알림’</strong>, <strong>3일 이하로 남은 상품은 ‘소비 권장 알림’</strong>, <strong>그 외에는 ‘보관 양호’</strong>로 자동 분류하는 알고리즘을 설계합니다.</p>
+</section>
+<section id="의사코드-pseudocode" class="level3">
+<h3 class="anchored" data-anchor-id="의사코드-pseudocode">2. 의사코드 (Pseudocode)</h3>
+<pre class="text"><code>알고리즘: FoodExpirationManager
+입력: 식자재 남은 일수 목록 days_left
+
+1. discard_count ← 0
+2. urgent_count ← 0
+3. safe_count ← 0
+
+4. days_left의 각 항목(d)에 대해 순차 반복:
+     만약 d &lt; 0 이면:
+         discard_count ← discard_count + 1
+     그렇지 않고 만약 d &lt;= 3 이면:
+         urgent_count ← urgent_count + 1
+     그렇지 않으면:
+         safe_count ← safe_count + 1
+
+5. 폐기 수량(discard_count), 긴급 수량(urgent_count), 안전 수량(safe_count) 출력</code></pre>
+</section>
+<section id="순서도-flowchart" class="level3">
+<h3 class="anchored" data-anchor-id="순서도-flowchart">3. 순서도 (Flowchart)</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    START(["시작"]) --&gt; INIT["초기화&lt;br/&gt;discard=0, urgent=0, safe=0, i=0"]
+    INIT --&gt; LOOP_COND{"i &lt; 데이터 개수?"}
+    
+    LOOP_COND -- "아니오 (검사 완료)" --&gt; OUTPUT[/"결과 리포트 출력"/]
+    OUTPUT --&gt; END_NODE(["종료"])
+
+    LOOP_COND -- "예 (순회 중)" --&gt; C_DISCARD{"days_left[i] &lt; 0 ?"}
+    
+    C_DISCARD -- "참 (유통기한 경과)" --&gt; ACT_DISCARD["discard += 1"]
+    C_DISCARD -- "거짓" --&gt; C_URGENT{"days_left[i] &lt;= 3 ?"}
+    
+    C_URGENT -- "참 (임박 상품)" --&gt; ACT_URGENT["urgent += 1"]
+    C_URGENT -- "거짓 (양호)" --&gt; ACT_SAFE["safe += 1"]
+    
+    ACT_DISCARD --&gt; INC_I["i = i + 1"]
+    ACT_URGENT --&gt; INC_I
+    ACT_SAFE --&gt; INC_I
+    INC_I --&gt; LOOP_COND
+
+    style START fill:#dcfce7,stroke:#16a34a
+    style END_NODE fill:#f1f5f9,stroke:#475569
+    style LOOP_COND fill:#fef3c7,stroke:#d97706
+    style C_DISCARD fill:#fee2e2,stroke:#dc2626
+    style C_URGENT fill:#fed7aa,stroke:#ea580c
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="파이썬-코드-구현" class="level3">
+<h3 class="anchored" data-anchor-id="파이썬-코드-구현">4. 파이썬 코드 구현</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 스마트 냉장고에 보관된 식자재들의 남은 유통기한 일수</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 음수: 기한 경과, 0: 오늘까지, 양수: 남은 일수</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>food_days <span class="op">=</span> [<span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">1</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>discard_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>urgent_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>safe_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> food_days:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> d <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        discard_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> d <span class="op">&lt;=</span> <span class="dv">3</span>:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        urgent_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        safe_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- 스마트 냉장고 재고 관리 리포트 ---"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"즉시 폐기 대상: </span><span class="sc">{</span>discard_count<span class="sc">}</span><span class="ss">개"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"소비 권장(임박): </span><span class="sc">{</span>urgent_count<span class="sc">}</span><span class="ss">개"</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"안전 보관 중: </span><span class="sc">{</span>safe_count<span class="sc">}</span><span class="ss">개"</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="요약-및-핵심-정리" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="요약-및-핵심-정리">요약 및 핵심 정리</h2>
+<ol type="1">
+<li><strong>추상화(Abstraction)</strong>는 문제 해결 목적에 맞게 핵심적인 정보와 기능만을 추출하고 불필요한 세부 구현을 감추는(정보 은닉) 지적 도구입니다.</li>
+<li>알고리즘 표현 방법에는 <strong>자연어, 의사코드, 순서도</strong>가 있으며, 개발 단계에 맞추어 적절한 표현 방식을 선택합니다.</li>
+<li>모든 알고리즘은 <strong>순차(Sequence), 선택(Selection), 반복(Iteration)</strong>의 3대 기본 제어 구조의 조합만으로 설계할 수 있습니다.</li>
+</ol>
+<hr>
+</section>
+<section id="참고문헌" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="참고문헌">참고문헌</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-abelson1996structure" class="csl-entry" role="listitem">
+Abelson, Harold, Gerald Jay Sussman, 와/과 Julie Sussman. 1996년. <em>Structure and Interpretation of Computer Programs</em>. 2nd ed. MIT Press.
+</div>
+<div id="ref-cormen2022introduction" class="csl-entry" role="listitem">
+Cormen, Thomas H., Charles E. Leiserson, Ronald L. Rivest, 와/과 Clifford Stein. 2022년. <em>Introduction to Algorithms</em>. 4th ed. MIT Press.
+</div>
+<div id="ref-dijkstra1972humble" class="csl-entry" role="listitem">
+Dijkstra, Edsger W. 1972년. <span>“The humble programmer”</span>. <em>Communications of the ACM</em> 15 (10): 859–66. <a href="https://doi.org/10.1145/355604.361591">https://doi.org/10.1145/355604.361591</a>.
+</div>
+<div id="ref-sedgewick2016intro" class="csl-entry" role="listitem">
+Sedgewick, Robert, Kevin Wayne, 와/과 Robert Dondero. 2016년. <em>Introduction to Programming in Python: An Interdisciplinary Approach</em>. Addison-Wesley Professional.
+</div>
+<div id="ref-sorva2013notional" class="csl-entry" role="listitem">
+Sorva, Juha. 2013년. <span>“Notional machines and introductory programming education”</span>. <em>ACM Transactions on Computing Education</em> 13 (2): 1–31. <a href="https://doi.org/10.1145/2483710.2483713">https://doi.org/10.1145/2483710.2483713</a>.
+</div>
+<div id="ref-wing2008computational" class="csl-entry" role="listitem">
+Wing, Jeannette M. 2008년. <span>“Computational thinking and thinking about computing”</span>. <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em> 366 (1881): 3717–25. <a href="https://doi.org/10.1098/rsta.2008.0118">https://doi.org/10.1098/rsta.2008.0118</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./week02-lab.html" class="pagination-link" aria-label="2주차 코딩 실습">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">2주차 코딩 실습</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./week03-quiz.html" class="pagination-link" aria-label="3주차 연습문제">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">3주차 연습문제</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
