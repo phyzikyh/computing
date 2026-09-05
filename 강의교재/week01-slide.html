@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>컴퓨팅적 사고와 논리적 문제해결 – 컴퓨팅적사고와논리적문제해결</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-77d2b90c99eeff80c5837adab8b96ac7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<meta name="mermaid-theme" content="default">
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&amp;family=Noto+Serif+KR:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#학습목차" id="toc-학습목차" class="nav-link active" data-scroll-target="#학습목차"><span class="header-section-number">0.1</span> 1. 학습목차</a></li>
+  <li><a href="#왜-지금-모든-분야에서-컴퓨팅-사고를-말할까" id="toc-왜-지금-모든-분야에서-컴퓨팅-사고를-말할까" class="nav-link" data-scroll-target="#왜-지금-모든-분야에서-컴퓨팅-사고를-말할까"><span class="header-section-number">0.2</span> 2. 왜 지금 모든 분야에서 ’컴퓨팅 사고’를 말할까?</a>
+  <ul class="collapse">
+  <li><a href="#디지털-대전환digital-transformation의-시대" id="toc-디지털-대전환digital-transformation의-시대" class="nav-link" data-scroll-target="#디지털-대전환digital-transformation의-시대">디지털 대전환(Digital Transformation)의 시대</a></li>
+  </ul></li>
+  <li><a href="#코딩coding을-배우는-것과-컴퓨팅-사고는-무엇이-다를까" id="toc-코딩coding을-배우는-것과-컴퓨팅-사고는-무엇이-다를까" class="nav-link" data-scroll-target="#코딩coding을-배우는-것과-컴퓨팅-사고는-무엇이-다를까"><span class="header-section-number">0.3</span> 3. 코딩(Coding)을 배우는 것과 컴퓨팅 사고는 무엇이 다를까?</a></li>
+  <li><a href="#글쓰기로-이해하는-코딩과-컴퓨팅-사고" id="toc-글쓰기로-이해하는-코딩과-컴퓨팅-사고" class="nav-link" data-scroll-target="#글쓰기로-이해하는-코딩과-컴퓨팅-사고"><span class="header-section-number">0.4</span> 4. 글쓰기로 이해하는 코딩과 컴퓨팅 사고</a></li>
+  <li><a href="#생각의-지렛대---시모어-페퍼트의-교육-철학" id="toc-생각의-지렛대---시모어-페퍼트의-교육-철학" class="nav-link" data-scroll-target="#생각의-지렛대---시모어-페퍼트의-교육-철학"><span class="header-section-number">0.5</span> 5. ‘생각의 지렛대’ - 시모어 페퍼트의 교육 철학</a>
+  <ul class="collapse">
+  <li><a href="#년-mit-시모어-페퍼트seymour-papert-교수" id="toc-년-mit-시모어-페퍼트seymour-papert-교수" class="nav-link" data-scroll-target="#년-mit-시모어-페퍼트seymour-papert-교수">1980년, MIT 시모어 페퍼트(Seymour Papert) 교수</a></li>
+  </ul></li>
+  <li><a href="#지넷-윙jeannette-wing-교수와-보편-역량-선언" id="toc-지넷-윙jeannette-wing-교수와-보편-역량-선언" class="nav-link" data-scroll-target="#지넷-윙jeannette-wing-교수와-보편-역량-선언"><span class="header-section-number">0.6</span> 6. 지넷 윙(Jeannette Wing) 교수와 보편 역량 선언</a>
+  <ul class="collapse">
+  <li><a href="#년-카네기멜론대학교-지넷-윙-교수" id="toc-년-카네기멜론대학교-지넷-윙-교수" class="nav-link" data-scroll-target="#년-카네기멜론대학교-지넷-윙-교수">2006년, 카네기멜론대학교 지넷 윙 교수</a></li>
+  </ul></li>
+  <li><a href="#csta-iste-융합형-문제해결-표준-프레임워크" id="toc-csta-iste-융합형-문제해결-표준-프레임워크" class="nav-link" data-scroll-target="#csta-iste-융합형-문제해결-표준-프레임워크"><span class="header-section-number">0.7</span> 7. CSTA &amp; ISTE 융합형 문제해결 표준 프레임워크</a></li>
+  <li><a href="#문제-해결의-전체-프로세스-5단계" id="toc-문제-해결의-전체-프로세스-5단계" class="nav-link" data-scroll-target="#문제-해결의-전체-프로세스-5단계"><span class="header-section-number">0.8</span> 8. 문제 해결의 전체 프로세스 5단계</a></li>
+  <li><a href="#우리가-명령을-내릴-컴퓨터-시스템의-동작-원리" id="toc-우리가-명령을-내릴-컴퓨터-시스템의-동작-원리" class="nav-link" data-scroll-target="#우리가-명령을-내릴-컴퓨터-시스템의-동작-원리"><span class="header-section-number">0.9</span> 9. 우리가 명령을 내릴 ’컴퓨터 시스템’의 동작 원리</a></li>
+  <li><a href="#하드웨어-삼총사-cpu-ram-ssd의-역할-분담" id="toc-하드웨어-삼총사-cpu-ram-ssd의-역할-분담" class="nav-link" data-scroll-target="#하드웨어-삼총사-cpu-ram-ssd의-역할-분담"><span class="header-section-number">0.10</span> 10. 하드웨어 삼총사: CPU, RAM, SSD의 역할 분담</a></li>
+  <li><a href="#하드웨어-상호작용-및-데이터-처리-흐름" id="toc-하드웨어-상호작용-및-데이터-처리-흐름" class="nav-link" data-scroll-target="#하드웨어-상호작용-및-데이터-처리-흐름"><span class="header-section-number">0.11</span> 11. 하드웨어 상호작용 및 데이터 처리 흐름</a></li>
+  <li><a href="#컴퓨터는-0과-1밖에-모른다-기계어와-고급-언어" id="toc-컴퓨터는-0과-1밖에-모른다-기계어와-고급-언어" class="nav-link" data-scroll-target="#컴퓨터는-0과-1밖에-모른다-기계어와-고급-언어"><span class="header-section-number">0.12</span> 12. 컴퓨터는 0과 1밖에 모른다? 기계어와 고급 언어</a></li>
+  <li><a href="#번역-방식의-비교-컴파일러-vs-인터프리터" id="toc-번역-방식의-비교-컴파일러-vs-인터프리터" class="nav-link" data-scroll-target="#번역-방식의-비교-컴파일러-vs-인터프리터"><span class="header-section-number">0.13</span> 13. 번역 방식의 비교: 컴파일러 vs 인터프리터</a></li>
+  <li><a href="#소프트웨어-개발-생명주기-sdlc" id="toc-소프트웨어-개발-생명주기-sdlc" class="nav-link" data-scroll-target="#소프트웨어-개발-생명주기-sdlc"><span class="header-section-number">0.14</span> 14. 소프트웨어 개발 생명주기 (SDLC)</a>
+  <ul class="collapse">
+  <li><a href="#소프트웨어-공학의-황금률" id="toc-소프트웨어-공학의-황금률" class="nav-link" data-scroll-target="#소프트웨어-공학의-황금률">소프트웨어 공학의 황금률</a></li>
+  </ul></li>
+  <li><a href="#sdlc-6단계-프로세스-상세-해설" id="toc-sdlc-6단계-프로세스-상세-해설" class="nav-link" data-scroll-target="#sdlc-6단계-프로세스-상세-해설"><span class="header-section-number">0.15</span> 15. SDLC 6단계 프로세스 상세 해설</a></li>
+  <li><a href="#컴퓨팅-사고의-4대-핵심-요소" id="toc-컴퓨팅-사고의-4대-핵심-요소" class="nav-link" data-scroll-target="#컴퓨팅-사고의-4대-핵심-요소"><span class="header-section-number">0.16</span> 16. 컴퓨팅 사고의 4대 핵심 요소</a></li>
+  <li><a href="#단계-문제-분해-decomposition" id="toc-단계-문제-분해-decomposition" class="nav-link" data-scroll-target="#단계-문제-분해-decomposition"><span class="header-section-number">0.17</span> 17. 1단계: 문제 분해 (Decomposition)</a>
+  <ul class="collapse">
+  <li><a href="#나누어-정복하라-divide-and-conquer" id="toc-나누어-정복하라-divide-and-conquer" class="nav-link" data-scroll-target="#나누어-정복하라-divide-and-conquer">“나누어 정복하라 (Divide and Conquer)”</a></li>
+  </ul></li>
+  <li><a href="#실전-분해-예시-동아리-mt-경비-정산-시스템" id="toc-실전-분해-예시-동아리-mt-경비-정산-시스템" class="nav-link" data-scroll-target="#실전-분해-예시-동아리-mt-경비-정산-시스템"><span class="header-section-number">0.18</span> 18. 실전 분해 예시: 동아리 MT 경비 정산 시스템</a></li>
+  <li><a href="#mt-정산-시스템의-하향식-분해-트리" id="toc-mt-정산-시스템의-하향식-분해-트리" class="nav-link" data-scroll-target="#mt-정산-시스템의-하향식-분해-트리"><span class="header-section-number">0.19</span> 19. MT 정산 시스템의 하향식 분해 트리</a></li>
+  <li><a href="#단계-패턴-인식-pattern-recognition" id="toc-단계-패턴-인식-pattern-recognition" class="nav-link" data-scroll-target="#단계-패턴-인식-pattern-recognition"><span class="header-section-number">0.20</span> 20. 2단계: 패턴 인식 (Pattern Recognition)</a>
+  <ul class="collapse">
+  <li><a href="#반복되는-규칙과-유사점을-포착하라" id="toc-반복되는-규칙과-유사점을-포착하라" class="nav-link" data-scroll-target="#반복되는-규칙과-유사점을-포착하라">“반복되는 규칙과 유사점을 포착하라”</a></li>
+  </ul></li>
+  <li><a href="#실전-패턴-발견-넷플릭스ott-시청-로그-분석" id="toc-실전-패턴-발견-넷플릭스ott-시청-로그-분석" class="nav-link" data-scroll-target="#실전-패턴-발견-넷플릭스ott-시청-로그-분석"><span class="header-section-number">0.21</span> 21. 실전 패턴 발견: 넷플릭스(OTT) 시청 로그 분석</a></li>
+  <li><a href="#발견된-현실의-패턴-rightarrow-파이썬-문법-매핑" id="toc-발견된-현실의-패턴-rightarrow-파이썬-문법-매핑" class="nav-link" data-scroll-target="#발견된-현실의-패턴-rightarrow-파이썬-문법-매핑"><span class="header-section-number">0.22</span> 22. 발견된 현실의 패턴 <span class="math inline">\(\rightarrow\)</span> 파이썬 문법 매핑</a></li>
+  <li><a href="#단계-추상화-abstraction의-진짜-목적" id="toc-단계-추상화-abstraction의-진짜-목적" class="nav-link" data-scroll-target="#단계-추상화-abstraction의-진짜-목적"><span class="header-section-number">0.23</span> 23. 3단계: 추상화 (Abstraction)의 진짜 목적</a>
+  <ul class="collapse">
+  <li><a href="#구체적-상황을-수식으로-바꾸는-것만이-추상화일까" id="toc-구체적-상황을-수식으로-바꾸는-것만이-추상화일까" class="nav-link" data-scroll-target="#구체적-상황을-수식으로-바꾸는-것만이-추상화일까">“구체적 상황을 수식으로 바꾸는 것만이 추상화일까?”</a></li>
+  </ul></li>
+  <li><a href="#추상화의-3대-차원-데이터-프로세스-규칙" id="toc-추상화의-3대-차원-데이터-프로세스-규칙" class="nav-link" data-scroll-target="#추상화의-3대-차원-데이터-프로세스-규칙"><span class="header-section-number">0.24</span> 24. 추상화의 3대 차원: 데이터, 프로세스, 규칙</a></li>
+  <li><a href="#실세계-추상화-모델-비교" id="toc-실세계-추상화-모델-비교" class="nav-link" data-scroll-target="#실세계-추상화-모델-비교"><span class="header-section-number">0.25</span> 25. 실세계 추상화 모델 비교</a></li>
+  <li><a href="#단계-알고리즘-algorithm이란-무엇인가" id="toc-단계-알고리즘-algorithm이란-무엇인가" class="nav-link" data-scroll-target="#단계-알고리즘-algorithm이란-무엇인가"><span class="header-section-number">0.26</span> 26. 4단계: 알고리즘 (Algorithm)이란 무엇인가?</a>
+  <ul class="collapse">
+  <li><a href="#문제를-해결하기-위한-명확한-단계별-명령어-집합" id="toc-문제를-해결하기-위한-명확한-단계별-명령어-집합" class="nav-link" data-scroll-target="#문제를-해결하기-위한-명확한-단계별-명령어-집합">“문제를 해결하기 위한 명확한 단계별 명령어 집합”</a></li>
+  </ul></li>
+  <li><a href="#도널드-커누스donald-knuth의-알고리즘-5대-요건" id="toc-도널드-커누스donald-knuth의-알고리즘-5대-요건" class="nav-link" data-scroll-target="#도널드-커누스donald-knuth의-알고리즘-5대-요건"><span class="header-section-number">0.27</span> 27. 도널드 커누스(Donald Knuth)의 알고리즘 5대 요건</a></li>
+  <li><a href="#대-요건의-상세-의미와-위반-시-발생하는-오류" id="toc-대-요건의-상세-의미와-위반-시-발생하는-오류" class="nav-link" data-scroll-target="#대-요건의-상세-의미와-위반-시-발생하는-오류"><span class="header-section-number">0.28</span> 28. 5대 요건의 상세 의미와 위반 시 발생하는 오류</a></li>
+  <li><a href="#요리-레시피-vs-알고리즘의-직관적-비유" id="toc-요리-레시피-vs-알고리즘의-직관적-비유" class="nav-link" data-scroll-target="#요리-레시피-vs-알고리즘의-직관적-비유"><span class="header-section-number">0.29</span> 29. 요리 레시피 vs 알고리즘의 직관적 비유</a></li>
+  <li><a href="#좋은-알고리즘의-평가-기준-시간과-공간" id="toc-좋은-알고리즘의-평가-기준-시간과-공간" class="nav-link" data-scroll-target="#좋은-알고리즘의-평가-기준-시간과-공간"><span class="header-section-number">0.30</span> 30. 좋은 알고리즘의 평가 기준: 시간과 공간</a></li>
+  <li><a href="#실전-예제-문제-풀이-쇼핑몰-vip-고객-자동-선별" id="toc-실전-예제-문제-풀이-쇼핑몰-vip-고객-자동-선별" class="nav-link" data-scroll-target="#실전-예제-문제-풀이-쇼핑몰-vip-고객-자동-선별"><span class="header-section-number">0.31</span> 31. 실전 예제 문제 풀이: 쇼핑몰 VIP 고객 자동 선별</a></li>
+  <li><a href="#vip-선별-알고리즘-표준-순서도-flowchart" id="toc-vip-선별-알고리즘-표준-순서도-flowchart" class="nav-link" data-scroll-target="#vip-선별-알고리즘-표준-순서도-flowchart"><span class="header-section-number">0.32</span> 32. VIP 선별 알고리즘 표준 순서도 (Flowchart)</a></li>
+  <li><a href="#순서도-leftrightarrow-파이썬-소스코드-11-매핑" id="toc-순서도-leftrightarrow-파이썬-소스코드-11-매핑" class="nav-link" data-scroll-target="#순서도-leftrightarrow-파이썬-소스코드-11-매핑"><span class="header-section-number">0.33</span> 33. 순서도 <span class="math inline">\(\leftrightarrow\)</span> 파이썬 소스코드 1:1 매핑</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">컴퓨팅적 사고와 논리적 문제해결</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="학습목차" class="level2" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="학습목차"><span class="header-section-number">0.1</span> 1. 학습목차</h2>
+<ul>
+<li><strong>왜 지금 컴퓨팅 사고(CT)인가?</strong></li>
+<li><strong>코딩 vs 컴퓨팅 사고</strong></li>
+<li><strong>컴퓨터 시스템의 동작 원리</strong></li>
+<li><strong>소프트웨어 개발 생명주기(SDLC)</strong></li>
+<li><strong>컴퓨팅 사고의 4대 핵심 기둥</strong>
+<ul>
+<li>① 문제 분해 (Decomposition)</li>
+<li>② 패턴 인식 (Pattern Recognition)</li>
+<li>③ 추상화 및 일반화 (Abstraction)</li>
+<li>④ 알고리즘 설계 (Algorithm Design)</li>
+</ul></li>
+<li><strong>통합 실전 예시</strong>: 쇼핑몰 VIP 고객 자동 선별 알고리즘 및 순서도 완전 정복</li>
+</ul>
+<hr>
+</section>
+<section id="왜-지금-모든-분야에서-컴퓨팅-사고를-말할까" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="왜-지금-모든-분야에서-컴퓨팅-사고를-말할까"><span class="header-section-number">0.2</span> 2. 왜 지금 모든 분야에서 ’컴퓨팅 사고’를 말할까?</h2>
+<section id="디지털-대전환digital-transformation의-시대" class="level3">
+<h3 class="anchored" data-anchor-id="디지털-대전환digital-transformation의-시대">디지털 대전환(Digital Transformation)의 시대</h3>
+<ul>
+<li>인공지능(AI), 빅데이터, 클라우드가 모든 학문과 산업을 재편</li>
+<li>데이터와 소프트웨어를 다루지 못하면 복잡한 현실 문제를 해결할 수 없음</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">노트</span>핵심 질문
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“우리는 왜 프로그래밍을 배울까요? 모두가 전업 프로그래머가 되기 위해서일까요?”</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>아닙니다!</strong> 복잡한 현실 세계의 문제를 <strong>컴퓨터가 해결할 수 있는 형태로 재정의하고 해법을 논리적으로 설계하는 힘</strong>을 기르기 위해서입니다.</p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="코딩coding을-배우는-것과-컴퓨팅-사고는-무엇이-다를까" class="level2" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="코딩coding을-배우는-것과-컴퓨팅-사고는-무엇이-다를까"><span class="header-section-number">0.3</span> 3. 코딩(Coding)을 배우는 것과 컴퓨팅 사고는 무엇이 다를까?</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["[프로그래밍 언어 / Coding]&lt;br/&gt;생각한 해결책을 컴퓨터에게 전달하는&lt;br/&gt;&lt;b&gt;수단 및 도구 (Language)&lt;/b&gt;"] 
+    B["[컴퓨팅 사고 / Computational Thinking]&lt;br/&gt;문제를 어떻게 정의하고 쪼개어 풀 것인가를&lt;br/&gt;&lt;b&gt;설계하는 지적 체계 (Architecture)&lt;/b&gt;"]
+
+    style A fill:#eff6ff,stroke:#3b82f6,stroke-width:2px
+    style B fill:#fef3c7,stroke:#d97706,stroke-width:3px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li><strong>프로그래밍 언어</strong>: 파이썬 문법, 키워드, 함수 호출법</li>
+<li><strong>컴퓨팅 사고</strong>: 데이터를 어떻게 구조화하고, 어떤 알고리즘으로 효율화할 것인가!</li>
+</ul>
+<hr>
+</section>
+<section id="글쓰기로-이해하는-코딩과-컴퓨팅-사고" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="글쓰기로-이해하는-코딩과-컴퓨팅-사고"><span class="header-section-number">0.4</span> 4. 글쓰기로 이해하는 코딩과 컴퓨팅 사고</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    W1["[글쓰기 세계: 도구]&lt;br/&gt;연필 쥐는 법 + 맞춤법/띄어쓰기"] --&gt;|"1:1 대응"| C1["[소프트웨어 세계: 도구]&lt;br/&gt;파이썬 키워드 + 문법 타이핑 (Coding)"]
+    W2["[글쓰기 세계: 사고력]&lt;br/&gt;설득력 있는 소설·논문을 기획하는 &lt;b&gt;작문력&lt;/b&gt;"] --&gt;|"1:1 대응"| C2["[소프트웨어 세계: 사고력]&lt;br/&gt;복잡한 문제를 쪼개어 절차를 설계하는 &lt;b&gt;컴퓨팅 사고 (CT)&lt;/b&gt;"]
+
+    style W1 fill:#ffffff,stroke:#9ca3af
+    style C1 fill:#ffffff,stroke:#9ca3af
+    style W2 fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style C2 fill:#ffffff,stroke:#1AB18B,stroke-width:2.5px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><br></p>
+<blockquote class="blockquote">
+<p><em>“한글을 알고 맞춤법을 뗐다고 해서 누구나 감동적인 소설을 쓸 수 있는 것은 아닙니다. 좋은 글을 쓰려면 글의 줄거리와 논리를 기획하는 <strong>작문 사고력</strong>이 필수적이듯, 훌륭한 소프트웨어를 만들려면 문법 암기 이전에 문제를 분석하고 절차를 설계하는 <strong>컴퓨팅 사고</strong>가 핵심입니다.”</em></p>
+</blockquote>
+<hr>
+</section>
+<section id="생각의-지렛대---시모어-페퍼트의-교육-철학" class="level2" data-number="0.5">
+<h2 data-number="0.5" class="anchored" data-anchor-id="생각의-지렛대---시모어-페퍼트의-교육-철학"><span class="header-section-number">0.5</span> 5. ‘생각의 지렛대’ - 시모어 페퍼트의 교육 철학</h2>
+<section id="년-mit-시모어-페퍼트seymour-papert-교수" class="level3">
+<h3 class="anchored" data-anchor-id="년-mit-시모어-페퍼트seymour-papert-교수">1980년, MIT 시모어 페퍼트(Seymour Papert) 교수</h3>
+<ul>
+<li>저서 <em>Mindstorms: Children, Computers, and Powerful Ideas</em> (1980)</li>
+<li>컴퓨터를 단순한 자동 계산기가 아닌 <strong>인간의 사고를 확장하는 도구</strong>로 규정</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["머릿속 추상적 아이디어&lt;br/&gt;(Abstract Idea)"] --&gt;|"파이썬 코드로 구현&lt;br/&gt;(구체화 &amp; 시각화)"| B["컴퓨터 실행 결과&lt;br/&gt;(Concrete Object)"]
+    B --&gt;|"오류 관찰 &amp; 디버깅&lt;br/&gt;(성찰과 개념 수정)"| C["확장된 논리적 사고력&lt;br/&gt;(Enhanced Thinking)"]
+
+    style A fill:#eff6ff,stroke:#3b82f6,stroke-width:2px
+    style B fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style C fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Object-to-think-with (생각을 돕는 지렛대)</strong>:<br>
+컴퓨터 프로그래밍은 생각을 눈앞에 구체화하고, 스스로 오류를 발견하며 고쳐나가는 가장 강력한 사고 훈련 도구입니다.</p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="지넷-윙jeannette-wing-교수와-보편-역량-선언" class="level2" data-number="0.6">
+<h2 data-number="0.6" class="anchored" data-anchor-id="지넷-윙jeannette-wing-교수와-보편-역량-선언"><span class="header-section-number">0.6</span> 6. 지넷 윙(Jeannette Wing) 교수와 보편 역량 선언</h2>
+<section id="년-카네기멜론대학교-지넷-윙-교수" class="level3">
+<h3 class="anchored" data-anchor-id="년-카네기멜론대학교-지넷-윙-교수">2006년, 카네기멜론대학교 지넷 윙 교수</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["과거의 고정관념&lt;br/&gt;컴퓨터과학자만의 특수 기술"] --&gt;|"2006년 지넷 윙 선언&lt;br/&gt;(Communications of the ACM)"| B["21세기 인류의 보편적 기본 역량&lt;br/&gt;&lt;b&gt;읽기 · 쓰기 · 셈하기 + 컴퓨팅 사고&lt;/b&gt;"]
+
+    style A fill:#fee2e2,stroke:#dc2626,stroke-width:2px
+    style B fill:#dbeafe,stroke:#1AB18B,stroke-width:3px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><em>“컴퓨팅 사고는 컴퓨터과학자만의 전유물이 아닙니다. 읽기, 쓰기, 셈하기와 마찬가지로 <strong>21세기를 살아가는 모든 사람이 갖추어야 할 보편적 기본 역량(Universal Skill)</strong>입니다.”</em></p>
+</blockquote>
+<ul>
+<li>기계처럼 생각하는 것이 아니라, <strong>기계의 강력한 연산력을 활용할 수 있도록 인간이 논리적으로 문제를 설계하는 것!</strong></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="csta-iste-융합형-문제해결-표준-프레임워크" class="level2" data-number="0.7">
+<h2 data-number="0.7" class="anchored" data-anchor-id="csta-iste-융합형-문제해결-표준-프레임워크"><span class="header-section-number">0.7</span> 7. CSTA &amp; ISTE 융합형 문제해결 표준 프레임워크</h2>
+<p>미국 컴퓨터과학교사협회(CSTA)와 국제교육기술협회(ISTE)의 표준 정의</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    M["수학 (Mathematics)"] --&gt; CT["컴퓨팅 사고 (CT)&lt;br/&gt;융합형 문제해결 역량"]
+    S["자연과학 (Science)"] --&gt; CT
+    H["인문·사회 (Humanities &amp; Social)"] --&gt; CT
+    E["공학·비즈니스 (Engineering &amp; Biz)"] --&gt; CT
+
+    style CT fill:#dbeafe,stroke:#1AB18B,stroke-width:3px
+    style M fill:#f8fafc,stroke:#94a3b8
+    style S fill:#f8fafc,stroke:#94a3b8
+    style H fill:#f8fafc,stroke:#94a3b8
+    style E fill:#f8fafc,stroke:#94a3b8
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="문제-해결의-전체-프로세스-5단계" class="level2" data-number="0.8">
+<h2 data-number="0.8" class="anchored" data-anchor-id="문제-해결의-전체-프로세스-5단계"><span class="header-section-number">0.8</span> 8. 문제 해결의 전체 프로세스 5단계</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A["1단계: 복잡한 현실 세계 문제 (Real-world Challenge)&lt;br/&gt;모호하고 거대한 문제 상황 인식"]
+    B["2단계: 컴퓨팅 사고 적용 (Computational Thinking)&lt;br/&gt;문제 분해 · 패턴 인식 · 추상화 모델링"]
+    C["3단계: 알고리즘 및 논리 설계 (Algorithm Design)&lt;br/&gt;의사코드 및 순서도 기반 단계별 절차 수립"]
+    D["4단계: 파이썬 프로그래밍 (Implementation)&lt;br/&gt;컴퓨터가 실행 가능한 코드로 구현"]
+    E["5단계: 컴퓨터 시스템 실행 및 결과 도출 (Execution)&lt;br/&gt;빠르고 정확한 자동화 솔루션 도출"]
+
+    A --&gt; B --&gt; C --&gt; D --&gt; E
+
+    style A fill:#fee2e2,stroke:#dc2626,stroke-width:2px
+    style B fill:#dbeafe,stroke:#1AB18B,stroke-width:2px
+    style C fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style D fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+    style E fill:#f3e8ff,stroke:#9333ea,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="우리가-명령을-내릴-컴퓨터-시스템의-동작-원리" class="level2" data-number="0.9">
+<h2 data-number="0.9" class="anchored" data-anchor-id="우리가-명령을-내릴-컴퓨터-시스템의-동작-원리"><span class="header-section-number">0.9</span> 9. 우리가 명령을 내릴 ’컴퓨터 시스템’의 동작 원리</h2>
+<p>컴퓨터는 크게 <strong>하드웨어(HW)</strong>와 <strong>소프트웨어(SW)</strong>의 결합체입니다.</p>
+<p><br></p>
+<ul>
+<li><strong>하드웨어 (Hardware)</strong>: 물리적으로 존재하는 전자 기계 부품</li>
+<li><strong>소프트웨어 (Software)</strong>: 하드웨어에게 무엇을 어떻게 실행할지 지시하는 <strong>명령어들의 집합(Program)</strong></li>
+</ul>
+<p><br></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+힌트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>소프트웨어는 평소에는 보조기억장치(SSD)에 파일로 잠들어 있다가, 실행 명령을 내리면 <strong>주기억장치(RAM)로 올라온 뒤 CPU에 의해 연산</strong>됩니다!</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="하드웨어-삼총사-cpu-ram-ssd의-역할-분담" class="level2" data-number="0.10">
+<h2 data-number="0.10" class="anchored" data-anchor-id="하드웨어-삼총사-cpu-ram-ssd의-역할-분담"><span class="header-section-number">0.10</span> 10. 하드웨어 삼총사: CPU, RAM, SSD의 역할 분담</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    CPU["1. CPU (중앙처리장치)&lt;br/&gt;- 1초에 수십억 번의 산술·논리 연산 수행&lt;br/&gt;- 컴퓨터의 두뇌 (ALU + Control Unit)"]
+    RAM["2. RAM (주기억장치 / 메모리)&lt;br/&gt;- 실행 중인 프로그램과 변수가 상주하는 초고속 작업대&lt;br/&gt;- 전원이 꺼지면 지워짐 (휘발성)"]
+    SSD["3. SSD / HDD (보조기억장치)&lt;br/&gt;- 소스코드와 데이터가 영구 보존되는 대용량 창고&lt;br/&gt;- 전원이 꺼져도 안전함 (비휘발성)"]
+
+    style CPU fill:#fef9c3,stroke:#ca8a04,stroke-width:2px
+    style RAM fill:#dbeafe,stroke:#1AB18B,stroke-width:2px
+    style SSD fill:#f3f4f6,stroke:#64748b,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="하드웨어-상호작용-및-데이터-처리-흐름" class="level2" data-number="0.11">
+<h2 data-number="0.11" class="anchored" data-anchor-id="하드웨어-상호작용-및-데이터-처리-흐름"><span class="header-section-number">0.11</span> 11. 하드웨어 상호작용 및 데이터 처리 흐름</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    subgraph Storage["보조기억장치 (SSD)"]
+        S_CODE["파이썬 소스코드 (*.py)"]
+        S_DATA["데이터 파일 (CSV, Image)"]
+    end
+
+    subgraph Memory["주기억장치 (RAM)"]
+        M_CODE["메모리에 적재된 실행 코드"]
+        M_DATA["동적 변수 &amp; 작업 데이터"]
+    end
+
+    subgraph Processing["연산 장치 (CPU)"]
+        ALU["산술논리연산장치 (ALU)"]
+        CU["제어장치 (Control Unit)"]
+    end
+
+    Storage --&gt;|"1. 실행 시 메모리로 적재 (Load)"| Memory
+    Memory &lt;--&gt;|"2. 기계어 명령어 인출 &amp; 데이터 연산 (Fetch-Execute)"| Processing
+
+    style Storage fill:#ffffff,stroke:#9ca3af
+    style Memory fill:#ffffff,stroke:#1AB18B
+    style Processing fill:#ffffff,stroke:#eab308
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="컴퓨터는-0과-1밖에-모른다-기계어와-고급-언어" class="level2" data-number="0.12">
+<h2 data-number="0.12" class="anchored" data-anchor-id="컴퓨터는-0과-1밖에-모른다-기계어와-고급-언어"><span class="header-section-number">0.12</span> 12. 컴퓨터는 0과 1밖에 모른다? 기계어와 고급 언어</h2>
+<ul>
+<li><strong>기계어 (Machine Code)</strong>: CPU가 직접 이해하는 <code>0</code>과 <code>1</code>의 2진 비트 열</li>
+<li><strong>고급 프로그래밍 언어 (High-level Language)</strong>: 인간이 이해하기 쉬운 문장 형태로 설계된 언어 (Python, C, Java)</li>
+</ul>
+<p><br></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["인간이 작성한 소스코드&lt;br/&gt;&lt;code&gt;print(10 + 20)&lt;/code&gt;"] --&gt;|"번역 (Translation)"| B["컴퓨터가 이해하는 기계어&lt;br/&gt;&lt;code&gt;01001000 01100101...&lt;/code&gt;"]
+
+    style A fill:#dbeafe,stroke:#1AB18B
+    style B fill:#fef3c7,stroke:#d97706
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="번역-방식의-비교-컴파일러-vs-인터프리터" class="level2" data-number="0.13">
+<h2 data-number="0.13" class="anchored" data-anchor-id="번역-방식의-비교-컴파일러-vs-인터프리터"><span class="header-section-number">0.13</span> 13. 번역 방식의 비교: 컴파일러 vs 인터프리터</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">비교 항목</th>
+<th style="text-align: left;">컴파일러 (C, C++, Java)</th>
+<th style="text-align: left;">인터프리터 (Python, R, JS)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>번역 방식</strong></td>
+<td style="text-align: left;">소스코드 전체를 실행 전에 한 번에 기계어로 번역</td>
+<td style="text-align: left;">소스코드를 <strong>한 줄씩 실시간 해석</strong>하며 실행</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>결과물</strong></td>
+<td style="text-align: left;">독립 실행 파일 (<code>.exe</code>) 생성</td>
+<td style="text-align: left;">중간 파일 없이 즉시 실행 결과 확인</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>실행 속도</strong></td>
+<td style="text-align: left;">매우 빠름 (최적화)</td>
+<td style="text-align: left;">컴파일러 대비 상대적으로 느림</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>개발/실습</strong></td>
+<td style="text-align: left;">수정 후 매번 다시 빌드 필요</td>
+<td style="text-align: left;"><strong>대화형(Interactive) 실습과 디버깅에 최고!</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="소프트웨어-개발-생명주기-sdlc" class="level2" data-number="0.14">
+<h2 data-number="0.14" class="anchored" data-anchor-id="소프트웨어-개발-생명주기-sdlc"><span class="header-section-number">0.14</span> 14. 소프트웨어 개발 생명주기 (SDLC)</h2>
+<blockquote class="blockquote">
+<p>“많은 초심자들이 문제를 보자마자 에디터를 열고 코딩부터 시작합니다. 그러나 <strong>설계가 부실한 코드는 반드시 무너집니다.</strong>”</p>
+</blockquote>
+<p><br></p>
+<section id="소프트웨어-공학의-황금률" class="level3 keybox">
+<h3 class="anchored" data-anchor-id="소프트웨어-공학의-황금률">소프트웨어 공학의 황금률</h3>
+<p>전체 개발 시간의 <strong>70%는 문제를 분석하고 알고리즘을 설계하는 데</strong> 쓰여야 하며, 실제 코딩은 완성된 설계를 옮겨 적는 과정에 불과합니다.</p>
+</section>
+<hr>
+</section>
+<section id="sdlc-6단계-프로세스-상세-해설" class="level2" data-number="0.15">
+<h2 data-number="0.15" class="anchored" data-anchor-id="sdlc-6단계-프로세스-상세-해설"><span class="header-section-number">0.15</span> 15. SDLC 6단계 프로세스 상세 해설</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    S1["1. 문제 분석 (What)"] --&gt; S2["2. 로직 설계 (How)"]
+    S2 --&gt; S3["3. 코드 구현 (Coding)"]
+    S3 --&gt; S4["4. 테스트 (QA/Debug)"]
+    S4 --&gt; S5["5. 배포 및 운영 (Deploy)"]
+    S5 --&gt; S6["6. 유지보수 (Update)"]
+    S6 -.-&gt;|"피드백"| S1
+
+    style S1 fill:#ffffff,stroke:#4f46e5,stroke-width:2px
+    style S2 fill:#ffffff,stroke:#1AB18B,stroke-width:2.5px
+    style S3 fill:#ffffff,stroke:#16a34a
+    style S4 fill:#ffffff,stroke:#dc2626
+    style S5 fill:#ffffff,stroke:#9333ea
+    style S6 fill:#ffffff,stroke:#64748b
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<section id="각-단계별-핵심-역할과-산출물" class="level3">
+<h3 class="anchored" data-anchor-id="각-단계별-핵심-역할과-산출물">각 단계별 핵심 역할과 산출물</h3>
+<ul>
+<li><strong>1. 요구사항 분석</strong>: “무엇을 해결할까?” <span class="math inline">\(\rightarrow\)</span> 사용자 요구 정의</li>
+<li><strong>2. 알고리즘 설계</strong>: “어떻게 풀까?” <span class="math inline">\(\rightarrow\)</span> 순서도·의사코드 수립 (<strong>가장 중요!</strong>)</li>
+<li><strong>3. 프로그래밍 구현</strong>: 파이썬 문법을 사용해 실행 코드로 변환</li>
+<li><strong>4. 검증 및 테스트</strong>: 다양한 예외 데이터를 넣어 버그 수정(디버깅)</li>
+<li><strong>5. 배포 및 운영</strong>: 완성된 프로그램을 사용자에게 제공</li>
+<li><strong>6. 유지보수</strong>: 사용자 피드백을 받아 기능 추가 및 개선</li>
+</ul>
+</section>
+</div>
+</div>
+<hr>
+</section>
+<section id="컴퓨팅-사고의-4대-핵심-요소" class="level2" data-number="0.16">
+<h2 data-number="0.16" class="anchored" data-anchor-id="컴퓨팅-사고의-4대-핵심-요소"><span class="header-section-number">0.16</span> 16. 컴퓨팅 사고의 4대 핵심 요소</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    D["1. 문제 분해 (Decomposition)&lt;br/&gt;복잡한 문제를 독립적인 작은 단위로 쪼개기"]
+    P["2. 패턴 인식 (Pattern Recognition)&lt;br/&gt;데이터 속 유사성, 규칙성, 반복성 찾기"]
+    A["3. 추상화 및 일반화 (Abstraction)&lt;br/&gt;불필요한 세부사항을 버리고 핵심 모델 추출"]
+    G["4. 알고리즘 설계 (Algorithm Design)&lt;br/&gt;명확하고 순서화된 단계별 해결 절차 수립"]
+
+    D ==&gt; P
+    P ==&gt; A
+    A ==&gt; G
+    G -.-&gt;|"새로운 문제 해결 및 최적화"| D
+
+    style D fill:#ffffff,stroke:#1d4ed8,stroke-width:2px
+    style P fill:#ffffff,stroke:#4338ca,stroke-width:2px
+    style A fill:#ffffff,stroke:#b45309,stroke-width:2px
+    style G fill:#ffffff,stroke:#1AB18B,stroke-width:2.5px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="단계-문제-분해-decomposition" class="level2" data-number="0.17">
+<h2 data-number="0.17" class="anchored" data-anchor-id="단계-문제-분해-decomposition"><span class="header-section-number">0.17</span> 17. 1단계: 문제 분해 (Decomposition)</h2>
+<section id="나누어-정복하라-divide-and-conquer" class="level3">
+<h3 class="anchored" data-anchor-id="나누어-정복하라-divide-and-conquer">“나누어 정복하라 (Divide and Conquer)”</h3>
+<ul>
+<li>거대하고 다루기 힘든 단일 문제를 <strong>해결 가능한 작은 하위 문제(Sub-problems)</strong>로 분할</li>
+</ul>
+<p><br></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">힌트</span>잘 쪼개진 분해의 조건
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>각 하위 문제는 서로 간섭하지 않고 독립적이어야 함 (낮은 결합도)</li>
+<li>하위 문제들의 해법을 합치면 전체 문제가 완벽하게 해결되어야 함</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="실전-분해-예시-동아리-mt-경비-정산-시스템" class="level2" data-number="0.18">
+<h2 data-number="0.18" class="anchored" data-anchor-id="실전-분해-예시-동아리-mt-경비-정산-시스템"><span class="header-section-number">0.18</span> 18. 실전 분해 예시: 동아리 MT 경비 정산 시스템</h2>
+<p>복잡한 15명의 영수증 정산 문제를 3개의 독립 모듈로 분해:</p>
+<p><br></p>
+<ol type="1">
+<li><strong>지출 데이터 수집 &amp; 분류</strong>: 공통 지출(숙소) vs 선택 지출(주류)</li>
+<li><strong>개인별 부담금 계산</strong>: 참석 일자별 가중치 계산 및 선결제액 집계</li>
+<li><strong>최종 송금 차액 매칭</strong>: 환급받을 사람과 추가 입금할 사람 명단 산출</li>
+</ol>
+<hr>
+</section>
+<section id="mt-정산-시스템의-하향식-분해-트리" class="level2" data-number="0.19">
+<h2 data-number="0.19" class="anchored" data-anchor-id="mt-정산-시스템의-하향식-분해-트리"><span class="header-section-number">0.19</span> 19. MT 정산 시스템의 하향식 분해 트리</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    ROOT["동아리 MT 정산 시스템"] --&gt; M1["1. 지출 데이터 수집 &amp; 분류"]
+    ROOT --&gt; M2["2. 개인별 부담금 계산"]
+    ROOT --&gt; M3["3. 최종 송금 차액 매칭"]
+
+    M1 --&gt; M1_1["공통 지출 (숙소/차량)"]
+    M1 --&gt; M1_2["선택 지출 (주류/바비큐)"]
+
+    M2 --&gt; M2_1["참석 일자별 가중치"]
+    M2 --&gt; M2_2["개인별 선결제액 차감"]
+
+    M3 --&gt; M3_1["환급 대상자 명단 도출"]
+    M3 --&gt; M3_2["추가 입금자 명단 도출"]
+
+    style ROOT fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style M1 fill:#ffffff,stroke:#3b82f6
+    style M2 fill:#ffffff,stroke:#3b82f6
+    style M3 fill:#ffffff,stroke:#3b82f6
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="단계-패턴-인식-pattern-recognition" class="level2" data-number="0.20">
+<h2 data-number="0.20" class="anchored" data-anchor-id="단계-패턴-인식-pattern-recognition"><span class="header-section-number">0.20</span> 20. 2단계: 패턴 인식 (Pattern Recognition)</h2>
+<section id="반복되는-규칙과-유사점을-포착하라" class="level3">
+<h3 class="anchored" data-anchor-id="반복되는-규칙과-유사점을-포착하라">“반복되는 규칙과 유사점을 포착하라”</h3>
+<ul>
+<li>분해된 데이터나 프로세스 속에서 <strong>주기성, 상관관계, 규칙성</strong>을 발견하는 능력</li>
+<li>패턴을 찾아내면 단 몇 줄의 코드로 수만 건의 데이터를 자동 처리할 수 있습니다!</li>
+</ul>
+<p><br></p>
+<blockquote class="blockquote">
+<p><em>“패턴을 인식하지 못하면 매번 새로운 코드를 짜야 하지만, 패턴을 찾으면 <strong>반복문과 조건문</strong>으로 자동화할 수 있습니다.”</em></p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="실전-패턴-발견-넷플릭스ott-시청-로그-분석" class="level2" data-number="0.21">
+<h2 data-number="0.21" class="anchored" data-anchor-id="실전-패턴-발견-넷플릭스ott-시청-로그-분석"><span class="header-section-number">0.21</span> 21. 실전 패턴 발견: 넷플릭스(OTT) 시청 로그 분석</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    LOG["OTT 시청 로그 빅데이터"] --&gt; P1["패턴 1 (시간대 반복): 주말 야간에 러닝타임 긴 영화 소비 급증"]
+    LOG --&gt; P2["패턴 2 (상관관계): SF 장르 80% 시청자는 마블 시리즈 클릭률 높음"]
+    LOG --&gt; P3["패턴 3 (행동 규칙): 연속 3편 시청 시 '다음 화 자동재생' 수락률 95%"]
+
+    style LOG fill:#ffffff,stroke:#dc2626,stroke-width:2px
+    style P1 fill:#ffffff,stroke:#3b82f6
+    style P2 fill:#ffffff,stroke:#3b82f6
+    style P3 fill:#ffffff,stroke:#3b82f6
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="발견된-현실의-패턴-rightarrow-파이썬-문법-매핑" class="level2" data-number="0.22">
+<h2 data-number="0.22" class="anchored" data-anchor-id="발견된-현실의-패턴-rightarrow-파이썬-문법-매핑"><span class="header-section-number">0.22</span> 22. 발견된 현실의 패턴 <span class="math inline">\(\rightarrow\)</span> 파이썬 문법 매핑</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">발견된 문제 속 패턴</th>
+<th style="text-align: left;">파이썬 프로그래밍 요소</th>
+<th style="text-align: left;">실제 소프트웨어 적용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">동일한 계산이 데이터 수만큼 반복됨</td>
+<td style="text-align: left;"><strong>반복문 (<code>for</code>, <code>while</code>)</strong></td>
+<td style="text-align: left;">수만 명의 학생 성적 일괄 처리</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">특정 조건 만족 여부에 따라 처리가 나뉨</td>
+<td style="text-align: left;"><strong>조건문 (<code>if-elif-else</code>)</strong></td>
+<td style="text-align: left;">장학금 지급 대상자 자동 선별</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">동일한 연산 논리가 여러 곳에서 재등장함</td>
+<td style="text-align: left;"><strong>함수 (<code>def</code>)</strong></td>
+<td style="text-align: left;">세금 및 할인율 계산기 모듈화</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="단계-추상화-abstraction의-진짜-목적" class="level2" data-number="0.23">
+<h2 data-number="0.23" class="anchored" data-anchor-id="단계-추상화-abstraction의-진짜-목적"><span class="header-section-number">0.23</span> 23. 3단계: 추상화 (Abstraction)의 진짜 목적</h2>
+<section id="구체적-상황을-수식으로-바꾸는-것만이-추상화일까" class="level3">
+<h3 class="anchored" data-anchor-id="구체적-상황을-수식으로-바꾸는-것만이-추상화일까">“구체적 상황을 수식으로 바꾸는 것만이 추상화일까?”</h3>
+<blockquote class="blockquote">
+<p><strong>아닙니다!</strong> 수식화는 여러 표현 형태 중 하나일 뿐입니다. 추상화의 본질적인 목적은 <strong>“복잡한 현실에서 불필요한 노이즈(Noise)를 걷어내고, 컴퓨터가 반복 처리할 수 있는 핵심 규칙과 데이터 구조(Model)로 단순화하는 것”</strong>입니다.</p>
+</blockquote>
+<p><br></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["복잡하고 다양한 개별 상황&lt;br/&gt;(현실의 복합 노이즈)"] --&gt;|"추상화 필터&lt;br/&gt;(핵심 속성만 추출)"| B["단순화된 핵심 모델&lt;br/&gt;(변수, 리스트, 함수, 규칙)"]
+    B --&gt;|"일반화 (Generalization)"| C["수천 가지 유사 문제에&lt;br/&gt;재사용 가능한 소프트웨어"]
+
+    style A fill:#ffffff,stroke:#dc2626
+    style B fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style C fill:#ffffff,stroke:#1AB18B,stroke-width:2.5px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="추상화의-3대-차원-데이터-프로세스-규칙" class="level2" data-number="0.24">
+<h2 data-number="0.24" class="anchored" data-anchor-id="추상화의-3대-차원-데이터-프로세스-규칙"><span class="header-section-number">0.24</span> 24. 추상화의 3대 차원: 데이터, 프로세스, 규칙</h2>
+<p>컴퓨팅 사고에서 추상화는 세 가지 차원으로 적용됩니다:</p>
+<p><br></p>
+<ol type="1">
+<li><strong>데이터 추상화 (Data Abstraction)</strong>:
+<ul>
+<li>현실 대상 <span class="math inline">\(\rightarrow\)</span> 컴퓨터가 다룰 변수, 리스트, 딕셔너리로 구조화</li>
+<li>예: 학생(신발사이즈, 성격 제거) <span class="math inline">\(\rightarrow\)</span> <code>학번</code>, <code>이름</code>, <code>성적</code> 변수만 저장</li>
+</ul></li>
+<li><strong>프로세스 추상화 (Process Abstraction)</strong>:
+<ul>
+<li>복잡한 세부 연산 과정을 하나의 함수(<code>def</code>) 블랙박스로 캡슐화</li>
+<li>예: <code>sum()</code>, <code>calculate_discount()</code> 호출만으로 내부 세부 계산 은닉</li>
+</ul></li>
+<li><strong>규칙 추상화 및 일반화 (Rule Abstraction)</strong>:
+<ul>
+<li>개별 주문 상황 <span class="math inline">\(\rightarrow\)</span> <code>단가 * 수량 * (1 + 세율)</code>의 일반화된 비즈니스 로직 도출</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="실세계-추상화-모델-비교" class="level2" data-number="0.25">
+<h2 data-number="0.25" class="anchored" data-anchor-id="실세계-추상화-모델-비교"><span class="header-section-number">0.25</span> 25. 실세계 추상화 모델 비교</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">대상</th>
+<th style="text-align: left;">버리는 정보 (Noise)</th>
+<th style="text-align: left;">남기는 핵심 모델 (Signal)</th>
+<th style="text-align: left;">프로그래밍 구현 형태</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>지하철 노선도</strong></td>
+<td style="text-align: left;">실제 지리적 곡선, 지형 고도, 건물</td>
+<td style="text-align: left;">역과 역 사이의 연결 관계</td>
+<td style="text-align: left;"><strong>그래프 / 딕셔너리 구조</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>대학생 정보</strong></td>
+<td style="text-align: left;">신발 사이즈, 음식 취향, MBTI</td>
+<td style="text-align: left;">학번, 이름, 학과, 성적</td>
+<td style="text-align: left;"><strong>데이터프레임 / 클래스 객체</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>카페 주문</strong></td>
+<td style="text-align: left;">컵 디자인, 손님 복장, 결제 카드사</td>
+<td style="text-align: left;">메뉴 단가, 주문 수량, 세율</td>
+<td style="text-align: left;"><strong>리스트 및 일반화 연산 함수</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="단계-알고리즘-algorithm이란-무엇인가" class="level2" data-number="0.26">
+<h2 data-number="0.26" class="anchored" data-anchor-id="단계-알고리즘-algorithm이란-무엇인가"><span class="header-section-number">0.26</span> 26. 4단계: 알고리즘 (Algorithm)이란 무엇인가?</h2>
+<section id="문제를-해결하기-위한-명확한-단계별-명령어-집합" class="level3">
+<h3 class="anchored" data-anchor-id="문제를-해결하기-위한-명확한-단계별-명령어-집합">“문제를 해결하기 위한 명확한 단계별 명령어 집합”</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    IN["&lt;b&gt;입력 (Input)&lt;/b&gt;&lt;br/&gt;외부 데이터 수신"] --&gt; ALG["&lt;b&gt;알고리즘 (Algorithm)&lt;/b&gt;&lt;br/&gt;명확하고 순서화된 연산 절차"]
+    ALG --&gt; OUT["&lt;b&gt;출력 (Output)&lt;/b&gt;&lt;br/&gt;원하는 문제 해결 결과"]
+
+    style IN fill:#ffffff,stroke:#3b82f6,stroke-width:2px
+    style ALG fill:#ffffff,stroke:#1AB18B,stroke-width:2.5px
+    style OUT fill:#ffffff,stroke:#16a34a,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><br></p>
+<ul>
+<li>어떤 입력이 주어졌을 때 <strong>유한한 시간 내에 올바른 답을 도출하는 명확한 연산 절차</strong></li>
+<li>9세기 페르시아 수학자 <strong>알 콰리즈미(al-Khwārizmī)</strong>의 이름에서 유래</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="도널드-커누스donald-knuth의-알고리즘-5대-요건" class="level2" data-number="0.27">
+<h2 data-number="0.27" class="anchored" data-anchor-id="도널드-커누스donald-knuth의-알고리즘-5대-요건"><span class="header-section-number">0.27</span> 27. 도널드 커누스(Donald Knuth)의 알고리즘 5대 요건</h2>
+<p>컴퓨터 알고리즘의 거장 도널드 커누스가 정립한 <strong>모든 알고리즘의 필수 조건</strong>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    K1["1. 입력 (Input): 0개 이상의 명확한 외부 데이터 수신"]
+    K2["2. 출력 (Output): 1개 이상의 유의미한 결과물 도출"]
+    K3["3. 명확성 (Definiteness): 모든 단계의 명령어는 모호함이 없어야 함"]
+    K4["4. 유한성 (Finiteness): 유한한 단계를 거친 후 반드시 스스로 종료되어야 함"]
+    K5["5. 유효성 (Effectiveness): 컴퓨터가 실제로 수행 가능한 연산이어야 함"]
+
+    style K1 fill:#ffffff,stroke:#1AB18B,stroke-width:1.5px
+    style K2 fill:#ffffff,stroke:#1AB18B,stroke-width:1.5px
+    style K3 fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style K4 fill:#ffffff,stroke:#dc2626,stroke-width:2px
+    style K5 fill:#ffffff,stroke:#1AB18B,stroke-width:1.5px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="대-요건의-상세-의미와-위반-시-발생하는-오류" class="level2" data-number="0.28">
+<h2 data-number="0.28" class="anchored" data-anchor-id="대-요건의-상세-의미와-위반-시-발생하는-오류"><span class="header-section-number">0.28</span> 28. 5대 요건의 상세 의미와 위반 시 발생하는 오류</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">요건</th>
+<th style="text-align: left;">구체적 의미</th>
+<th style="text-align: left;">만약 위반하면 어떻게 될까? (오류 사례)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>명확성</strong></td>
+<td style="text-align: left;">명령어가 100% 명확하여 다의적 해석이 없어야 함</td>
+<td style="text-align: left;">“적당히 끓인다” <span class="math inline">\(\rightarrow\)</span> 컴퓨터가 해석 불가 (구문 에러)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>유한성</strong></td>
+<td style="text-align: left;">정해진 단계 후 반드시 정상 종료되어야 함</td>
+<td style="text-align: left;">루프 조건 미갱신 <span class="math inline">\(\rightarrow\)</span> <strong>무한 루프(Infinite Loop)로 컴퓨터 멈춤!</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>유효성</strong></td>
+<td style="text-align: left;">실제로 실행 가능한 물리적/논리적 연산이어야 함</td>
+<td style="text-align: left;"><code>10 / 0</code> (0으로 나누기) <span class="math inline">\(\rightarrow\)</span> <strong>ZeroDivisionError 런타임 크래시</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>입·출력</strong></td>
+<td style="text-align: left;">입력 데이터가 들어가고 유의미한 결과가 나와야 함</td>
+<td style="text-align: left;">연산 후 결과를 화면에 보여주지 않음 <span class="math inline">\(\rightarrow\)</span> 목적 상실</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="요리-레시피-vs-알고리즘의-직관적-비유" class="level2" data-number="0.29">
+<h2 data-number="0.29" class="anchored" data-anchor-id="요리-레시피-vs-알고리즘의-직관적-비유"><span class="header-section-number">0.29</span> 29. 요리 레시피 vs 알고리즘의 직관적 비유</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    subgraph Recipe["🍳 요리 레시피 (Kitchen)"]
+        R1["&lt;b&gt;1. 신선한 재료 준비&lt;/b&gt;&lt;br/&gt;라면 1개, 물 550ml, 계란 1개"]
+        R2["&lt;b&gt;2. 정량 조리 순서&lt;/b&gt;&lt;br/&gt;물 끓이기 ➔ 면/스프 투하 ➔ 4분 가열"]
+        R3["&lt;b&gt;3. 맛있는 라면 완성!&lt;/b&gt;&lt;br/&gt;식탁에 제공"]
+    end
+    R1 --&gt; R2 --&gt; R3
+    style Recipe fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style R1 fill:#ffffff,stroke:#cbd5e1
+    style R2 fill:#ffffff,stroke:#cbd5e1
+    style R3 fill:#ffffff,stroke:#cbd5e1
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    subgraph Algo["💻 컴퓨터 알고리즘 (Software)"]
+        A1["&lt;b&gt;1. 입력 데이터 (Input)&lt;/b&gt;&lt;br/&gt;고객 구매액 리스트 10건"]
+        A2["&lt;b&gt;2. 단계별 연산 (Process)&lt;/b&gt;&lt;br/&gt;평균 산출 ➔ 10만원 이상 조건 검사"]
+        A3["&lt;b&gt;3. 결과 출력 (Output)&lt;/b&gt;&lt;br/&gt;VIP 타깃 고객 명단 리포트"]
+    end
+    A1 --&gt; A2 --&gt; A3
+    style Algo fill:#ffffff,stroke:#1AB18B,stroke-width:2px
+    style A1 fill:#ffffff,stroke:#cbd5e1
+    style A2 fill:#ffffff,stroke:#cbd5e1
+    style A3 fill:#ffffff,stroke:#cbd5e1
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">비교 포인트</th>
+<th style="text-align: left;">요리 레시피</th>
+<th style="text-align: left;">컴퓨터 알고리즘</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>입력과 준비물</strong></td>
+<td style="text-align: left;">식재료 및 양념</td>
+<td style="text-align: left;">변수, 파일, 데이터셋</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>명령어의 엄밀함</strong></td>
+<td style="text-align: left;">“소금 약간(X)” <span class="math inline">\(\rightarrow\)</span> <strong>“소금 5g(O)”</strong></td>
+<td style="text-align: left;">모호함 없는 정확한 코드 한 줄</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>조리 실패와 디버깅</strong></td>
+<td style="text-align: left;">조리법이 틀려 맛이 없음</td>
+<td style="text-align: left;">논리 오류(Bug)로 엉뚱한 결과 도출</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="좋은-알고리즘의-평가-기준-시간과-공간" class="level2" data-number="0.30">
+<h2 data-number="0.30" class="anchored" data-anchor-id="좋은-알고리즘의-평가-기준-시간과-공간"><span class="header-section-number">0.30</span> 30. 좋은 알고리즘의 평가 기준: 시간과 공간</h2>
+<p>동일한 문제를 해결하는 여러 알고리즘 중 어떤 것이 더 뛰어난가?</p>
+<p><br></p>
+<ol type="1">
+<li><strong>시간 복잡도 (Time Complexity)</strong>
+<ul>
+<li>목표를 달성하기 위해 CPU가 명령어를 몇 번 실행하는가?</li>
+<li><strong>“얼마나 빠른가?”</strong> (실행 속도)</li>
+</ul></li>
+<li><strong>공간 복잡도 (Space Complexity)</strong>
+<ul>
+<li>연산을 수행하는 동안 RAM 메모리를 얼마나 소비하는가?</li>
+<li><strong>“자원을 얼마나 알뜰하게 쓰는가?”</strong> (메모리 효율성)</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="실전-예제-문제-풀이-쇼핑몰-vip-고객-자동-선별" class="level2" data-number="0.31">
+<h2 data-number="0.31" class="anchored" data-anchor-id="실전-예제-문제-풀이-쇼핑몰-vip-고객-자동-선별"><span class="header-section-number">0.31</span> 31. 실전 예제 문제 풀이: 쇼핑몰 VIP 고객 자동 선별</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">노트</span>📝 [실전 문제] VIP 고객 타깃 마케팅 명단 추출
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>어느 온라인 쇼핑몰의 지난달 고객 구매액 데이터가 다음과 같이 주어졌을 때,<br>
+<strong>“전체 고객의 평균 구매액을 초과하면서 동시에 10만 원 이상 구매한 VIP 고객”</strong>을 자동으로 선별하는 프로그램을 작성하시오.</p>
+</div>
+</div>
+<section id="주어진-입력-데이터" class="level4">
+<h4 class="anchored" data-anchor-id="주어진-입력-데이터">1. 주어진 입력 데이터</h4>
+<p><code>purchase_data = [45000, 128000, 89000, 250000, 32000, 156000, 98000, 410000, 72000, 115000]</code></p>
+</section>
+<section id="단계별-문제-풀이-과정" class="level4">
+<h4 class="anchored" data-anchor-id="단계별-문제-풀이-과정">2. 단계별 문제 풀이 과정</h4>
+<ul>
+<li><strong>1단계 (총합 및 평균 계산)</strong>: 총 구매액 <span class="math inline">\(= 1,395,000\)</span>원 <span class="math inline">\(\div 10\)</span>명 <span class="math inline">\(\rightarrow\)</span> <strong>평균 구매액 <span class="math inline">\(= 139,500\)</span>원</strong></li>
+<li><strong>2단계 (복합 조건 검사)</strong>: 각 고객의 금액이 <strong><code>(금액 &gt; 139,500) AND (금액 &gt;= 100,000)</code></strong>인지 판별</li>
+<li><strong>3단계 (VIP 선별 결과)</strong>: <span class="math inline">\(128,000\)</span>원(탈락-평균미만), <strong><span class="math inline">\(250,000\)</span>원(통과)</strong>, <strong><span class="math inline">\(156,000\)</span>원(통과)</strong>, <strong><span class="math inline">\(410,000\)</span>원(통과)</strong>, <span class="math inline">\(115,000\)</span>원(탈락-평균미만)</li>
+<li><strong>4단계 (최종 정답 도출)</strong>: <strong>VIP 고객 수 = 3명</strong>, <strong>VIP 구매액 목록 = <code>[250000, 156000, 410000]</code></strong></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="vip-선별-알고리즘-표준-순서도-flowchart" class="level2" data-number="0.32">
+<h2 data-number="0.32" class="anchored" data-anchor-id="vip-선별-알고리즘-표준-순서도-flowchart"><span class="header-section-number">0.32</span> 32. VIP 선별 알고리즘 표준 순서도 (Flowchart)</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    START(["시작 (Start)"]) --&gt; INIT["1. 변수 초기화&lt;br/&gt;vip_count = 0, vip_list = []"]
+    INIT --&gt; CALC_AVG["2. 평균 계산&lt;br/&gt;avg = sum(data) / len(data)"]
+    CALC_AVG --&gt; COND_LOOP{"3. 모든 고객 검사 완료?&lt;br/&gt;(데이터 순회 끝?)"}
+    
+    COND_LOOP -- "아니오 (검사)" --&gt; CHECK_VIP{"4. 구매액 &gt; avg&lt;br/&gt;AND&lt;br/&gt;구매액 &gt;= 100,000?"}
+    CHECK_VIP -- "참 (True)" --&gt; ADD_VIP["5. vip_count += 1&lt;br/&gt;vip_list에 추가"]
+    ADD_VIP --&gt; COND_LOOP
+    CHECK_VIP -- "거짓 (False)" --&gt; COND_LOOP
+    
+    COND_LOOP -- "예 (종료)" --&gt; OUTPUT[/"6. 최종 VIP 리포트 출력"/]
+    OUTPUT --&gt; END_NODE(["종료 (End)"])
+
+    style START fill:#ffffff,stroke:#9ca3af
+    style CALC_AVG fill:#ffffff,stroke:#3b82f6
+    style CHECK_VIP fill:#ffffff,stroke:#d97706,stroke-width:2px
+    style ADD_VIP fill:#ffffff,stroke:#16a34a,stroke-width:2px
+    style OUTPUT fill:#ffffff,stroke:#9333ea
+    style END_NODE fill:#ffffff,stroke:#9ca3af
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<section id="순서도-도형-의미-및-단계별-실행-해설" class="level3">
+<h3 class="anchored" data-anchor-id="순서도-도형-의미-및-단계별-실행-해설">순서도 도형 의미 및 단계별 실행 해설</h3>
+<ul>
+<li>🔘 <strong>타원 (시작/종료)</strong>: 프로그램의 시작점과 정상 종료점</li>
+<li>🟦 <strong>직사각형 (처리/연산)</strong>:
+<ul>
+<li><strong>1단계 (초기화)</strong>: 카운트와 결과 리스트 메모리 확보</li>
+<li><strong>2단계 (평균 산출)</strong>: 전체 데이터의 산술 평균값 연산</li>
+</ul></li>
+<li>🔶 <strong>마름모 (조건 분기/루프)</strong>:
+<ul>
+<li><strong>3단계 (반복 제어)</strong>: 모든 데이터 순회 완료 여부 판단</li>
+<li><strong>4단계 (조건 판별)</strong>: <code>구매액 &gt; avg</code> AND <code>구매액 &gt;= 10만</code></li>
+</ul></li>
+<li>🟩 <strong>직사각형 (결과 처리)</strong>:
+<ul>
+<li><strong>5단계 (데이터 추가)</strong>: 조건 만족 시 리스트에 적재 및 카운트 <span class="math inline">\(+1\)</span></li>
+</ul></li>
+<li>🟪 <strong>평행사변형 (데이터 입출력)</strong>:
+<ul>
+<li><strong>6단계 (화면 출력)</strong>: 최종 집계된 통계 명단 리포트 출력</li>
+</ul></li>
+</ul>
+</section>
+</div>
+</div>
+<hr>
+</section>
+<section id="순서도-leftrightarrow-파이썬-소스코드-11-매핑" class="level2" data-number="0.33">
+<h2 data-number="0.33" class="anchored" data-anchor-id="순서도-leftrightarrow-파이썬-소스코드-11-매핑"><span class="header-section-number">0.33</span> 33. 순서도 <span class="math inline">\(\leftrightarrow\)</span> 파이썬 소스코드 1:1 매핑</h2>
+<p>순서도의 각 도형은 실제 파이썬 코드와 다음과 같이 1:1로 직결됩니다:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 초기화 &amp; 2. 평균 연산 (직사각형)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>purchase_data <span class="op">=</span> [<span class="dv">45000</span>, <span class="dv">128000</span>, <span class="dv">89000</span>, <span class="dv">250000</span>, <span class="dv">32000</span>, <span class="dv">156000</span>, <span class="dv">98000</span>, <span class="dv">410000</span>, <span class="dv">72000</span>, <span class="dv">115000</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>vip_list <span class="op">=</span> []</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>vip_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>avg_amount <span class="op">=</span> <span class="bu">sum</span>(purchase_data) <span class="op">/</span> <span class="bu">len</span>(purchase_data)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 반복 루프 (마름모: 순회 검사)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> amount <span class="kw">in</span> purchase_data:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. 복합 조건 분기 (마름모: 참/거짓 판별)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> amount <span class="op">&gt;</span> avg_amount <span class="kw">and</span> amount <span class="op">&gt;=</span> <span class="dv">100000</span>:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 5. 참 실행 블록 (직사각형: 리스트 추가 &amp; 카운트 증가)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        vip_list.append(amount)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        vip_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. 최종 출력 (평행사변형: 화면 출력)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"VIP 고객 수: </span><span class="sc">{</span>vip_count<span class="sc">}</span><span class="ss">명, 목록: </span><span class="sc">{</span>vip_list<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p><br></p>
+<blockquote class="blockquote">
+<p><strong>핵심 교훈</strong>: 순서도를 명확하게 설계하면, 파이썬 코딩은 순서도의 흐름을 그대로 옮겨 적는 단순 작업이 됩니다!</p>
+</blockquote>
+
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

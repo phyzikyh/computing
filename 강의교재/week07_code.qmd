@@ -1,0 +1,141 @@
+---
+format: live-html
+---
+# 코딩실습 {#sec-ch7-lab}
+
+## 예제 1. 리스트 생성과 조회
+```python
+scores=[80,95,72]
+print(scores[0],scores[-1])
+```
+```text
+80 72
+```
+## 예제 2. 슬라이싱
+```python
+data=[0,1,2,3,4,5]
+print(data[1:5:2])
+```
+```text
+[1, 3]
+```
+## 예제 3. 추가와 삭제
+```python
+items=["A","B"]
+items.append("C");items.remove("A")
+print(items)
+```
+```text
+['B', 'C']
+```
+## 예제 4. 정렬
+```python
+scores=[72,95,80]
+scores.sort(reverse=True)
+print(scores)
+```
+```text
+[95, 80, 72]
+```
+## 예제 5. 리스트 순회
+```python
+for score in [80,95,72]: print(score+5)
+```
+```text
+85
+100
+77
+```
+## 예제 6. 튜플 언패킹
+```python
+point=(35.1,129.0)
+lat,lon=point
+print(lat,lon)
+```
+```text
+35.1 129.0
+```
+## 예제 7. 딕셔너리 조회
+```python
+student={"name":"민지","score":88}
+print(student["name"],student.get("grade","미정"))
+```
+```text
+민지 미정
+```
+## 예제 8. 딕셔너리 수정
+```python
+stock={"water":10}
+stock["water"]-=2;stock["juice"]=5
+print(stock)
+```
+```text
+{'water': 8, 'juice': 5}
+```
+## 예제 9. 중첩 자료
+```python
+students=[{"name":"A","score":90},{"name":"B","score":80}]
+print(students[1]["score"])
+```
+```text
+80
+```
+## 예제 10. 모듈
+```python
+import math
+print(math.ceil(3.2),math.sqrt(16))
+```
+```text
+4 4.0
+```
+
+## 문제 1. 리스트 통계
+점수 리스트의 합계, 평균, 최댓값, 최솟값을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 2. 인덱스와 슬라이싱
+목록의 첫 값, 마지막 값, 짝수 위치 값, 역순을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 3. 데이터 정리
+목록에 값을 추가·삽입·삭제한 뒤 오름차순으로 정렬한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 4. 점수 필터링
+80점 이상만 새 리스트에 저장해 내림차순으로 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 5. 튜플 좌표
+세 좌표 튜플을 순회하고 각 위도와 경도를 언패킹한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 6. 학생 딕셔너리
+이름·전공·점수를 저장하고 점수를 수정한 뒤 모든 항목을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 7. 안전한 조회
+존재하지 않는 키를 get()으로 조회해 기본값을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 8. 빈도표
+문자열의 각 문자가 나온 횟수를 딕셔너리에 저장한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 9. 주문 정산
+메뉴 가격 딕셔너리와 주문 리스트로 총액을 계산한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 10. 모듈 활용
+math와 random을 사용해 반지름이 임의로 정해진 원의 넓이를 계산한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```

@@ -1,0 +1,141 @@
+---
+format: live-html
+---
+# 코딩실습 {#sec-ch5-lab}
+
+## 예제 1. 단일 조건
+```python
+score=85
+if score>=60: print("통과")
+```
+```text
+통과
+```
+## 예제 2. 양자택일
+```python
+age=17
+print("성인" if age>=19 else "미성년")
+```
+```text
+미성년
+```
+## 예제 3. 다중 조건
+```python
+score=87
+if score>=90: grade="A"
+elif score>=80: grade="B"
+else: grade="C"
+print(grade)
+```
+```text
+B
+```
+## 예제 4. 논리곱
+```python
+average,minimum=72,45
+print(average>=60 and minimum>=40)
+```
+```text
+True
+```
+## 예제 5. 논리합
+```python
+is_child,is_senior=False,True
+print(is_child or is_senior)
+```
+```text
+True
+```
+## 예제 6. not
+```python
+is_closed=False
+if not is_closed: print("입장 가능")
+```
+```text
+입장 가능
+```
+## 예제 7. 범위 비교
+```python
+temperature=23
+print(18<=temperature<=26)
+```
+```text
+True
+```
+## 예제 8. 중첩 조건
+```python
+member,amount=True,60000
+discount=0.1 if member and amount>=50000 else 0
+print(discount)
+```
+```text
+0.1
+```
+## 예제 9. 입력 검증
+```python
+score=105
+if 0<=score<=100: print("정상")
+else: print("입력 오류")
+```
+```text
+입력 오류
+```
+## 예제 10. 함수로 판단 재사용
+```python
+def is_even(number): return number%2==0
+print(is_even(14))
+```
+```text
+True
+```
+
+## 문제 1. 홀짝 판정
+정수를 입력받아 홀수 또는 짝수를 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 2. 성인 요금
+나이에 따라 성인·청소년·어린이 요금을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 3. 학점 계산
+점수를 입력받아 A부터 F까지 판정한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 4. 합격과 과락
+평균 60 이상이며 모든 과목이 40 이상일 때만 합격을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 5. 윤년 판정
+4의 배수이면서 100의 배수가 아니거나 400의 배수인 연도를 찾는다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 6. 할인 계산
+회원 여부와 구매 금액을 이용해 할인율과 최종 금액을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 7. 입력 범위 검증
+0~100 밖의 점수에는 입력 오류를 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 8. 세 수 비교
+세 수 중 가장 큰 값을 조건문만으로 구한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 9. 계절 판정
+월을 입력받아 계절을 출력하고 잘못된 월을 구분한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+## 문제 10. 배송비 함수
+주문 금액과 회원 여부를 받아 배송비를 반환하는 함수를 작성한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```

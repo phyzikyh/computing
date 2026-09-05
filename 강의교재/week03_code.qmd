@@ -1,0 +1,221 @@
+---
+format: live-html
+---
+
+# 코딩실습 {#sec-ch3-lab}
+
+## 예제 1. 입력값을 정수로 변환
+
+```python
+age_text = "20"
+age = int(age_text)
+print(age + 1)
+```
+
+```text
+21
+```
+
+## 예제 2. 입력–처리–출력
+
+```python
+width = 8
+height = 5
+area = width * height
+print(f"직사각형 넓이: {area}")
+```
+
+```text
+직사각형 넓이: 40
+```
+
+## 예제 3. 변수값 교환
+
+```python
+left = "A"
+right = "B"
+left, right = right, left
+print(left, right)
+```
+
+```text
+B A
+```
+
+## 예제 4. 순차 알고리즘
+
+```python
+price = 12000
+quantity = 3
+total = price * quantity
+print(f"결제 금액: {total:,}원")
+```
+
+```text
+결제 금액: 36,000원
+```
+
+## 예제 5. 선택 구조의 모양
+
+```python
+temperature = 31
+if temperature >= 30:
+    print("폭염 주의")
+else:
+    print("일반 운영")
+```
+
+```text
+폭염 주의
+```
+
+## 예제 6. 반복 구조의 모양
+
+```python
+for number in range(1, 4):
+    print(f"{number}번 점검")
+```
+
+```text
+1번 점검
+2번 점검
+3번 점검
+```
+
+## 예제 7. 몫과 나머지 알고리즘
+
+```python
+items = 53
+box_size = 10
+full_boxes = items // box_size
+remaining = items % box_size
+print(full_boxes, remaining)
+```
+
+```text
+5 3
+```
+
+## 예제 8. 값을 단계별로 추적
+
+```python
+balance = 10000
+print("시작:", balance)
+balance = balance - 2500
+print("1단계:", balance)
+balance = balance + 4000
+print("2단계:", balance)
+```
+
+```text
+시작: 10000
+1단계: 7500
+2단계: 11500
+```
+
+## 예제 9. 경계값 확인
+
+```python
+score = 60
+print(score >= 60)
+score = 59
+print(score >= 60)
+```
+
+```text
+True
+False
+```
+
+## 예제 10. 논리 오류 수정
+
+```python
+minutes = 125
+hours = minutes // 60
+remaining_minutes = minutes % 60
+print(f"{hours}시간 {remaining_minutes}분")
+```
+
+```text
+2시간 5분
+```
+
+## 문제 1. 섭씨 온도 변환
+
+화씨 온도를 입력받아 `섭씨 = (화씨 - 32) × 5 / 9`로 계산하고 소수점 첫째 자리까지 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 2. 두 변수 교환
+
+두 문자열을 변수에 저장하고 교환 전과 교환 후를 각각 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 3. 총 결제 금액
+
+상품 가격과 수량을 입력받아 총액을 계산하고 천 단위 쉼표가 포함된 f-string으로 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 4. 초를 시·분·초로 변환
+
+전체 초를 입력받아 시, 분, 초로 나누어 출력한다. `//`와 `%`를 모두 사용한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 5. 경계값 판정
+
+점수를 입력받아 60점 이상이면 `통과`, 그렇지 않으면 `재검사`를 출력한다. 59, 60, 61을 각각 시험한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 6. 세 수의 평균
+
+세 개의 실수를 입력받아 평균을 계산하고 소수점 둘째 자리까지 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 7. 반복 출력
+
+점검 항목을 입력받고 같은 항목을 번호와 함께 다섯 번 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 8. 모호한 명령 구체화
+
+`금액이 크면 할인한다`를 `50,000원 이상이면 10% 할인`으로 구체화하여 최종 금액을 계산한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 9. 추적표를 코드로 확인
+
+초깃값 3에서 시작해 2를 더하고, 4를 곱하고, 5를 빼는 각 단계의 값을 모두 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 10. 주차요금 알고리즘
+
+주차 시간을 분 단위로 입력받는다. 기본 30분은 1,000원이고 이후 10분마다 500원을 추가한다. 초과 시간은 10분 단위로 올림하며 최종 요금을 출력한다.
+
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```

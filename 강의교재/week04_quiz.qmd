@@ -1,0 +1,32 @@
+# 연습문제 {#sec-ch4-quiz}
+
+<div id="week04-quiz"></div>
+<div class="quiz-actions"><button class="quiz-button check" id="check-week04">정답 확인</button><button class="quiz-button reset" id="reset-week04">다시 풀기</button><span class="quiz-score" id="score-week04"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+const items=[
+["파이썬 변수에 대한 설명은?",["메모리 주소 그 자체다","객체를 가리키는 이름이다","자료형을 영구 고정한다","숫자만 저장한다"],2,"변수는 값 객체를 참조하기 위해 사용하는 이름이다."],
+["올바른 변수 이름은?",["2nd_score","user-name","total_score","class"],3,"문자로 시작하고 예약어·공백·하이픈을 사용하지 않은 total_score가 적절하다."],
+["type(25)의 결과는?",["int","float","str","bool"],1,"따옴표 없는 25는 정수 int다."],
+["type('25')의 결과는?",["int","float","bool","str"],4,"따옴표로 감싼 값은 문자열 str이다."],
+["input()이 반환하는 기본 자료형은?",["int","str","float","bool"],2,"키보드 입력은 항상 문자열로 반환된다."],
+["문자열 '3.5'를 실수로 바꾸는 함수는?",["int()","str()","float()","bool()"],3,"소수 형태 문자열은 float()로 변환한다."],
+["17 // 5의 결과는?",["3","2","3.4","4"],1,"//는 나눗셈의 몫을 구한다."],
+["17 % 5의 결과는?",["3","5","0","2"],4,"%는 나눗셈의 나머지를 구한다."],
+["2 ** 5의 결과는?",["10","32","25","7"],2,"**는 거듭제곱 연산자이므로 2의 5제곱은 32다."],
+["3 + 4 * 2의 결과는?",["11","14","10","9"],1,"곱셈이 덧셈보다 먼저 계산된다."],
+["x=5 다음 x+=3 실행 후 x는?",["3","5","8","15"],3,"x += 3은 x = x + 3과 같다."],
+["'ab' * 3의 결과는?",["ab3","오류","abab","ababab"],4,"문자열과 정수의 곱은 문자열 반복이다."],
+["5 == 5.0의 결과는?",["False","True","5","오류"],2,"정수 5와 실수 5.0은 값이 같으므로 True다."],
+["not True의 결과는?",["False","True","None","0"],1,"not은 불리언 값을 반전한다."],
+["True and False의 결과는?",["True","1","False","None"],3,"and는 두 조건이 모두 참일 때만 True다."],
+["int('3.5') 실행 결과는?",["3","ValueError","3.5","TypeError"],2,"정수 형식이 아닌 문자열을 int()로 직접 바꾸면 ValueError가 발생한다."],
+["정의하지 않은 total을 출력할 때 발생하는 오류는?",["TypeError","ValueError","SyntaxError","NameError"],4,"정의되지 않은 이름을 사용하면 NameError가 발생한다."],
+["문자열과 정수를 안전하게 함께 출력하는 방법은?",["print(f'인원: {count}')","print('인원: '+count)","print(count+'명')","print(str+'count')"],1,"f-string은 서로 다른 자료형을 출력 문자열에 안전하게 삽입한다."],
+["a=1, b=2를 교환하는 문장은?",["a=b","a,b=a,b","a,b=b,a","swap=a+b"],3,"다중 대입 a, b = b, a로 값을 교환한다."],
+["연산 순서를 가장 명확하게 지정하는 방법은?",["공백을 늘린다","변수명을 짧게 한다","주석만 작성한다","괄호를 사용한다"],4,"괄호는 우선 계산할 부분을 명시한다."]];
+const marks=["①","②","③","④"],root=document.getElementById("week04-quiz");root.innerHTML=items.map((x,i)=>`<section class="quiz-question" data-answer="${x[2]}"><p>${i+1}. ${x[0]}</p><div class="quiz-options">${x[1].map((c,j)=>`<label class="quiz-option"><input type="radio" name="w4q${i}" value="${j+1}">${marks[j]} ${c}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[x[2]-1]}</strong> ${x[3]}</div></section>`).join("");const qs=[...root.querySelectorAll(".quiz-question")],score=document.getElementById("score-week04");root.addEventListener("change",e=>{if(!e.target.matches("input"))return;const q=e.target.closest(".quiz-question");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected"));e.target.closest(".quiz-option").classList.add("selected")});document.getElementById("check-week04").onclick=()=>{let n=0;qs.forEach(q=>{q.classList.add("checked");q.classList.remove("unanswered");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("is-correct","is-incorrect"));const a=q.dataset.answer,s=q.querySelector("input:checked");q.querySelector(`input[value="${a}"]`).closest(".quiz-option").classList.add("is-correct");if(!s)q.classList.add("unanswered");else if(s.value===a)n++;else s.closest(".quiz-option").classList.add("is-incorrect")});score.textContent=`점수: ${n} / 20`};document.getElementById("reset-week04").onclick=()=>{qs.forEach(q=>{q.className="quiz-question";q.querySelectorAll("input").forEach(i=>i.checked=false);q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected","is-correct","is-incorrect"))});score.textContent=""};});
+</script>
+```

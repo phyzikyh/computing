@@ -1,0 +1,39 @@
+# 연습문제 {#sec-ch3-quiz}
+
+<div id="week03-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week03">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week03">다시 풀기</button><span class="quiz-score" id="score-week03" aria-live="polite"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+ const items = [
+ ["추상화의 핵심 설명은?",["세부사항을 모두 보존한다","목적에 필요한 특징만 남긴다","코드를 다른 언어로 번역한다","자료를 무작위로 제거한다"],2,"추상화는 해결 목적에 필요한 특징을 남기고 불필요한 세부사항을 감춘다."],
+ ["지하철 노선도에서 가장 중요하게 남겨야 할 정보는?",["건물 외벽 색상","실제 도로의 굴곡","역의 순서와 환승 관계","상점의 영업시간"],3,"노선도의 목적은 이동 경로 파악이므로 역의 연결과 환승 관계가 핵심이다."],
+ ["블랙박스 모델의 특징은?",["입력·출력 규칙을 알면 내부 구현을 몰라도 사용할 수 있다","모든 내부 코드를 공개해야 한다","입력 없이 출력만 만든다","오류를 자동으로 없앤다"],1,"블랙박스는 내부 구현보다 외부에서 관찰되는 입력, 처리 결과, 인터페이스에 집중한다."],
+ ["여러 사례에서 공통 규칙을 만들어 새로운 사례에 적용하는 과정은?",["복사","삭제","분해","일반화"],4,"일반화는 여러 사례의 공통 구조를 규칙으로 만들고 다른 상황에 재사용하는 과정이다."],
+ ["알고리즘의 설명으로 가장 적절한 것은?",["컴퓨터 부품의 목록","문제를 해결하기 위한 명확하고 유한한 절차","실행 결과만 기록한 표","특정 프로그래밍 언어 자체"],2,"알고리즘은 입력을 원하는 출력으로 바꾸는 명확하고 끝이 있는 절차다."],
+ ["좋은 알고리즘의 유한성이 의미하는 것은?",["명령이 짧아야 한다","입력이 하나여야 한다","정해진 단계 뒤 반드시 종료해야 한다","항상 같은 숫자를 출력해야 한다"],3,"유한성은 무한히 실행되지 않고 유한한 단계 안에 종료됨을 뜻한다."],
+ ["자연어 알고리즘의 대표적인 한계는?",["표현이 모호할 수 있다","한글을 사용할 수 없다","그림만 사용할 수 있다","입력을 표현할 수 없다"],1,"자연어는 접근하기 쉽지만 작성자와 독자가 다르게 해석할 수 있다."],
+ ["프로그래밍 문법 대신 논리와 처리 순서를 간결하게 적는 방식은?",["기계어","실행 파일","회로도","의사코드"],4,"의사코드는 특정 언어의 문법보다 알고리즘의 구조를 명료하게 나타낸다."],
+ ["순서도에서 조건 판단을 나타내는 도형은?",["직사각형","마름모","타원","평행사변형"],2,"마름모는 조건을 검사하고 참·거짓 경로로 흐름을 나누는 판단 기호다."],
+ ["순서도에서 입력과 출력을 나타내는 도형은?",["평행사변형","마름모","직사각형","원"],1,"평행사변형은 데이터 입력 또는 결과 출력을 나타낸다."],
+ ["세 명령 A, B, C가 위에서 아래로 한 번씩 실행되는 구조는?",["선택","반복","순차","재귀"],3,"순차 구조는 명령을 작성된 순서대로 차례로 실행한다."],
+ ["조건 결과에 따라 서로 다른 명령을 실행하는 구조는?",["순차","입력","출력","선택"],4,"선택 구조는 조건의 참과 거짓에 따라 실행 경로를 결정한다."],
+ ["같은 명령을 조건이나 횟수에 따라 다시 실행하는 구조는?",["입력","반복","저장","종료"],2,"반복 구조는 정해진 횟수 또는 조건이 유지되는 동안 명령을 되풀이한다."],
+ ["의사코드 '가격 입력 → 할인 계산 → 최종 가격 출력'의 기본 구조는?",["순차","선택","반복","병렬"],1,"세 단계가 앞에서 뒤로 한 번씩 진행되므로 순차 구조다."],
+ ["알고리즘 추적표를 작성하는 주된 이유는?",["글꼴을 선택하려고","파일을 압축하려고","단계별 변수값과 흐름을 확인하려고","코드를 자동 번역하려고"],3,"추적표는 각 단계에서 변수값이 어떻게 바뀌는지 기록해 논리 오류를 찾게 한다."],
+ ["정상값·경계값·예외값을 함께 시험하는 이유는?",["실행 시간을 늘리려고","다양한 입력에서 알고리즘의 안정성을 확인하려고","변수를 없애려고","출력을 숨기려고"],2,"대표 입력뿐 아니라 조건의 경계와 예상 밖 입력까지 검사해야 오류를 발견할 수 있다."],
+ ["'충분히 뜨거우면 잠시 기다린다'를 명확하게 고친 것은?",["적당히 식을 때까지 기다린다","가능하면 기다린다","조금 기다린다","온도가 60°C 이하가 될 때까지 1분마다 확인한다"],4,"측정 기준과 반복 간격, 종료 조건이 있어야 실행 가능한 명령이 된다."],
+ ["a=3, b=7의 값을 임시변수 없이 교환하는 파이썬 문장은?",["a, b = b, a","a = b = a","a + b","swap(a)"],1,"파이썬의 다중 대입을 사용하면 오른쪽 값을 평가한 뒤 두 변수에 동시에 배정한다."],
+ ["input()으로 받은 '25'를 숫자 계산에 사용하려면?",["print('25')","type('25')","int('25')","str(25)"],3,"input() 결과는 문자열이므로 정수 계산에는 int() 변환이 필요하다."],
+ ["문법 오류 없이 실행되지만 잘못된 결과가 나오는 오류는?",["SyntaxError","NameError","ValueError","논리 오류"],4,"논리 오류는 프로그램이 실행되더라도 계산식이나 절차가 잘못되어 기대와 다른 결과를 만든다."]
+ ];
+ const marks=["①","②","③","④"], root=document.getElementById("week03-quiz");
+ root.innerHTML=items.map((x,i)=>`<section class="quiz-question" data-answer="${x[2]}"><p>${i+1}. ${x[0]}</p><div class="quiz-options">${x[1].map((c,j)=>`<label class="quiz-option"><input type="radio" name="w3q${i+1}" value="${j+1}">${marks[j]} ${c}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[x[2]-1]}</strong> ${x[3]}</div></section>`).join("");
+ const qs=[...root.querySelectorAll(".quiz-question")], score=document.getElementById("score-week03");
+ root.addEventListener("change",e=>{if(!e.target.matches('input[type="radio"]'))return;const q=e.target.closest(".quiz-question");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected"));e.target.closest(".quiz-option").classList.add("selected");});
+ document.getElementById("check-week03").addEventListener("click",()=>{let n=0;qs.forEach(q=>{q.classList.add("checked");q.classList.remove("unanswered");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("is-correct","is-incorrect"));const a=q.dataset.answer,s=q.querySelector("input:checked");q.querySelector(`input[value="${a}"]`).closest(".quiz-option").classList.add("is-correct");if(!s)q.classList.add("unanswered");else if(s.value===a)n++;else s.closest(".quiz-option").classList.add("is-incorrect");});score.textContent=`점수: ${n} / ${qs.length}`;});
+ document.getElementById("reset-week03").addEventListener("click",()=>{qs.forEach(q=>{q.classList.remove("checked","unanswered");q.querySelectorAll("input").forEach(i=>i.checked=false);q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected","is-correct","is-incorrect"));});score.textContent="";});
+});
+</script>
+```

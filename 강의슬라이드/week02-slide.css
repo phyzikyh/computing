@@ -1,0 +1,92 @@
+.reveal #title-slide::after {
+  content: "WEEK 02";
+}
+
+/* Quarto가 Mermaid 렌더링 후 생성하는 실제 SVG를 크게 가운데 배치 */
+.reveal .cell:has(svg.mermaid-js),
+.reveal .cell-output-display:has(svg.mermaid-js),
+.reveal figure:has(svg.mermaid-js),
+.reveal figure:has(svg.mermaid-js) > div {
+  width: 100% !important;
+  max-width: none !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center !important;
+}
+
+.reveal svg.mermaid-js {
+  display: block !important;
+  width: 98% !important;
+  height: auto !important;
+  max-width: 1180px !important;
+  max-height: 540px !important;
+  margin: 0.1em auto !important;
+}
+
+/* 교재의 밝은 Mermaid 테마를 슬라이드에서도 유지 */
+.reveal svg.mermaid-js .cluster rect {
+  fill: #f8fafc !important;
+  stroke: #cbd5e1 !important;
+  stroke-width: 1.5px !important;
+}
+
+.reveal svg.mermaid-js .cluster-label text,
+.reveal svg.mermaid-js .cluster-label span,
+.reveal svg.mermaid-js .cluster-label p {
+  fill: #334155 !important;
+  color: #334155 !important;
+}
+
+.reveal svg.mermaid-js .edgeLabel,
+.reveal svg.mermaid-js .edgeLabel rect {
+  fill: #ffffff !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+}
+
+.reveal svg.mermaid-js .flowchart-link {
+  stroke: #64748b !important;
+  stroke-width: 2px !important;
+}
+
+/* 템플릿의 본문 p/li 규칙이 Mermaid의 글자 폭 계산에 침범하지 않도록 격리 */
+.reveal pre.mermaid-js foreignObject,
+.reveal svg.mermaid-js foreignObject {
+  overflow: visible !important;
+}
+
+.reveal pre.mermaid-js foreignObject div,
+.reveal pre.mermaid-js foreignObject span,
+.reveal pre.mermaid-js foreignObject p,
+.reveal pre.mermaid-js .nodeLabel,
+.reveal pre.mermaid-js .edgeLabel,
+.reveal svg.mermaid-js foreignObject div,
+.reveal svg.mermaid-js foreignObject span,
+.reveal svg.mermaid-js foreignObject p,
+.reveal svg.mermaid-js .nodeLabel,
+.reveal svg.mermaid-js .edgeLabel {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  overflow: visible !important;
+}
+
+/* Mermaid가 생성되기 전 잠깐 보이는 코드 영역도 중앙 배치 */
+.reveal pre.mermaid-js {
+  width: 96% !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 18번 슬라이드 의존 관계 도표만 기본 Mermaid 크기의 70%로 표시 */
+.reveal .mermaid-70 svg.mermaid-js {
+  width: 70% !important;
+  max-width: 826px !important;
+  max-height: 378px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}

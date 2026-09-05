@@ -1,0 +1,28 @@
+:root{--ink:#172033;--muted:#5d687a;--blue:#1769d2;--blue-soft:#f4f7fb;--green:#1769d2;--green-soft:#f7f9fc;--orange:#5d687a;--orange-soft:#f7f9fc;--red:#b4233c;--red-soft:#fff7f8;--line:#d8e0ec}
+.reveal{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
+.reveal .slides{text-align:left}.reveal .slides section{padding:10px 16px;box-sizing:border-box}
+.reveal h1,.reveal h2,.reveal h3{color:var(--ink);letter-spacing:-.035em;font-weight:800}
+.reveal h2{font-size:1.45em;margin-bottom:.35em}.reveal h3{font-size:.86em;color:var(--blue)}
+.reveal p,.reveal li{font-size:.58em;line-height:1.5}.reveal code{color:#b4233c}.reveal strong{color:#0d57b5}
+.reveal blockquote{width:92%;margin:.8em 0;padding:.5em .8em;border:1px solid var(--line);background:var(--blue-soft);box-shadow:none;font-style:normal}
+.reveal div.sourceCode{border:0!important;background:#fff!important;box-shadow:none!important;overflow:visible!important}
+.reveal pre,.reveal pre.sourceCode{width:100%;margin:.35em 0;border:1px solid #d8e0ec!important;border-radius:8px;box-shadow:none!important;background:#fff!important;overflow:hidden!important;font-size:1em}
+.reveal pre code,.reveal pre.sourceCode code{max-height:460px;padding:15px 17px;font-size:.50em;line-height:1.38;white-space:pre-wrap!important;overflow-wrap:anywhere;background:#fff!important;border:0!important}
+.reveal table{width:100%;margin:.5em 0;font-size:.5em;border-collapse:collapse}.reveal th{color:white;background:var(--blue);padding:9px 12px}.reveal td{padding:9px 12px;border-bottom:1px solid var(--line)}.reveal tr:nth-child(even) td{background:#f7f9fc}
+.box{border:1px solid var(--line);border-radius:12px;padding:14px 17px;margin:10px 0;background:white}.box p,.box li{margin-top:.2em;margin-bottom:.2em}
+.box.blue,.box.green,.box.orange{background:#fff;border-color:#cbd5e3}.box.red{background:var(--red-soft);border-color:#efc5cc}.box.muted-box{background:#f7f9fc;color:var(--muted);border-color:#d8e0ec}
+.center{text-align:center}.muted{color:var(--muted)}.flow{font-size:.72em;font-weight:750;color:var(--blue);text-align:center}
+.big-claim{margin:.6em auto;padding:.55em .8em;border:1px solid var(--line);border-radius:8px;background:#f4f7fb;color:#173b6c;font-size:.78em;font-weight:800;text-align:center}
+.hero-question{margin:.65em auto;padding:.55em .7em;color:var(--blue);font-size:1.05em;font-weight:850;text-align:center;letter-spacing:-.04em}
+.metric-title{margin:.2em 0 .55em;padding:.35em .7em;border:1px solid var(--line);border-radius:6px;background:var(--blue-soft);font-size:.72em;font-weight:800}
+.reveal .slide-number{font-size:15px;color:#68758a}.reveal .footer{color:#728096;font-size:.34em}.reveal .chalkboard-button{z-index:50}
+.reveal #title-slide{position:relative;overflow:hidden;text-align:left;padding:82px 88px!important;border-radius:22px;background:#fff;box-shadow:none}
+.reveal #title-slide::before{content:"";position:absolute;left:88px;top:58px;width:76px;height:7px;border-radius:99px;background:#1769d2}
+.reveal #title-slide::after{content:"WEEK 01";position:absolute;right:74px;bottom:54px;color:#dfe7f2;font-size:1.05em;font-weight:850;letter-spacing:.12em}
+.reveal #title-slide h1{position:relative;z-index:1;max-width:900px;margin:0 0 24px;font-size:2.35em;line-height:1.12;letter-spacing:-.055em;color:#14213a}
+.reveal #title-slide .subtitle{position:relative;z-index:1;display:block;margin:0 0 42px;padding:0;border:0;background:none;color:#1769d2;font-size:.68em;font-weight:750;letter-spacing:.04em}
+.reveal #title-slide .quarto-title-author-name{position:relative;z-index:1;color:#42516a;font-size:.58em;font-weight:650}
+.reveal #title-slide p{position:relative;z-index:1}.reveal img{max-height:500px;object-fit:contain}
+.reveal .columns{align-items:flex-start}.reveal .slides section.present:not(#title-slide),.reveal section.top-slide{top:0!important;padding-top:4px!important}.reveal section.top-slide h2{margin-top:0!important;margin-bottom:.3em}
+.reveal .figure-center{text-align:center}.reveal .figure-center img{display:block;margin:0 auto}.reveal .mermaid{font-size:.82em}.reveal .mermaid svg{max-height:475px}
+.source{margin-top:.5em;color:#748094;font-size:.38em!important;text-align:right}.explain{margin:.45em 0;color:#3f4b5e;font-size:.54em;line-height:1.55}.figure-caption{margin-top:.3em;color:#667085;font-size:.4em!important;text-align:center}

@@ -1,0 +1,56 @@
+<style>
+.answer-lock { margin: 2rem 0; padding: 1.4rem; border: 1px solid #d7dee8; border-radius: 12px; background: #f8fafc; }
+.answer-lock h3 { margin-top: 0; }
+.answer-row { display: flex; gap: .6rem; max-width: 560px; }
+.answer-row input { flex: 1; min-width: 0; padding: .7rem .85rem; border: 1px solid #aab6c5; border-radius: 8px; }
+.answer-row button { padding: .7rem 1rem; border: 0; border-radius: 8px; background: #2563eb; color: white; font-weight: 700; }
+#week02-answer-message { min-height: 1.5rem; margin-top: .7rem; color: #c62828; }
+#week02-answer-content { display: none; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #2563eb; }
+#week02-answer-content table { width: 100%; }
+@media (max-width: 560px) { .answer-row { flex-direction: column; } }
+</style>
+
+<section id="week02-answer-lock" class="answer-lock">
+  <h3>정답 확인</h3>
+  <div class="answer-row">
+    <input id="week02-answer-password" type="password" autocomplete="current-password" aria-label="정답 비밀번호">
+    <button id="week02-answer-open" type="button">확인</button>
+  </div>
+  <div id="week02-answer-message" aria-live="polite"></div>
+</section>
+<section id="week02-answer-content"></section>
+
+<script>
+(() => {
+  const payload = {
+    salt: "4iDxytG7sumWlKmNGJUJxw==",
+    iv: "dKolOLBXMf97vNnj",
+    data: "i29IA2KqNRDtcqJb3g4vpQDNR0OgYpp98/44iTw1CkvGOnoYERW3VYqokwFgJzBmctzh+N2NH8WrzlsU+rgqd60oyr1bDGkbm+BwzOuz+OOqL070HMzqR1hpof+H9JMv7LgNW1So82ft4Ytszx2llEclCLsUpo8GL+n66SGDy+8ZWo0E5+hbcIANU8V92seB1a19HEsuRUogB815P+4QQmH8yJovIkk9Q14Dy71r7VWO6YXfYoFESNL/qgKsyyauLpeQHJR7YK67EnvZWmvWADhGtG9ZtIEbBtAwyY4kPF4R44FGBRP6Df8fIas87ek5GXKy0Wu1ePTzyc+VIMbEGtmBkzHxkxYZAbDTFmw+0BybmkdOe5sIN6aeGRu57LhLurZH3DikcDqILHDt9M6F1oMTs9UjPfyQrskkwcGiAf5vFE3TzL03sDxfq9NwKXfFAsFp2gX0+G6XFX0vnCQ70qUlKmYZiQ50IUc5NtAP7YOz394lGbAdzeQNO0YAZ6fFos5u0FmXgPH1CrgVcLej//6JkBPHoBa6h8CFovmkceM3XfAMV5/wnek9nOJGj+5+cB70KlOj5FYWg0GfAzSqocALJdeREVZXbGsECnhMErRLpCow4tiuZpitdd3Z9Ahi1SGCKxre5gRplpCN3G4kKfFswSjWyudA6pRYH+hMsRWGF8eWvAx25uBuimRozYn+PL/X4+fTiI2u4jpyQn6EheEKsQnHU5haYVmCvYmXL/kMU+JASvRlhYtDYN+stwXC+lxaiO8Oth1QqxS2bX+g4Lfkf4WM6H7CMtCUM2CJkA6X9TElKmr6L3W8NPJ5hc5wUL/7qnSt1NsW1o1lS7VIGzQcdyPJUz7EUaE7u19pUS6re8Wx7MPlS4ESMVyAUsBPiqMGrf9uA1fm/LetFIKeDVOUp6AM3HqXIATmc+0+KKzVlNM1H1L9Rvt5PuXoDy+dRlURTcYv4YSQ9be9BsaC1mQuNOC8Wc26HL7kdIMKxUZBYkizmvx4TZh5rb/vrVttFNGWQ863eOdtSIT6Ub/zNNyEMgH//L94dEQpVInS5eQuv1Ixhm72Bvu7q7DIk9G63ZHsuJBtL2R8b0dNKjZTuvH6Be62jPUX34OHZjoPwKAWz5mumVBgyng7BwyP2Me9qYXUfKn1DiP89kwNrHDFSqxQACu+8HvGQm59iBO5r0mDBAbjeqJJ9rkrjGJ5Z1tZatNBhiGCUnkQ2kxr3kO9yHGzuK1IfqyTAdiTxKgiK9HTPhf/VNQAaQgj7tDhflLrsmurGQGvz3omnmnr14xXoGcEoM/9RHFiZxKSvEEn/aALRNdpVwcBGTaBJQpfUYzB95ifX8xX/5S+jjMqdvC6LzBJmdHxmsuZgg6NUplnfJLkhDNJ7jyQ0arlkwR97Scdqw9eTZb1tZunFgXcME2MQynCfpoXBSZxKLm+gDxRgVlpb5a+uRKOp8NiKgSTTUOxM2pLqtL6p4WESCHq7DMHq78WpWEZENd/o8rinMLcWnKXyHzFLWOrxR02J2HTo2LksWVft94A6SxM8+FZJHjXw50NNjwgtlXfZqQZKUOAaDgkbn/Zrkhl5VgslBUTSB+Qrct8J3YCCvumAxOSnUkhcAsaA53dEbI5Rqw1o4neBfOvb8L/8VXHncdU1jc5MHXsaZb2BnTrF1/ulSYMzdqydzR8pQZ15Z4awv4WfR090kwZFf3GeHSZO0dK0XRh6gMO8poXe2/roOM5k6KypiCrqiCqS8lhhahBf1qTIlOCscj8F8CZDlWMAObtaf+nkn2IyEWyeetR4l1p5tHWlLAG9sHjNxhwK+UlJ1/x7ujnnRkS7wW90sss77Niu+QeYBPlhs/mQirYCmeqWow/uwsSK37qZ7GcbBwuxzR4WBfd2xGl2EOdwfydXrQ+tVnC5HwmJm/x9fP5OBk0RHNUvWna93n9oTXFTHxKf1H9K8YjvcF5pL/uolj6+uvUhSQc8ZC/62De7p87R4dDTnYo7xdbKkR6Hns39KzUN7sPxgMS5EuDsC9GWPFX93sghXFuJwZlVhMIGbmEjc7Ce4iEWZxKqU7XzC1TAT18LByM/vGAQ2B4DCnuO7VEWOyDrJ88U6Ar6GkUky5D8l3piAMVUex+DM2Vow42QqFO52QCG4EwhClWMS+bYfLKdFxfdlhonEJIzyJ5VarnVaqbpv3bSDJdfRz3KdgUWzVEJcGkC3UHwSweK+QZayGAQujECuqrfK0DWRvM9MtftFWCPGgmCzHE+ty6Of8GV0HQvpdi/uptwoQIHUPJjsv4XpvV6yA+eukrDt+gvxkN6qq7sKvfIZe5wvF8QnpScpS8wZyAmDCsyTR0Dq134L1PRDXB4dt+3BSBUjcnfZCNI0mh0vPbehne0bEfPzSRjqkB0Lx3NXIufpysHTXCuDVl+rVwkjlRO4WlXBdrvz6EW+MzPc41lWN3K6wu/VmhJjNohcdxn0Uo96oKyx2zPCS05ALS4CMgzgT4/CHbHNxt2a2lEjwFpCOGrvdG6rsSZMLOH2Ec8DACJzNuMxylKr4uUW5LJv4HZ8G9tgofyORe5ZkXO/Fk8UT/11PXJyFmWhW4GBGBOoii2VlgR+hjxrV1wwz1I9M/m5VuUwvAtKKdzvsB6Si1K/HeUSaIVPWZtTsPVK2WxXDkU9G22N2a26taF/6vgjMlnkC3jNu20qDjl2G8CJQITv49AOye9Op+c+MT2gf9GXsfxkjaKhpiM5/qPG9L0eC94SoU/DuVHL5Bf+kdY3RqZvzJqAwtrZHXq1uh+0JFshmC6NCdRlOrp5P8IohUOAjboXzaSjmfF8s639IgsGIFLhAjpcuux0yB0IrYuwu3NY7IBCmIE1cc+8LQ/VW9pFTHLqKDmAhoxLIY/M5JtsYtp75JhMKy0KepQolICONak/wWxKpSOx5Bt6cojskH1RfubY7at3f+NJw1RLW6B7C9orLC54CwlXfc/azaN2aumcW0BCEwc2oP1x/kCyZowhq2J4iBjRFHudae3xy4vdlk8ouI3AP69tEmn4iy3kbo1mVT9hCGN1IfLWch2CwCCPjBgL4B/2rk2DqL3/N7I6Z+HXSRRY3FvPrgpjt5d29Cj0gziSeuZwLgs9ZPTMaHT79i4VI85PP3MPYAYwLO45SnzCjb6/WFA0Axx58o3cgKrdQex8/Jx6ICktYfQsXb2mrdVNgj0OD5pWh9G8jqqfqfEzox4uAznwXUAaY781XlJKf5Yh9WD67p1KGKIgg+RfIXsug+ItcY0Yx7LTs7svSOSFl47oS4mNnnk33TkDEAMmzbV1ngGGE1ndEVhXEnjn7Vm4A094l9v8pHhr2ZH0EliwiflYOZdLZ+fQaAIoXYy3XsVguxsxGcxqMysr5WtS7xZRmXxVqKw7NUqpDtEiJqyCyBTIN3Mp5kboDvB5be0hidHlw1FY9K15SimhPeSnM4h1HiPxbFllxYrimDOKierSERn/q0cIToZPf1m1l8+XZtPTVqxia0GHEQ7Hc2+hXknSW5vtD/3FFnfsVg0wzrRrLRHMpbjwp5b1Nz3SYbaSqmgWTBzeKyrhqpig8nq+LtoyTOMFo3ix3onJHbfL4VEA8B3vwjbe1UqLCuSyY7VKQpuzdaFfrCs1lU9VuvLSV5N+CAYMXiD6bwqK1p8CVVRdEDOffXMwEQEjGzXikS0Scjt9yqspjDqWGXyM5QfJOQ3JKpvw67RPMZ+iZ0uUna915KUxmOs3H5PYcslWuJiOKPwz3wh2cr8qLyRwj5Hgb2aaqzSxjsydGHWVHphhFUn9ZuqO6GKC/nIdlpKhKiq6eC23pkJg=="
+  };
+  const bytes = value => Uint8Array.from(atob(value), char => char.charCodeAt(0));
+  const input = document.getElementById("week02-answer-password");
+  const button = document.getElementById("week02-answer-open");
+  const message = document.getElementById("week02-answer-message");
+  const content = document.getElementById("week02-answer-content");
+
+  async function openAnswer() {
+    message.textContent = "확인 중입니다.";
+    button.disabled = true;
+    try {
+      const material = await crypto.subtle.importKey("raw", new TextEncoder().encode(input.value), "PBKDF2", false, ["deriveKey"]);
+      const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: bytes(payload.salt), iterations: 250000, hash: "SHA-256" }, material, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+      const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(payload.iv) }, key, bytes(payload.data));
+      content.innerHTML = new TextDecoder().decode(plain);
+      content.style.display = "block";
+      document.getElementById("week02-answer-lock").style.display = "none";
+    } catch (_) {
+      message.textContent = "비밀번호가 일치하지 않습니다.";
+      input.select();
+    } finally {
+      button.disabled = false;
+    }
+  }
+  button.addEventListener("click", openAnswer);
+  input.addEventListener("keydown", event => { if (event.key === "Enter") openAnswer(); });
+})();
+</script>

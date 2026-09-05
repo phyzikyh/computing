@@ -1,0 +1,262 @@
+/* ==========================================================
+   컴퓨팅적사고와논리적문제해결 · Quarto Book 스타일
+   데이터구축실습(databuilding) styles.scss와 동일한 학술 교재풍 디자인.
+   (live-html 포맷이라 SCSS 변수 대신 색상값을 인라인한 plain CSS)
+   브랜드 강조색: #1AB18B(청록) · 링크: #128a6c
+   ========================================================== */
+
+/* ── 본문 타이포 — 여백 넉넉히, 읽기 좋은 행간 ── */
+body {
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.85;
+  letter-spacing: -0.003em;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 본문 폭을 학술 교재처럼 적당히 좁게 */
+main.content { max-width: 760px; }
+
+/* ── 제목 계층 — 굵기와 여백으로 위계 표현(색 배경 없이) ── */
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+h1.title, .quarto-title h1 { font-weight: 800; }
+h2 {
+  margin-top: 2.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+h3 { margin-top: 1.8rem; }
+/* 절·목차 번호는 기본색(본문 잉크) */
+.header-section-number { color: inherit; font-weight: 700; }
+
+/* 링크 — 청록 계열 */
+a { color: #128a6c; }
+
+/* ── 그림 — 중앙 정렬, 얇은 테두리, 학술풍 캡션 ── */
+figure.figure, .quarto-figure { margin: 1.8rem auto; text-align: center; }
+.figure img, .quarto-figure img, p > img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  background: #fff;
+}
+figcaption, .figure-caption, .quarto-figure figcaption {
+  font-size: 0.88em;
+  color: #555;
+  margin-top: 0.6rem;
+  line-height: 1.6;
+  text-align: center;
+}
+figcaption .quarto-figure-number, .figure-caption strong { color: #333; }
+
+/* 본문 그림/셀출력 — 열 폭 안에서 비율 유지 */
+.quarto-figure, .cell-output-display, .figure {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.quarto-figure img, .cell-output-display img, .figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+  object-fit: contain;
+}
+figure.quarto-float-fig, div.quarto-figure { text-align: center; }
+
+/* 수동 그림 캡션(.figcap) / 본문 그림(.figbody) */
+.figcap { text-align: center; font-size: 0.9rem; color: #57606a; margin: 8px auto 22px; max-width: 94%; }
+.figcap strong, .figcap b { color: #1f2328; }
+.figbody { text-align: center; margin-top: 6px; }
+.figbody img { max-width: 100%; height: auto; border-radius: 6px; }
+
+/* ── 표 — 학술풍 상하 굵은 선(booktabs 느낌) ── */
+table { font-size: 0.94em; border-collapse: collapse; margin: 1.5rem auto; }
+thead th { background: #fafafa; border-top: 2px solid #333; border-bottom: 1px solid #333; }
+tbody tr:last-child td { border-bottom: 2px solid #333; }
+caption, .table-caption { caption-side: top; font-size: 0.88em; color: #555; }
+
+/* ── 수식 ── */
+.math.display { margin: 1.2rem 0; overflow-x: auto; overflow-y: hidden; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+
+/* ── 코드블록 — 회색 배경, 얇은 테두리 ── */
+pre.sourceCode { border-radius: 4px; border: 1px solid #eee; font-size: 0.86em; line-height: 1.55; }
+code { font-size: 0.9em; }
+
+/* ── 본문 강조 ── */
+strong { color: #111; font-weight: 700; }
+/* 중요 내용 강조색 — [텍스트]{.imp} */
+.imp { color: #1AB18B; font-weight: 700; }
+/* 컴퓨팅 책 기존 클래스(.key) 유지 */
+.key { color: #1AB18B; font-weight: 700; }
+/* 중요 문장 강조 박스(왼쪽 청록 막대) */
+.keybox { background: #f2fbf8; border-left: 4px solid #1AB18B; padding: 0.7em 1.1em; margin: 1.2rem 0; border-radius: 0 5px 5px 0; }
+.keybox p { margin: 0; }
+/* 수식 바로 아래 기호 설명 */
+.eqnote { font-size: 0.9em; color: #555; margin: -0.4rem 0 1.2rem 0.4rem; border-left: 2px solid #d9dde2; padding-left: 0.9em; }
+.eqnote strong { color: #128a6c; }
+
+/* ── 강의 슬라이드 강조 팔레트 ── */
+.red  { color: #E8402E; font-weight: 700; }   /* 핵심 키워드 */
+.grn  { color: #2FA84F; font-weight: 700; }   /* 부연 설명 */
+.amb  { color: #F08C1D; font-weight: 700; }   /* why?/주의 */
+.navy { color: #23368C; font-weight: 700; }   /* 영어 기술 용어 */
+
+/* 알약형 라벨: [강아지]{.pill} */
+.pill { display: inline-block; background: #E84A9C; color: #fff; font-weight: 700; padding: 0.05em 0.6em; border-radius: 999px; margin: 0 0.1em; font-size: 0.95em; line-height: 1.6; }
+.pill.teal  { background: #1AB18B; }
+.pill.navy  { background: #23368C; }
+.pill.amber { background: #F08C1D; }
+
+/* 컬러 테두리 콜아웃 박스: ::: {.callbox} … ::: */
+.callbox { border: 2px solid #F08C1D; border-radius: 12px; background: #fffaf2; padding: 0.7em 1.1em; margin: 1.2rem 0; font-weight: 500; }
+.callbox.teal { border-color: #1AB18B; background: #f1fbf8; }
+.callbox.red  { border-color: #E8402E; background: #fdf3f2; }
+
+/* 굵은 화살표 텍스트 */
+.arrow { color: #b9bdc4; font-weight: 800; font-size: 1.1em; }
+
+/* ── 인용구 — 청록 콜아웃 느낌 ── */
+blockquote { border-left: 5px solid #1AB18B; background: #f2fbf8; padding: 14px 20px; color: #23303a; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+
+/* ── 섹션 구분선 ── */
+main.content hr { margin: 2rem 0; border: 0; border-top: 1px solid #e8edf2; }
+
+/* 강조 콜아웃(.quiz 박스) */
+.quiz { background: #fbf7f4; border-left: 3px solid #1AB18B; padding: 0.7em 1.1em; margin: 0.7em 0; border-radius: 0 4px 4px 0; line-height: 2.0; }
+
+/* 인용/참고문헌 번호 목록 가독성 */
+.references, #refs { font-size: 0.93em; }
+
+/* ══════════════════════════════════════════════════════════
+   좌측 사이드바(목차) — 교재풍 중첩 네비 (databuilding 동일)
+   굵은 주차 헤더 + 들여쓴 하위항목(좌측 가이드선) + 활성=글자색만(청록)
+   ══════════════════════════════════════════════════════════ */
+.sidebar-navigation { font-size: 0.92rem; padding-top: 0.4rem; }
+.sidebar-navigation .sidebar-item { margin: 1px 0; }
+
+/* 사이드바 링크 기본 */
+.sidebar-navigation .sidebar-item .sidebar-link {
+  color: #4a4f57 !important;
+  border-radius: 6px;
+  padding: 3px 8px !important;
+  transition: background 0.12s, color 0.12s;
+}
+.sidebar-navigation .sidebar-item .sidebar-link:hover {
+  color: #1AB18B !important;
+  background: transparent !important;
+}
+
+/* 상위(주차) 섹션 헤더 — 굵고 진하게 */
+.sidebar-navigation .sidebar-item-section > .sidebar-item-container .sidebar-link,
+.sidebar-navigation .sidebar-item-section > .sidebar-item-container .menu-text,
+.sidebar-navigation > ul > .sidebar-item > .sidebar-item-container .sidebar-link {
+  font-weight: 800 !important;
+  color: #16181d !important;
+  font-size: 0.98em !important;
+}
+
+/* 하위 항목(이론/연습문제/코딩실습) — 들여쓰기 + 얇은 좌측 가이드선 */
+.sidebar-navigation .sidebar-item-section .sidebar-item .sidebar-item {
+  border-left: 1px solid #e8edf2;
+  margin-left: 0.55rem;
+  padding-left: 0.3rem;
+}
+.sidebar-navigation .sidebar-item-section .sidebar-item .sidebar-item .sidebar-link {
+  font-size: 0.9em !important;
+  color: #626871 !important;
+}
+
+/* 활성 항목 — 배경/박스 없이 '글자 색'만 변경(청록) */
+.sidebar-navigation .sidebar-link.active,
+.sidebar-navigation .sidebar-item .sidebar-link.active {
+  color: #1AB18B !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 펼침/접힘 화살표 색 */
+.sidebar-navigation .sidebar-item-toggle .bi { color: #9aa0a8; }
+/* 섹션 사이 여백(주차 구분감) */
+.sidebar-navigation > ul > li.sidebar-item-section { margin-top: 0.5rem; }
+
+/* ══════════════════════════════════════════════════════════
+   Mermaid 다이어그램 — 열 폭 안에서 가독성 유지
+   ══════════════════════════════════════════════════════════ */
+.cell-output-display svg,
+pre.mermaid svg,
+div.mermaid svg {
+  display: block;
+  margin: 1.5rem auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+.mermaid text,
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid g.label {
+  font-weight: 600 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+.mermaid .cluster-label span,
+.mermaid .cluster-label { font-size: 16px !important; font-weight: 700 !important; }
+
+/* ══════════════════════════════════════════════════════════
+   인터랙티브 연습문제 채점 UI (컴퓨팅 책 전용 마크업 — 유지)
+   ══════════════════════════════════════════════════════════ */
+.quiz-question { margin: 1.7rem 0 2.1rem; padding: 0; background: #fff; }
+.quiz-question > p:first-child { margin: 0 0 1rem; font-size: 1.04rem; font-weight: 700; }
+.quiz-options { display: flex; flex-direction: column; gap: 6px; margin: 0 0 .8rem; }
+
+.quiz-option {
+  position: relative; display: block; width: 100%; box-sizing: border-box;
+  cursor: pointer; border: 1px solid #e3e7ec; border-radius: 9px;
+  padding: 10px 12px 10px 42px; margin: 0; background: #fff;
+  line-height: 1.55; transition: background .12s, border-color .12s;
+  user-select: none;
+}
+.quiz-option input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.quiz-option::before {
+  content: ""; position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; box-sizing: border-box; border: 2px solid #b8c0cb;
+  border-radius: 5px; background: #fff; display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: 900; color: #fff; line-height: 1;
+}
+.quiz-option:hover { background: #f4f7fa; border-color: #cfd6de; }
+.quiz-option.selected { background: #eef4fb; border-color: #3c6eb4; }
+.quiz-option.selected::before { content: "✓"; background: #3c6eb4; border-color: #3c6eb4; }
+
+.quiz-question.checked .quiz-option { cursor: default; }
+.quiz-option.is-correct { background: #eafaf4; border-color: #1ab18b; color: #0d6e56; font-weight: 700; }
+.quiz-option.is-correct::before { content: "✓"; background: #1ab18b; border-color: #1ab18b; }
+.quiz-option.is-correct::after { content: " 정답"; color: #1ab18b; font-weight: 900; font-size: .85em; }
+.quiz-option.is-incorrect { background: #fdecea; border-color: #e8402e; color: #a5281c; }
+.quiz-option.is-incorrect::before { content: "✗"; background: #e8402e; border-color: #e8402e; }
+.quiz-option.is-incorrect::after { content: " 내가 고른 답"; color: #e8402e; font-weight: 800; font-size: .85em; }
+.quiz-question.unanswered > p:first-child::after { content: "  선택하지 않음"; color: #b7791f; font-size: .85rem; font-weight: 700; }
+
+.quiz-explanation { display: none; margin-top: .8rem; padding: 0 12px 12px; border: 1px solid #d7e0eb; border-left: 4px solid #2878e5; border-radius: 3px; background: #fff; line-height: 1.65; }
+.quiz-explanation::before { content: "ⓘ  노트"; display: block; margin: 0 -12px 10px; padding: 8px 12px; background: #eaf2fb; color: #344054; font-weight: 800; }
+.quiz-question.checked .quiz-explanation { display: block; }
+
+.quiz-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 1.8rem 0 .4rem; }
+.quiz-button { border-radius: 10px; padding: 11px 20px; font-weight: 800; cursor: pointer; }
+.quiz-button.check { background: #1ab18b; color: #fff; border: 0; box-shadow: 0 2px 6px rgba(26,177,139,.28); }
+.quiz-button.check:hover { background: #149b78; }
+.quiz-button.reset { background: #fff; color: #4a4f57; border: 1px solid #cfd6de; }
+.quiz-button.reset:hover { background: #f4f7fa; }
+.quiz-score { font-weight: 800; font-size: 1.05rem; color: #16181d; }
+.quiz-score .s-num { color: #1AB18B; }
+@media (max-width: 640px) { .quiz-option { padding-right: 8px; } .quiz-actions { align-items: stretch; } }

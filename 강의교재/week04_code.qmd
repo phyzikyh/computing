@@ -1,0 +1,174 @@
+---
+format: live-html
+---
+
+# 코딩실습 {#sec-ch4-lab}
+
+## 예제 1. 자료형 확인
+```python
+values = [25, 3.5, "Python", True]
+for value in values:
+    print(value, type(value))
+```
+```text
+25 <class 'int'>
+3.5 <class 'float'>
+Python <class 'str'>
+True <class 'bool'>
+```
+
+## 예제 2. 변수값 변경
+```python
+stock = 30
+stock = stock - 4
+print(stock)
+```
+```text
+26
+```
+
+## 예제 3. 자료형 변환
+```python
+age_text = "20"
+age = int(age_text)
+print(age + 1)
+```
+```text
+21
+```
+
+## 예제 4. 산술 연산자
+```python
+a, b = 17, 5
+print(a+b, a-b, a*b, a/b, a//b, a%b, a**2)
+```
+```text
+22 12 85 3.4 3 2 289
+```
+
+## 예제 5. 복합 대입
+```python
+balance = 10000
+balance -= 2500
+balance += 4000
+print(balance)
+```
+```text
+11500
+```
+
+## 예제 6. 문자열 연산
+```python
+title = "데이터"
+print(title + " 분석")
+print("안내 " * 3)
+```
+```text
+데이터 분석
+안내 안내 안내 
+```
+
+## 예제 7. 비교와 논리 연산
+```python
+age, has_ticket = 20, True
+print(age >= 19 and has_ticket)
+```
+```text
+True
+```
+
+## 예제 8. f-string
+```python
+price, count = 12500, 3
+print(f"총액: {price * count:,}원")
+```
+```text
+총액: 37,500원
+```
+
+## 예제 9. 변수값 교환
+```python
+first, second = "왼쪽", "오른쪽"
+first, second = second, first
+print(first, second)
+```
+```text
+오른쪽 왼쪽
+```
+
+## 예제 10. 오류 수정
+```python
+count = 12
+print("인원:", count)
+number = int("35")
+print(number + 5)
+```
+```text
+인원: 12
+40
+```
+
+## 문제 1. 네 가지 자료형
+정수, 실수, 문자열, 불리언을 각각 변수에 저장하고 값과 자료형을 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 2. 올바른 변수 이름
+상품명, 상품 가격, 재고 수량을 의미가 분명한 변수 이름으로 저장하여 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 3. 입력과 정수 변환
+나이와 현재 연도를 입력받아 출생 연도를 계산한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 4. 시간 변환
+전체 분을 입력받아 시간과 남은 분으로 나누어 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 5. 원의 넓이
+반지름을 실수로 입력받아 원의 넓이를 계산하고 소수점 둘째 자리까지 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 6. 복합 대입 연산
+초기 포인트 1,000점에서 250점을 사용하고 500점을 적립한 결과를 복합 대입 연산자로 계산한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 7. 문자열 조합
+이름과 전공을 입력받아 f-string으로 한 문장을 만들고 같은 구분선을 세 번 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 8. 입장 조건
+나이와 티켓 보유 여부를 변수에 저장하고 두 조건을 모두 만족하는지 불리언으로 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```
+
+## 문제 9. 오류 세 가지 수정
+아래 오류 코드를 참고해 `NameError`, `TypeError`, `ValueError`가 발생하지 않는 새 코드를 작성한다.
+```python
+print(total)
+print("수량: " + 3)
+int("세 개")
+```
+```{pyodide}
+# 수정한 코드를 여기에 작성하세요.
+```
+
+## 문제 10. 급여 계산기
+근무시간과 시급을 입력받아 기본 급여를 계산하고 천 단위 쉼표가 포함된 f-string으로 출력한다.
+```{pyodide}
+# 여기에 코드를 작성하세요.
+```

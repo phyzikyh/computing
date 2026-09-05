@@ -7,3 +7,12 @@ IT CookBook*
 .tempmediaStorage/
 .user_uploaded/
 .quarto/
+
+# Quarto 빌드 산출물 (Actions가 자동 생성)
+강의교재/_book/
+강의교재/.quarto/
+강의교재/_freeze/
+강의교재/**/*_files/
+
+# 보관용(배포·버전관리 제외)
+/etc/

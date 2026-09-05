@@ -1,0 +1,62 @@
+# 연습문제 {#sec-ch2-quiz}
+
+<div id="week02-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week02">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week02">다시 풀기</button><span class="quiz-score" id="score-week02" aria-live="polite"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["‘축제 입장 줄이 길다’와 ‘입구를 하나 더 만들자’ 사이에 먼저 규정해야 할 것은?", ["홍보 문구", "해결해야 할 문제", "행사 후기", "담당자의 이름"], 2, "긴 줄은 관찰된 현상이고 입구 추가는 해결책이다. 해결책을 고르기 전에 현재 상태와 목표가 포함된 문제를 규정해야 한다."],
+    ["‘축제 입장을 편리하게 만들자’를 측정 가능한 문제로 바꿀 때 가장 적절한 문장은?", ["모두가 만족하는 축제를 만든다", "입구를 무조건 두 개 늘린다", "개막 전후 평균 대기시간을 20분에서 8분 이하로 줄인다", "입장 담당자가 더 열심히 일한다"], 3, "현재값 20분, 목표값 8분 이하, 측정 범위가 포함되어 해결 여부를 확인할 수 있다."],
+    ["문제 분해에 대한 설명으로 가장 적절한 것은?", ["복잡한 문제를 해결 가능한 작은 문제로 나누고 결과를 다시 결합하는 사고", "담당자를 무조건 여러 명 배정하는 방법", "세부 작업을 가능한 한 많이 만드는 활동", "해결책 하나를 먼저 선택하는 과정"], 1, "문제 분해는 작은 문제를 만드는 데서 끝나지 않고 각 결과를 다시 연결해 전체 문제를 해결하는 사고다."],
+    ["대학 축제 준비를 같은 수준의 하위 문제로 나눈 것은?", ["장소 관리·포스터 글자색·예산 관리", "성공한 일·실패한 일·보통인 일", "오늘 할 일·내일 할 일·나중에 할 일", "장소·일정, 부스 운영, 안전 관리, 홍보, 물품·예산"], 4, "모두 축제 준비의 큰 기능에 해당하며 서로 비슷한 크기의 하위 문제다."],
+    ["하위 문제를 나누기 전에 목표와 조건을 먼저 확인해야 하는 이유는?", ["표를 더 크게 만들기 위해", "필요한 하위 문제와 해결 범위를 정하기 위해", "모든 일을 병렬로 처리하기 위해", "담당자 수를 늘리기 위해"], 2, "완료 기준과 제약조건이 분명해야 목표 달성에 필요한 부분만 알맞게 나눌 수 있다."],
+    ["하위 문제의 ‘입력’과 ‘출력’을 구분하는 주된 목적은?", ["업무 이름을 짧게 만들기 위해", "모든 업무를 독립적으로 만들기 위해", "각 부분이 필요한 정보와 만들어 내는 결과를 분명히 하기 위해", "처리 순서를 없애기 위해"], 3, "입력과 출력을 밝히면 각 부분의 역할과 다른 부분으로 전달되는 결과를 확인할 수 있다."],
+    ["축제 부스 신청 관리에서 가장 먼저 이루어져야 할 작업은?", ["신청 정보를 접수한다", "대기 동아리를 승인한다", "부스 위치를 최종 안내한다", "취소된 부스를 다시 모집한다"], 1, "신청 정보가 있어야 누락·중복을 확인하고 참가 여부를 결정할 수 있다."],
+    ["장소와 일정이 확정된 뒤 동시에 진행할 수 있는 업무 조합은?", ["부스 신청 접수와 참가 부스 확정", "입장 확인과 손목띠 배부", "취소 접수와 대기자 승인", "홍보물 제작과 안전계획 작성"], 4, "두 업무는 장소·일정이라는 공통 선행 결과를 사용하지만 서로의 결과를 기다릴 필요는 없다."],
+    ["좋은 문제 분해인지 확인하는 기준에 해당하지 않는 것은?", ["누락된 부분이 없는가", "각 부분을 서로 다른 사람이 맡았는가", "같은 일을 중복해서 다루지 않는가", "부분 결과를 합치면 전체 목표가 달성되는가"], 3, "역할을 몇 명이 맡는지는 분해의 필수 품질 기준이 아니다. 누락·중복·크기·결합·명확성을 점검해야 한다."],
+    ["‘일정 관리·예산 관리·포스터 제목 색상 변경’이라는 분해의 문제점은?", ["서로 크기와 수준이 다른 항목을 같은 단계에 놓았다", "모든 항목이 지나치게 크다", "항목 사이에 중복이 전혀 없다", "시간 순서가 완전히 같다"], 1, "일정과 예산은 큰 기능이지만 제목 색상 변경은 홍보물 제작 아래에 놓일 세부 작업이다."],
+    ["문제 분해와 역할 분담의 관계를 가장 정확하게 설명한 것은?", ["두 개념은 언제나 같다", "혼자 해결하면 문제 분해가 필요 없다", "역할부터 정한 뒤 문제를 만든다", "문제의 작업과 관계를 먼저 분해한 뒤 필요하면 역할을 나눈다"], 4, "문제 분해는 문제의 구조를 나누는 사고이고 역할 분담은 그 결과를 사람에게 배정하는 일이다."],
+    ["패턴 인식이 수열 규칙 찾기보다 넓은 개념인 이유는?", ["숫자를 사용하지 않기 때문에", "대상의 특징뿐 아니라 처리 과정과 해결 전략의 공통성도 찾기 때문에", "모든 문제의 정답을 같게 만들기 때문에", "차이점과 예외를 무시하기 때문에"], 2, "패턴 인식은 데이터의 모양뿐 아니라 반복되는 절차와 문제 구조까지 대상으로 한다."],
+    ["부스 신청·공연 시간 신청·자원봉사 신청에서 공통으로 발견할 수 있는 구조는?", ["요청 접수 → 조건 확인 → 승인·대기 결정 → 기록·안내", "홍보 → 공연 → 철거 → 예산 편성", "신청 취소 → 조건 삭제 → 무조건 승인", "장소 확정 → 음식 조리 → 만족도 조사"], 1, "세 신청 업무는 대상과 세부 조건은 달라도 요청을 받고 조건을 확인한 뒤 결과를 결정·기록·안내하는 구조를 공유한다."],
+    ["공통 패턴을 찾은 뒤에도 각 업무의 차이점을 확인해야 하는 까닭은?", ["패턴을 사용하지 않기 위해", "모든 업무의 이름을 같게 만들기 위해", "공통 절차를 삭제하기 위해", "업무마다 승인 기준과 예외 조건이 다를 수 있기 때문에"], 4, "공통 구조는 재사용할 수 있지만 부스 수, 공연 시간, 근무 가능 시간처럼 업무별 조건은 따로 반영해야 한다."],
+    ["일반화에 대한 설명으로 가장 적절한 것은?", ["한 사례의 숫자를 그대로 외우는 것", "공통 해결 구조를 새로운 문제에 맞게 재사용하는 것", "예외 사례를 모두 제거하는 것", "큰 문제를 담당자별로 배정하는 것"], 2, "일반화는 발견한 공통 구조를 유지하면서 새로운 문제의 조건에 맞게 수정하여 적용하는 과정이다."],
+    ["부스 신청 절차를 푸드트럭 신청에 적용할 때 새로 확인해야 할 조건은?", ["기존 부스 신청자의 이름만 확인한다", "모든 푸드트럭을 선착순으로 승인한다", "음식 종류·위생서류·전기 사용량을 확인한다", "신청 절차를 전부 삭제한다"], 3, "요청·확인·기록·안내 구조는 재사용하되 푸드트럭에 필요한 위생과 전기 조건을 추가해야 한다."],
+    ["‘모든 축제 신청은 선착순으로 승인한다’는 규칙을 검증하는 가장 좋은 방법은?", ["규칙을 더 짧게 쓴다", "신청자 수를 숨긴다", "선착순 결과만 반복해서 확인한다", "심사나 추첨이 필요한 신청 사례에도 적용해 본다"], 4, "예외가 될 수 있는 사례에 규칙을 적용하면 공통 구조는 유지되는지, 승인 기준은 수정해야 하는지 확인할 수 있다."],
+    ["확정 부스가 취소됐지만 대기 동아리가 없을 때 가장 적절한 처리는?", ["취소 사실을 무시한다", "빈 부스로 기록하고 추가 모집 여부를 결정한다", "이미 탈락한 동아리를 임의로 승인한다", "전체 축제를 취소한다"], 2, "대기 명단이 비어 있다는 조건을 확인하고 빈 부스 기록과 추가 모집이라는 별도 판단으로 절차를 수정해야 한다."],
+    ["문제 분해와 패턴 인식의 관계를 가장 정확하게 설명한 것은?", ["분해는 패턴 인식이 끝난 뒤 한 번만 한다", "두 사고는 서로 관련이 없다", "분해로 반복 구조를 찾고, 발견한 패턴으로 분해를 다시 개선할 수 있다", "패턴을 찾으면 분해 결과를 결합하지 않아도 된다"], 3, "두 사고는 한 방향으로만 진행되지 않으며 서로의 결과를 이용해 반복적으로 개선할 수 있다."],
+    ["축제 문제 해결안을 최종 검토할 때 가장 적절한 질문은?", ["부분 결과를 합쳤을 때 전체 목표와 제약조건을 충족하는가", "하위 문제의 이름이 모두 같은 길이인가", "표에 가능한 한 많은 항목을 적었는가", "모든 작업을 한 사람이 처리하는가"], 1, "좋은 분해와 해결안은 부분 결과를 다시 결합했을 때 처음 정한 목표를 제약조건 안에서 달성해야 한다."]
+  ];
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week02-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, c) => `<label class="quiz-option"><input type="radio" name="q${index + 1}" value="${c + 1}">${marks[c]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week02");
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+  document.getElementById("check-week02").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked"); question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector("input:checked");
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+  document.getElementById("reset-week02").addEventListener("click", () => {
+    questions.forEach((question) => { question.classList.remove("checked", "unanswered"); question.querySelectorAll("input").forEach(i => i.checked = false); question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected", "is-correct", "is-incorrect")); });
+    score.textContent = "";
+  });
+});
+</script>
+```

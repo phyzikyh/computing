@@ -1,0 +1,35 @@
+.reveal #title-slide::after {
+  content: "WEEK 02";
+}
+
+/* Mermaid 도표: 슬라이드 중앙에 크게 표시 */
+.reveal .cell:has(pre.mermaid),
+.reveal .cell-output-display:has(pre.mermaid) {
+  width: 100%;
+}
+
+.reveal pre.mermaid,
+.reveal pre.mermaid.mermaid-js {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96% !important;
+  min-height: 300px;
+  margin: 0.35em auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center;
+}
+
+.reveal pre.mermaid svg,
+.reveal .mermaid svg {
+  display: block;
+  width: 92% !important;
+  height: auto !important;
+  max-width: 1120px !important;
+  max-height: 500px !important;
+  margin: 0 auto !important;
+}
