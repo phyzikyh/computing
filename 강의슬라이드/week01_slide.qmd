@@ -3,6 +3,8 @@ title: "컴퓨팅적 사고와 논리적 문제해결"
 format:
   revealjs:
     theme: default
+    embed-resources: true
+    self-contained-math: true
     transition: none
     background-transition: none
     slide-number: true

@@ -8,6 +8,8 @@ mermaid:
 format:
   revealjs:
     theme: simple
+    embed-resources: true
+    self-contained-math: true
     css:
       - "강의슬라이드 작성템플릿/week01-clean.css"
       - week02-slide.css
@@ -22,11 +24,6 @@ format:
     incremental: false
     code-overflow: wrap
     highlight-style: github
-    chalkboard:
-      theme: whiteboard
-      boardmarker-width: 4
-      buttons: true
-      transition: 0
 footer: "컴퓨팅적 사고와 논리적 문제해결 · Week 02"
 ---
 
