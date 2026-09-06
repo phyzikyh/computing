@@ -13,6 +13,7 @@ score = 95
 ```
 
 ```{mermaid}
+%%| fig-cap: "**그림 4-1.** 변수 이름과 메모리 객체의 관계"
 flowchart LR
     VAR["변수 이름 (score)"] -->|"참조 (Reference)"| OBJ["메모리 객체 (RAM)<br/>값: 95<br/>타입: int<br/>주소: 0x7FFF..."]
 
@@ -42,6 +43,7 @@ flowchart LR
 파이썬은 변수에 값을 대입하는 순간 인터프리터가 데이터의 형식을 자동으로 판별하는 **동적 타이핑(Dynamic Typing)**을 지원합니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 4-2.** 파이썬의 기본 자료형"
 flowchart TD
     ROOT["파이썬 기본 자료형"] --> NUM["1. 숫자형 (Numeric)"]
     ROOT --> TXT["2. 문자열형 (str)"]
@@ -88,6 +90,7 @@ print(type(is_registered))  # <class 'bool'>
 키보드로부터 사용자 입력을 받는 `input()` 함수는 **사용자가 숫자를 입력하더라도 항상 문자열(`str`) 형식으로 수신**합니다. 따라서 산술 연산을 수행하기 위해서는 반드시 [명시적 형변환(Type Casting)]{.key}을 거쳐야 합니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 4-3.** 키보드 입력값의 정수 형 변환 과정"
 flowchart LR
     KBD["키보드 입력<br/>'5000'"] --> INPUT["input() 수신<br/>'5000' (문자열 str)"]
     INPUT --> CAST["int() 형변환<br/>5000 (정수 int)"]
@@ -189,4 +192,3 @@ print(f"신장: {height_cm}cm, 체중: {weight_kg}kg")
 print(f"계산된 BMI 지수: {bmi:.2f}")
 print(f"정상 체중 범위(18.5 <= BMI < 23) 여부: {18.5 <= bmi < 23}")
 ```
-

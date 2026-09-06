@@ -7,6 +7,7 @@
 [반복 구조(Iteration/Loop)]{.key}는 동일하거나 유사한 일련의 명령어 집합을 **정해진 횟수만큼 또는 특정 조건이 만족되는 동안 되풀이하여 실행**하도록 제어하는 프로그래밍 구조입니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 6-1.** 반복 조건에 따른 반복 구조의 흐름"
 flowchart TD
     START(["루프 진입"]) --> COND{"반복 조건 만족?<br/>(Loop Condition)"}
     COND -- "예 (True)" --> BODY["반복 본문 실행<br/>(Loop Body)"]
@@ -41,6 +42,7 @@ for ch in "PYTHON":
 `range()`는 지정된 범위의 연속된 정수 수열을 메모리 효율적으로 생성하는 파이썬의 강력한 내장 제너레이터 함수입니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 6-2.** range() 함수의 범위 지정 방식"
 flowchart LR
     R["range(start, stop, step)"]
     R --> S1["range(5)<br/>0부터 4까지 5회 반복<br/>[0, 1, 2, 3, 4]"]
@@ -99,6 +101,7 @@ print("발사!")
 | **`continue`** | 아래쪽 실행문을 건너뛰고 **다음 회차 반복으로 즉시 이동** | 줄을 서 있다가 결격 사유가 있는 사람만 건너뛰고 다음 사람을 심사함 |
 
 ```{mermaid}
+%%| fig-cap: "**그림 6-3.** break와 continue의 제어 흐름"
 flowchart TD
     subgraph BreakConcept["break 제어 흐름"]
         B_START["루프 실행 중"] --> B_COND{"break 조건?"}
@@ -183,4 +186,3 @@ for dan in range(2, 5):          # 바깥 루프 (단수: 2, 3, 4)
 4. **`break`**는 루프를 완전히 파괴하고 탈출하며, **`continue`**는 이번 회차만 건너뛰고 다음 반복으로 넘어갑니다.
 
 ------------------------------------------------------------------------
-

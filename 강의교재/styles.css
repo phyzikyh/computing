@@ -260,3 +260,39 @@ div.mermaid svg {
 .quiz-score { font-weight: 800; font-size: 1.05rem; color: #16181d; }
 .quiz-score .s-num { color: #1AB18B; }
 @media (max-width: 640px) { .quiz-option { padding-right: 8px; } .quiz-actions { align-items: stretch; } }
+
+/* Mermaid 그림 크기 규칙: 기본 68%, 소형 50%, 와이드 84% */
+.cell-output-display:has(pre.mermaid) {
+  width: 68%;
+  max-width: 720px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.cell-output-display:has(pre.mermaid) svg {
+  width: 100% !important;
+  height: auto;
+}
+.figure-compact {
+  width: 50%;
+  max-width: 620px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.figure-wide {
+  width: 84%;
+  max-width: 940px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.figure-compact .cell-output-display,
+.figure-wide .cell-output-display {
+  width: 100% !important;
+  max-width: none;
+}
+@media (max-width: 640px) {
+  .cell-output-display:has(pre.mermaid),
+  .figure-compact,
+  .figure-wide {
+    width: 100%;
+  }
+}

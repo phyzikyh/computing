@@ -29,7 +29,9 @@
 
 미국 컴퓨터과학교사협회(CSTA)와 국제교육기술협회(ISTE)는 컴퓨팅 사고를 수학, 과학, 인문학, 사회과학 등 모든 학문 분야에 전이되어 적용될 수 있는 **융합형 문제해결 역량**으로 표준화하였습니다.
 
+::: {.figure-compact}
 ```{mermaid}
+%%| fig-cap: "**그림 1-1.** 컴퓨팅 사고를 적용한 문제 해결 과정"
 flowchart TD
     A["1단계: 복잡한 현실 세계 문제<br/>(Real-world Challenge)"]
     B["2단계: 컴퓨팅 사고 적용<br/>(문제 분해 · 패턴 인식 · 추상화 모델링)"]
@@ -48,6 +50,7 @@ flowchart TD
     style D fill:#dcfce7,stroke:#16a34a,stroke-width:2px
     style E fill:#f3e8ff,stroke:#9333ea,stroke-width:2px
 ```
+:::
 
 ------------------------------------------------------------------------
 
@@ -69,6 +72,7 @@ flowchart TD
   - 소프트웨어는 보조기억장치에 파일 형태로 저장되어 있다가, 실행 시 **메모리(RAM)에 적재(Load)**된 후 CPU에 의해 순차적으로 처리됩니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 1-2.** 프로그램이 저장되고 실행되는 과정"
 flowchart TD
     subgraph Storage["보조기억장치 (SSD / HDD)"]
         P1["파이썬 소스코드 (*.py)"]
@@ -117,7 +121,9 @@ CPU는 $0$과 $1$의 이진 비트 열로 이루어진 **기계어(Machine Code)
 
 복잡한 시스템 문제를 해결할 때는 즉흥적으로 코드를 작성하기보다, 소프트웨어 공학의 체계적인 프로세스를 따라야 오류를 최소화하고 지속 가능한 결과물을 만들 수 있습니다.
 
+::: {.figure-compact}
 ```{mermaid}
+%%| fig-cap: "**그림 1-3.** 소프트웨어 개발의 기본 과정"
 flowchart TD
     S1["1단계: 문제 정의 및 분석 (Requirements)<br/>무엇을 해결할 것인가? 요구사항 명세서 작성"]
     S2["2단계: 시스템 및 로직 설계 (Design & Algorithm)<br/>컴퓨팅 사고 기반 데이터 구조 및 순서도·의사코드 수립"]
@@ -140,6 +146,7 @@ flowchart TD
     style S5 fill:#f3e8ff,stroke:#9333ea,stroke-width:2px
     style S6 fill:#f1f5f9,stroke:#64748b,stroke-width:2px
 ```
+:::
 
 | 단계 | 주요 활동 내용 | 산출물 및 핵심 질문 |
 |:--------------------------:|:---------------------|:---------------------|
@@ -162,7 +169,9 @@ flowchart TD
 
 컴퓨팅 사고는 크게 다음의 **4가지 상호 연결된 단계**로 이루어집니다.
 
+::: {.figure-compact}
 ```{mermaid}
+%%| fig-cap: "**그림 1-4.** 컴퓨팅 사고의 네 가지 요소"
 flowchart TD
     subgraph CT["컴퓨팅 사고의 4대 기둥 (Four Pillars of CT)"]
         D["1. 문제 분해 (Decomposition)<br/>복잡한 문제를 독립적인 작은 단위로 세분화"]
@@ -181,6 +190,7 @@ flowchart TD
     style A fill:#fef3c7,stroke:#b45309,stroke-width:2px
     style G fill:#dcfce7,stroke:#15803d,stroke-width:2px
 ```
+:::
 
 ------------------------------------------------------------------------
 
@@ -193,6 +203,7 @@ flowchart TD
 동아리 MT가 끝난 후 총무가 $15$명의 영수증을 모아 공평하게 정산하는 복잡한 문제를 다음과 같이 하위 모듈로 분해할 수 있습니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 1-5.** 동아리 MT 정산 문제의 분해"
 flowchart TD
     ROOT["동아리 MT 정산 시스템"] --> M1["1. 지출 데이터 수집 & 분류"]
     ROOT --> M2["2. 개인별 부담금 계산"]
@@ -269,7 +280,9 @@ flowchart TD
 
 컴퓨터 과학에서 알고리즘은 **"어떤 입력(Input)이 주어졌을 때, 유한한 시간 내에 올바른 출력(Output)을 만들어내는 명확한 연산 레시피"**입니다.
 
+::: {.figure-compact}
 ```{mermaid}
+%%| fig-cap: "**그림 1-6.** 알고리즘의 입력·처리·출력 구조"
 flowchart LR
     IN["입력 (Input)<br/>외부 데이터 수신"] --> ALG["알고리즘 (Algorithm)<br/>명확하고 순서화된 연산 절차"]
     ALG --> OUT["출력 (Output)<br/>원하는 문제 해결 결과"]
@@ -278,6 +291,7 @@ flowchart LR
     style ALG fill:#fef3c7,stroke:#d97706,stroke-width:2px
     style OUT fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
 ```
+:::
 
 #### 도널드 커누스(Donald Knuth)의 알고리즘 5대 필수 요건
 컴퓨터 알고리즘의 대가인 스탠퍼드대학교 **도널드 커누스(Donald E. Knuth)** 교수는 저서 *The Art of Computer Programming*에서 모든 컴퓨터 알고리즘이 반드시 만족해야 할 **5가지 핵심 요건**을 다음과 같이 정립했습니다.
@@ -376,6 +390,7 @@ print(f"VIP 고객 구매액 목록: {vip_list}")
 순서도는 알고리즘의 흐름과 논리적 제어 구조를 표준화된 기호를 통해 한눈에 파악할 수 있도록 돕는 강력한 시각화 도구입니다.
 
 ```{mermaid}
+%%| fig-cap: "**그림 1-7.** 구매 데이터 처리 알고리즘의 순서도"
 flowchart TD
     START(["시작 (Start)"]) --> INIT["구매 데이터 로드 & 변수 초기화<br/>vip_count = 0, idx = 0"]
     INIT --> CALC_AVG["평균 구매액 계산<br/>avg = sum(data) / len(data)"]
@@ -435,4 +450,3 @@ def sum_gauss(n):
 2.  **소프트웨어 개발 생명주기(SDLC)** 중 가장 많은 시간과 노력이 투입되어야 하는 핵심 구간은 **요구사항 분석과 알고리즘 설계**입니다.
 3.  컴퓨팅 사고의 4대 기둥은 **문제 분해(Decomposition), 패턴 인식(Pattern Recognition), 추상화 및 일반화(Abstraction & Generalization), 알고리즘 설계(Algorithm Design)**로 구성됩니다.
 4.  좋은 알고리즘은 단순히 작동하는 것을 넘어, 컴퓨터의 연산 자원과 시간을 효율적으로 활용할 수 있도록 최적화되어야 합니다.
-
