@@ -72,7 +72,7 @@ book:
           text: "코딩실습"
 
 format:
-  live-html:
+  html:
     theme: cosmo
     css: styles.css
     lang: ko
