@@ -193,13 +193,14 @@ flowchart LR
 
 순서도(flowchart)는 정해진 도형으로 절차의 흐름을 나타내는 표현 방식입니다. 각 도형은 아래와 같이 역할이 정해져 있습니다.
 
-| 기호 | 도형 | 역할 |
-|:---|:---:|:---|
-| 단말 | 둥근 사각형 | 시작과 종료 |
-| 입출력 | 평행사변형 | 값을 입력받거나 결과를 출력 |
-| 처리 | 직사각형 | 계산, 값 저장 |
-| 판단 | 마름모 | 조건의 참·거짓에 따라 흐름을 나눔 |
-| 흐름선 | 화살표 | 실행 순서 |
+| 기호 | 모양 | 도형 | 역할 |
+|:---|:---:|:---:|:---|
+| 단말 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="둥근 사각형"><rect x="4" y="7" width="52" height="24" rx="12" ry="12" fill="none" stroke="currentColor" stroke-width="2"/></svg> | 둥근 사각형 | 시작과 종료 |
+| 입출력 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="평행사변형"><polygon points="14,7 56,7 46,31 4,31" fill="none" stroke="currentColor" stroke-width="2"/></svg> | 평행사변형 | 값을 입력받거나 결과를 출력 |
+| 처리 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="직사각형"><rect x="6" y="8" width="48" height="22" fill="none" stroke="currentColor" stroke-width="2"/></svg> | 직사각형 | 계산, 값 저장 |
+| 서브루틴 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="양옆에 세로선이 있는 직사각형"><rect x="6" y="8" width="48" height="22" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="30" stroke="currentColor" stroke-width="2"/><line x1="48" y1="8" x2="48" y2="30" stroke="currentColor" stroke-width="2"/></svg> | 이중 선 직사각형 | 미리 정의된 처리(함수·서브루틴)를 호출 |
+| 판단 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="마름모"><polygon points="30,4 56,19 30,34 4,19" fill="none" stroke="currentColor" stroke-width="2"/></svg> | 마름모 | 조건의 참·거짓에 따라 흐름을 나눔 |
+| 흐름선 | <svg width="60" height="38" viewBox="0 0 60 38" role="img" aria-label="화살표"><line x1="4" y1="19" x2="48" y2="19" stroke="currentColor" stroke-width="2"/><polygon points="48,13 58,19 48,25" fill="currentColor"/></svg> | 화살표 | 실행 순서 |
 
 ### 순차·선택·반복
 

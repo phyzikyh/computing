@@ -6,27 +6,20 @@
 1. [Google Colab](https://colab.research.google.com/)에서 **새 노트**를 만듭니다.
 2. 코드 셀에 예제를 직접 입력하고 `Shift + Enter`로 실행합니다.
 3. 코드를 고쳤다면 그 셀을 다시 실행해야 새 결과가 나옵니다.
-
-오류가 나도 노트가 망가진 것이 아닙니다. 오류 메시지의 **마지막 줄**부터 읽습니다.
 :::
 
 ## 코드와 결과 구분하기
 
-```python
-print("축제 운영을 시작합니다.")
-print(240)
-print(100 + 20)
+```{python}
+#| echo: true
+print("대학 축제 준비를 시작합니다.")
+print(120)
 ```
 
-```text
-축제 운영을 시작합니다.
-240
-120
-```
-
-`print()`는 괄호 안의 값을 화면에 보여 주라는 명령입니다. 코드 셀에 적은 세 줄은 명령이고 실행 뒤 나타난 세 줄은 결과입니다. 파이썬은 위에서 아래로 한 줄씩 실행합니다.
+`print()`는 괄호 안의 값을 화면에 보여 주라는 명령입니다. 코드 셀에 적은 것은 명령이고 실행 뒤 나타난 것은 결과입니다. 파이썬은 위에서 아래로 한 줄씩 실행합니다.
 
 ```{mermaid}
+%%| echo: false
 %%| fig-cap: "코드가 실행 결과로 바뀌는 과정"
 flowchart LR
     A["코드 셀<br/>print(100 + 20)"] -->|실행| B["파이썬<br/>명령 해석·계산"]
@@ -41,63 +34,61 @@ flowchart LR
 
 화살표를 왼쪽에서 오른쪽으로 읽습니다. 작성한 **코드**를 파이썬이 해석하면 **실행 결과**가 나타납니다.
 
-```python
+```{python}
+#| echo: true
 print("100 + 20")
 print(100 + 20)
 ```
 
 첫 줄은 따옴표 안의 글자를 그대로 출력하고, 둘째 줄은 계산 결과 `120`을 출력합니다. 글자는 따옴표로 감싸지만 계산할 숫자는 따옴표로 감싸지 않습니다.
 
-## 문자열과 정수
+## 변수 만들기 
 
- -  숫자가 아닌 문자열(문자)을 작성 할 때는 " ", ' ' 을 사용 합니다. 
-
-```python
-print("240", type("240"))
-print(240, type(240))
-print("축제" + " 안내")
-print(240 + 10)
-```
-
-```text
-240 <class 'str'>
-240 <class 'int'>
-축제 안내
-250
-```
-
-`"240"`은 문자열(`str`), `240`은 정수(`int`)입니다. 문자열은 글자로 취급하고 정수는 계산할 수 있습니다. 문자열 사이의 `+`는 글자를 연결하고, 숫자 사이의 `+`는 덧셈을 합니다.
-
-## 변수: 값에 이름 붙이기
-
-```python
+```{python}
+#| echo: true
+event_name = "가을 축제"
 visitors = 240
-information_desks = 6
+print(event_name)
 print(visitors)
-print(information_desks)
 ```
 
 변수는 값을 보관하는 이름입니다. `visitors = 240`은 오른쪽 값 `240`을 왼쪽 변수에 저장하라는 뜻입니다. 수학의 등호처럼 양쪽이 같다는 판정이 아닙니다. 오른쪽부터 “240을 visitors에 저장한다”라고 읽습니다.
 
-`a = 240`보다 `visitors = 240`이 값의 역할을 잘 드러냅니다. 이름은 숫자로 시작하거나 공백을 포함할 수 없으므로 여러 단어는 `information_desks`처럼 밑줄로 연결합니다.
+`a = 240`보다 `visitors = 240`이 값의 역할을 잘 드러냅니다. 이름은 숫자로 시작하거나 공백을 포함할 수 없으므로 여러 단어는 `event_name`처럼 밑줄로 연결합니다.
+
+## 문자열과 정수
+
+ -  숫자가 아닌 문자열(문자)을 작성 할 때는 " ", ' ' 을 사용 합니다. 
+
+```{python}
+#| echo: true
+event_name = "가을 축제"
+visitors = 240
+open_rate = 0.85
+is_open = True
+
+print(event_name, type(event_name))
+print(visitors, type(visitors))
+print(open_rate, type(open_rate))
+print(is_open, type(is_open))
+```
+
+`type()`은 값의 자료형을 알려 줍니다. `"가을 축제"`는 문자열(`str`), `240`은 정수(`int`), `0.85`는 실수(`float`), `True`는 불리언(`bool`)입니다. 문자열은 글자로 취급하고, 정수와 실수는 계산할 수 있습니다.
 
 ## 변수값 변경과 실행 순서
 
-```python
+```{python}
+#| echo: true
 visitors = 240
 print("집계 전:", visitors)
 visitors = 252
 print("집계 후:", visitors)
 ```
 
-```text
-집계 전: 240
-집계 후: 252
-```
-
 같은 변수에 새 값을 저장하면 그 줄 이후에는 새 값이 사용됩니다. 이미 출력한 결과가 바뀌는 것은 아닙니다.
 
 ```{mermaid}
+%%| echo: false
 %%| fig-cap: "변수 상자에 저장된 값의 변화"
 flowchart LR
     A["visitors 상자<br/>240"] -->|"visitors = 252 실행"| B["visitors 상자<br/>252"]
@@ -118,23 +109,59 @@ flowchart LR
 
 ## 숫자 계산과 주석
 
-```python
+파이썬에서는 계산 기호를 **연산자**라고 합니다. 같은 두 숫자라도 어떤 연산자를 사용하는지에 따라 결과가 달라집니다.
+
+```{python}
+#| echo: true
+print(18 + 7)   # 18에 7 더하기
+print(18 - 7)   # 18에서 7 빼기
+print(18 * 7)   # 18을 7번 더한 값
+print(18 / 7)   # 18을 7로 나눈 값
+print(18 // 7)  # 18 안에 7이 몇 번 들어가는지
+print(18 % 7)   # 18에서 7을 두 번 빼고 남는 값
+print(4 ** 2)   # 4를 두 번 곱한 값
+```
+
+| 연산자 | 읽는 방법 | 결과 | 주로 사용하는 상황 |
+|---|---|---:|---|
+| `18 + 7` | 18 더하기 7 | 25 | 수량이나 금액을 합할 때 |
+| `18 - 7` | 18 빼기 7 | 11 | 사용하고 남은 값을 구할 때 |
+| `18 * 7` | 18 곱하기 7 | 126 | 같은 수량이 여러 묶음 있을 때 |
+| `18 / 7` | 18 나누기 7 | 약 2.57 | 정확한 나눗셈 결과가 필요할 때 |
+| `18 // 7` | 18 나누기 7의 몫 | 2 | 완성할 수 있는 묶음 수를 구할 때 |
+| `18 % 7` | 18 나누기 7의 나머지 | 4 | 묶고 남는 수량을 구할 때 |
+| `4 ** 2` | 4의 2제곱 | 16 | 같은 수를 여러 번 곱할 때 |
+
+`/`는 소수점이 포함된 나눗셈 결과를 구합니다. `//`와 `%`는 하나의 나눗셈을 두 관점으로 나누어 봅니다. 예를 들어 18개를 7개씩 묶으면 완성된 묶음은 2개이고 4개가 남습니다.
+
+```text
+18개 = 7개 × 2묶음 + 4개
+          ↑             ↑
+        18 // 7       18 % 7
+```
+
+이 관계는 `전체 수량 = 묶음 크기 × 몫 + 나머지`로 나타낼 수 있습니다.
+
+```{python}
+#| echo: true
 total_water = 245
 booths = 6
 
-print(total_water + 5)       # 더하기
-print(total_water - 5)       # 빼기
-print(booths * 10)           # 곱하기
-print(total_water / booths)  # 나누기
-print(total_water // booths) # 정수 몫
-print(total_water % booths)  # 나머지
+water_per_booth = total_water // booths
+water_left = total_water % booths
+
+print("부스당 생수:", water_per_booth, "병")
+print("남는 생수:", water_left, "병")
 ```
 
-`+`, `-`, `*`, `/`는 기본 계산에 사용합니다. 물건을 똑같이 나눌 때 `245 // 6`은 부스당 40병, `245 % 6`은 남는 5병을 뜻합니다. `#` 뒤의 글은 사람이 읽는 주석이며 실행되지 않습니다.
+생수 245병을 6개 부스에 나누면 각 부스에 40병씩 줄 수 있고 5병이 남습니다. `/`를 사용한 `40.8333...병`은 실제 생수병을 나누는 답으로 적절하지 않으므로, 온전한 병의 수는 `//`, 남는 병은 `%`로 계산합니다.
+
+`#` 뒤의 글은 **주석**입니다. 주석은 코드의 계산 방법이나 값의 단위를 사람이 알아볼 수 있게 기록하며, 파이썬은 실행하지 않습니다.
 
 ## 계산 결과 저장하기
 
-```python
+```{python}
+#| echo: true
 total_water = 245
 booths = 6
 water_per_booth = total_water // booths
@@ -148,7 +175,8 @@ print("남는 생수:", water_left, "병")
 
 ## 입력–처리–출력으로 분해하기
 
-```python
+```{python}
+#| echo: true
 # 입력: 문제를 푸는 데 필요한 값
 total_snacks = 125
 booths = 6
@@ -165,9 +193,10 @@ print("남는 간식:", snacks_left, "개")
 여기서 **입력**은 키보드 입력만 뜻하지 않습니다. 프로그램이 처음 제공받는 값 전체를 뜻합니다.
 
 ```{mermaid}
+%%| echo: false
 %%| fig-cap: "입력–처리–출력 구조"
 flowchart LR
-    A["입력<br/>간식 125개<br/>부스 6곳"] --> B["처리<br/>125 // 6<br/>125 % 6"]
+    A["입력<br/>간식 125개<br/>부스 6곳"] --> B["처리<br/>몫 계산<br/>나머지 계산"]
     B --> C["출력<br/>20개씩<br/>5개 남음"]
     classDef input fill:#e8f1ff,stroke:#2563eb,color:#172554
     classDef process fill:#fff4d6,stroke:#d97706,color:#451a03
@@ -179,22 +208,54 @@ flowchart LR
 
 입력은 출발할 때 가진 재료, 처리는 재료로 하는 계산, 출력은 사용자에게 전달할 결과입니다. 코드의 주석 세 구역과 그림의 세 상자를 대응해 봅니다.
 
-## 반복되는 계산 패턴 찾기
+## 변수로 새로운 값 계산하기
 
-```python
+변수에는 처음 주어진 값뿐 아니라 계산한 결과도 저장할 수 있습니다. 오전 방문객 수와 운영 시간을 각각 변수에 저장한 뒤, 두 변수를 나누어 시간당 평균 방문객 수를 계산합니다.
+
+```{python}
+#| echo: true
 morning_visitors = 120
 morning_hours = 3
 morning_average = morning_visitors / morning_hours
-
-afternoon_visitors = 200
-afternoon_hours = 4
-afternoon_average = afternoon_visitors / afternoon_hours
-
 print("오전 시간당:", morning_average, "명")
-print("오후 시간당:", afternoon_average, "명")
 ```
 
-시간대와 값은 달라도 `방문객 수 / 운영 시간`이라는 계산 구조는 같습니다.
+세 변수의 역할은 서로 다릅니다.
+
+| 변수 | 저장되는 값 | 역할 |
+|---|---:|---|
+| `morning_visitors` | 120 | 계산에 사용할 방문객 수 |
+| `morning_hours` | 3 | 계산에 사용할 운영 시간 |
+| `morning_average` | 40.0 | 두 변수로 계산한 새로운 값 |
+
+```{mermaid}
+%%| echo: false
+%%| fig-cap: "두 변수로 새로운 변수의 값 계산하기"
+flowchart LR
+    A["morning_visitors<br/>120"] --> C["나누기 /"]
+    B["morning_hours<br/>3"] --> C
+    C --> D["morning_average<br/>40.0"]
+    classDef input fill:#e8f1ff,stroke:#2563eb,color:#172554
+    classDef process fill:#fff4d6,stroke:#d97706,color:#451a03
+    classDef output fill:#e8f8ee,stroke:#16a34a,color:#052e16
+    class A,B input
+    class C process
+    class D output
+```
+
+`morning_average = morning_visitors / morning_hours`는 다음 순서로 실행됩니다.
+
+1. 오른쪽의 `morning_visitors`에서 `120`을 가져옵니다.
+2. `morning_hours`에서 `3`을 가져옵니다.
+3. `120 / 3`을 계산합니다.
+4. 계산 결과 `40.0`을 `morning_average`에 저장합니다.
+
+```text
+결과를 저장할 변수 = 계산에 사용할 변수 / 계산에 사용할 변수
+morning_average   = morning_visitors / morning_hours
+```
+
+프로그래밍에서는 값을 코드에 반복해서 직접 적는 대신 변수에 저장하고, 변수 이름을 사용해 계산합니다. 계산 결과도 새 변수에 저장하면 그 값을 출력하거나 다른 계산에 다시 사용할 수 있습니다.
 
 ## 오류 메시지 읽기
 
@@ -210,7 +271,8 @@ print("오후 시간당:", afternoon_average, "명")
 - `NameError`: 변수 정의 여부와 철자를 확인합니다.
 - `TypeError`: 값의 종류에 맞는 연산인지 확인합니다.
 
-```python
+```{python}
+#| echo: true
 total_visitors = 240
 print("축제 운영을 시작합니다.")
 print("방문객:", total_visitors)
@@ -219,6 +281,7 @@ print("방문객:", total_visitors)
 오류가 발생하면 ① 마지막 줄에서 오류 이름을 찾고, ② 표시된 코드 줄을 확인하고, ③ 한 가지를 고친 뒤 다시 실행합니다.
 
 ```{mermaid}
+%%| echo: false
 %%| fig-cap: "오류를 고치는 반복 과정"
 flowchart LR
     A[코드 실행] --> B{오류 발생?}
@@ -234,9 +297,10 @@ flowchart LR
 
 오류는 실패의 표시가 아니라 수정할 위치를 알려 주는 정보입니다. 여러 곳을 한꺼번에 바꾸지 말고 한 가지씩 고쳐 다시 실행합니다.
 
-## 누적 예제: 안내소 물품 배분
+## 안내소 물품 배분 예제
 
-```python
+```{python}
+#| echo: true
 # 입력
 event_name = "가을빛 축제"
 desks = 6

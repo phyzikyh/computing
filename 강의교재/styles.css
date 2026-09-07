@@ -296,3 +296,23 @@ div.mermaid svg {
     width: 100%;
   }
 }
+
+/* 코드 실행 결과(stdout)를 코드블록 형태로 표시 */
+.cell-output-stdout > pre {
+  background-color: #f8fafc;
+  border: 1px solid #d0d7de;
+  border-left: 4px solid #16a34a;
+  border-radius: 6px;
+  padding: 0.55rem 0.8rem;
+  margin: 0.2rem 0 1rem;
+  overflow-x: auto;
+}
+.cell-output-stdout > pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: #1f2328;
+  white-space: pre;
+}
