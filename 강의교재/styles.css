@@ -19,6 +19,57 @@ body {
 /* 본문 폭을 학술 교재처럼 적당히 좁게 */
 main.content { max-width: 760px; }
 
+/* ── 반복 학습 장치 ── */
+.chapter-opening {
+  margin: 0.8rem 0 2rem;
+  padding: 1.15rem 1.3rem;
+  border: 1px solid #cfe9e2;
+  border-top: 5px solid #1AB18B;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f2fbf8 0%, #ffffff 72%);
+}
+.chapter-opening > :first-child { margin-top: 0; }
+.chapter-opening > :last-child { margin-bottom: 0; }
+.chapter-opening .essential-question { font-size: 1.08em; font-weight: 800; color: #0d6e56; }
+.chapter-opening ul { margin-bottom: 0.65rem; }
+
+.learning-path {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin: 1.4rem 0 2rem;
+}
+.path-step {
+  display: inline-block;
+  padding: 0.48rem 0.85rem;
+  border: 1px solid #cfe9e2;
+  border-radius: 999px;
+  background: #f2fbf8;
+  color: #0d6e56;
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+.path-arrow { color: #9aa0a8; font-weight: 800; }
+
+.checkpoint, .worked-example, .misconception, .transfer, .completion-check {
+  margin: 1.35rem 0;
+  padding: 0.9rem 1.05rem;
+  border-radius: 7px;
+}
+.checkpoint { border-left: 4px solid #2878e5; background: #f3f7fd; }
+.worked-example { border-left: 4px solid #1AB18B; background: #f2fbf8; }
+.misconception { border-left: 4px solid #E8402E; background: #fdf3f2; }
+.transfer { border-left: 4px solid #F08C1D; background: #fff8ee; }
+.completion-check { border: 1px dashed #8c98a8; background: #fafbfc; }
+.checkpoint > :first-child, .worked-example > :first-child,
+.misconception > :first-child, .transfer > :first-child,
+.completion-check > :first-child { margin-top: 0; }
+.checkpoint > :last-child, .worked-example > :last-child,
+.misconception > :last-child, .transfer > :last-child,
+.completion-check > :last-child { margin-bottom: 0; }
+
 /* ── 제목 계층 — 굵기와 여백으로 위계 표현(색 배경 없이) ── */
 h1, h2, h3, h4, h5 {
   font-weight: 700;
@@ -260,6 +311,11 @@ div.mermaid svg {
 .quiz-score { font-weight: 800; font-size: 1.05rem; color: #16181d; }
 .quiz-score .s-num { color: #1AB18B; }
 @media (max-width: 640px) { .quiz-option { padding-right: 8px; } .quiz-actions { align-items: stretch; } }
+
+@media (max-width: 640px) {
+  .learning-path { align-items: stretch; flex-direction: column; text-align: center; }
+  .path-arrow { transform: rotate(90deg); }
+}
 
 /* Mermaid 그림 크기 규칙: 기본 68%, 소형 50%, 와이드 84% */
 .cell-output-display:has(pre.mermaid) {

@@ -1,4 +1,4 @@
-# 연습문제 {#sec-ch3-quiz}
+# 학습 점검 {#sec-ch3-quiz}
 
 <div id="week03-quiz"></div>
 <div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week03">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week03">다시 풀기</button><span class="quiz-score" id="score-week03" aria-live="polite"></span></div>

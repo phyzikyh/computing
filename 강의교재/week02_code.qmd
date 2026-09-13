@@ -1,4 +1,4 @@
-# 코딩실습 {#sec-ch2-lab}
+# 코딩 실습 {#sec-ch2-lab}
 
 ::: {.callout-note}
 ## Google Colab에서 실습하기
