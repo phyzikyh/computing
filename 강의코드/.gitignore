@@ -1,0 +1,5 @@
+# 노트북 렌더 부산물은 추적하지 않음
+*.html
+*_files/
+.ipynb_checkpoints/
+/.quarto/

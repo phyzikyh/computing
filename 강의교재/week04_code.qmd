@@ -138,14 +138,39 @@ print(f"총액: {price * quantity:,}원")
 
 `:.1f`는 실수를 소수점 첫째 자리까지, `:,`는 천 단위 쉼표를 표시합니다.
 
+## 여러 변수로 행사 예산 계산하기
+
+여러 값을 변수에 저장하고 사칙연산을 이어서 적용하면 실제 상황을 계산할 수 있습니다. 동아리 행사의 수입과 지출을 정산해 봅니다.
+
+```{python}
+#| echo: true
+members = 12          # 참가 인원
+fee = 15000           # 1인당 회비
+rental_cost = 80000   # 장소 대여비
+snack_cost = 46000    # 간식비
+
+income = members * fee              # 전체 수입
+expense = rental_cost + snack_cost  # 전체 지출
+balance = income - expense          # 남는 예산
+refund = balance / members          # 1인당 환급액
+
+print("전체 수입:", income, "원")
+print("전체 지출:", expense, "원")
+print("남는 예산:", balance, "원")
+print("1인당 환급액:", refund, "원")
+```
+
+수입은 곱셈, 지출은 덧셈, 남는 예산은 뺄셈, 환급액은 나눗셈으로 구했습니다. 계산 결과를 다시 변수에 저장하면 다음 계산에 이어서 사용할 수 있습니다.
+
 ## 실습 문제
 
 ### 1. 학생 정보 카드 만들기
 
 학생 정보를 자료형에 맞게 저장하고 확인하는 프로그램을 작성하세요.
 
-- 이름과 학번은 문자열, 평균 점수는 실수, 과제 제출 여부는 불리언으로 저장합니다.
-- 학번은 앞자리의 `0`이 유지되도록 문자열로 저장합니다.
+- 변수 이름은 이름 `name`, 학번 `student_id`, 평균 점수 `average_score`, 과제 제출 여부 `submitted`를 사용합니다.
+- `name`과 `student_id`는 문자열, `average_score`는 실수, `submitted`는 불리언으로 저장합니다.
+- `student_id`는 앞자리의 `0`이 유지되도록 문자열로 저장합니다.
 - 각 값과 자료형을 `print()`와 `type()`으로 출력합니다.
 - 마지막에 f-string으로 이름·학번·평균 점수를 한 문장으로 출력합니다.
 
@@ -153,8 +178,9 @@ print(f"총액: {price * quantity:,}원")
 
 상품 정보를 입력받아 결제 금액을 계산하는 프로그램을 작성하세요.
 
-- 상품명은 문자열, 가격과 수량은 정수로 입력받습니다.
-- 상품 금액은 `가격 × 수량`, 최종 금액은 상품 금액에 배송비 `3000`원을 더해 계산합니다.
+- 변수 이름은 상품명 `product_name`, 가격 `price`, 수량 `quantity`, 상품 금액 `subtotal`, 배송비 `delivery_fee`, 최종 금액 `total_price`를 사용합니다.
+- `product_name`은 문자열, `price`와 `quantity`는 정수로 입력받습니다.
+- `subtotal`은 `price * quantity`, `total_price`는 `subtotal`에 배송비 `3000`원을 더해 계산합니다.
 - 상품명·상품 금액·최종 금액을 f-string으로 출력하고, 금액에는 천 단위 쉼표를 표시합니다.
 
 ### 3. 오류가 있는 주문 계산기 고치기
