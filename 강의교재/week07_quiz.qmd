@@ -1,4 +1,4 @@
-# 학습 점검 {#sec-ch7-quiz}
+# 학습 점검 {.unnumbered #sec-ch7-quiz}
 
 ---
 

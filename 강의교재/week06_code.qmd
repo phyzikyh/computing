@@ -1,4 +1,4 @@
-# 코딩 실습 {#sec-ch6-lab}
+# 코딩 실습 {.unnumbered #sec-ch6-lab}
 
 ## 예제 1. 문자열 순회
 ```python

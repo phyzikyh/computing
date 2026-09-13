@@ -372,3 +372,8 @@ div.mermaid svg {
   color: #1f2328;
   white-space: pre;
 }
+/* 주차명에 이미 번호가 있으므로 좌측 목차와 이전·다음 탐색에는 장 번호를 표시하지 않는다. */
+.sidebar-navigation .chapter-number,
+.nav-page .chapter-number {
+  display: none !important;
+}

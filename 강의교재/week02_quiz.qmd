@@ -1,4 +1,4 @@
-# 학습 점검 {#sec-ch2-quiz}
+# 학습 점검 {.unnumbered #sec-ch2-quiz}
 
 <div id="week02-quiz"></div>
 <div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week02">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week02">다시 풀기</button><span class="quiz-score" id="score-week02" aria-live="polite"></span></div>
