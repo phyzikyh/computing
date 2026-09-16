@@ -1,3 +1,11 @@
 {
-  "quarto.path": "C:\\Users\\user\\AppData\\Local\\Programs\\Positron\\resources\\app\\quarto\\bin\\quarto.exe"
+  "quarto.path": "C:\\Users\\user\\AppData\\Local\\Programs\\Positron\\resources\\app\\quarto\\bin\\quarto.exe",
+  "quarto.render.previewType": "internal",
+  "quarto.render.previewReveal": true,
+  // Windows 파일 잠금(os error 32) 회피: preview 시 preview 프로파일을 자동 적용해
+  // output-dir를 현재 폴더(.)로 두어 _site로의 이동을 없앤다.
+  // (_site로 배포 렌더할 때는 프로파일을 끄고 실행: $env:QUARTO_PROFILE=''; quarto render)
+  "terminal.integrated.env.windows": {
+    "QUARTO_PROFILE": "preview"
+  }
 }

@@ -1,0 +1,557 @@
+---
+title: "파이썬의 값·변수와 연산"
+subtitle: "컴퓨팅적 사고와 논리적 문제해결 · 4주차"
+author: "유한대학교"
+lang: ko
+jupyter: python3
+execute:
+  echo: true
+  cache: false
+  freeze: false
+  error: false
+format:
+  revealjs:
+    theme: simple
+    embed-resources: true
+    self-contained-math: true
+    html-math-method: plain
+    css:
+      - "강의슬라이드 작성템플릿/week01-clean.css"
+      - week04-slide.css
+    width: 1280
+    height: 720
+    margin: 0.05
+    slide-number: c/t
+    controls: true
+    progress: true
+    center: false
+    transition: none
+    incremental: false
+    code-overflow: wrap
+    highlight-style: github
+footer: "컴퓨팅적 사고와 논리적 문제해결 · Week 04"
+---
+
+```{python}
+#| include: false
+import builtins
+_original_input = builtins.input
+def _demo_inputs(values):
+    answers = iter(values)
+    def demo_input(prompt=""):
+        value = next(answers)
+        print(prompt + value)
+        return value
+    globals()["input"] = demo_input
+```
+
+## 1. 학습 목표
+
+::: {.hero-question}
+같은 20의 덧셈과 문자열 연결 차이 확인
+:::
+
+- 실행 순서를 따라 변수의 현재 값을 설명함.
+- `int`, `float`, `str`, `bool`을 용도에 맞게 선택함.
+- 입력 → 변환 → 계산 → 출력을 코드로 연결함.
+- 오류 메시지로 수정할 줄을 찾음.
+
+> 오늘은 코드를 보고, 결과를 예상한 다음, 이유를 설명함.
+
+
+## 2. 파이썬 프로그램이 실행되기까지
+
+<div class="steps"><span>명령 작성</span><b>→</b><span>.py 저장</span><b>→</b><span>인터프리터 실행</span><b>→</b><span>결과 / 오류</span></div>
+
+- `.py` 파일은 명령을 저장해 다시 실행하거나 공유함.
+- 코랩에서는 코드 셀을 실행 가능함. (현재 우리가 학습하는 형태)
+- 인터프리터는 파이썬 명령을 읽고 실행하는 프로그램임.
+
+| 큰 구분 | 입문 단계의 이해 |
+|---|---|
+| 컴파일러 | 보통 전체를 먼저 번역해 실행 파일을 만듦 |
+| 인터프리터 | 실행 과정에서 명령을 해석하고 처리함 |
+
+
+
+
+## 3. 코드 실행 시 현재 값 사용
+
+```{python}
+price = 18000
+quantity = 2
+total = price * quantity
+print(total)
+```
+
+::: {.code-explanation}
+① 가격 연결 → ② 수량 연결 → ③ 곱한 결과 연결 → ④ 출력
+:::
+
+
+## 4. 데이터·값·자료형 구분하기
+
+| 구분 | 의미 | 예 |
+|---|---|---|
+| 데이터 | 저장·처리할 수 있게 표현한 사실 | 주문 수량, 이름, 온도 |
+| 값 | 프로그램이 다루는 구체적인 데이터 하나 | `25`, `"서울"`, `True` |
+| 자료형 | 값의 종류와 가능한 처리 방법 | `int`, `str`, `bool` |
+
+::: {.big-claim}
+25만으로는 부족함. 무엇을 나타내는지와 단위도 필요함.
+:::
+
+`temperature = 25`처럼 의미 있는 이름을 사용함.
+
+
+## 5. 네 가지 기본 자료형
+
+| 자료형 | 값의 예 | 사용하는 정보 |
+|---|---|---|
+| 정수 `int` | `12`, `0`, `-5` | 인원수·수량 |
+| 실수 `float` | `3.5`, `-0.2` | 무게·온도 |
+| 문자열 `str` | `"홍길동"`, `"2026"`, `'문자'` | 이름·학번 |
+| 불리언 `bool` | `True`, `False` | 제출 여부 |
+
+> 따옴표가 있으면 문자열임. 불리언은 첫 글자를 대문자로 작성함.
+
+
+## 6. type()으로 확인
+
+```{python}
+number_value = 2026
+text_value = "2026"
+print(number_value, type(number_value))
+print(text_value, type(text_value))
+```
+
+::: {.code-explanation}
+화면의 숫자는 같아 보여도 가능한 연산은 다름.
+:::
+
+::: {.code-explanation}
+`type()`과 같은 형태를 '함수'라고 부름. 함수는 특별한 기능을 구현한 것으로, `()`안에 변수를 넣어서 함수의 기능을 변수에 적용
+:::
+
+
+## 7. 학번의 정수 변환 결과
+
+```{python}
+student_id = "00125"
+print(student_id)
+print(int(student_id))
+```
+
+::: {.code-explanation}
+앞자리 0이 사라짐. 학번·전화번호는 계산보다 식별이 목적임.
+:::
+
+
+## 8. 같은 +, 다른 처리
+
+```{python}
+print(20 + 3)
+print("20" + "3")
+print("20" * 3)
+```
+
+::: {.code-explanation}
+숫자: 덧셈
+
+문자열: 연결 또는 정수 횟수만큼 반복
+:::
+
+
+## 9. 실수의 작은 표현 오차
+
+```{python}
+print(0.1 + 0.2)
+print(type(3.5))
+```
+
+::: {.code-explanation}
+일부 소수는 이진수로 정확히 표현되지 않음.
+:::
+> 정수는 고정 자릿수 제한 대신 메모리의 제약을 받음. 실수는 근삿값으로 저장될 수 있음.
+
+
+## 10. 자료형 선택: 이유까지 답하기
+
+| 정보 | 적절한 자료형 선택 |
+|---|---|
+| 대출한 책 3권 | ? |
+| 전체 무게 3.5kg | ? |
+| 우편번호 01234 | ? |
+| 과제 제출 여부 | ? |
+
+::: {.fragment}
+**정답:** `int` / `float` / `str` / `bool`
+
+우편번호는 수량이 아니며 앞자리 0을 보존해야 함.
+:::
+
+
+## 11. 변수는 객체에 연결된 이름
+
+<div class="steps"
+     style="display:flex; align-items:center; justify-content:center; gap:6px;">
+  <span>book_price</span>
+  <b>참조 →</b>
+  <span>값 18000 · 자료형 int</span>
+</div>
+
+```{python}
+book_price = 18000
+```
+
+- 객체는 값과 자료형을 가진 파이썬의 대상임.
+- 값 객체는 메모리에 마련되고 이름을 통해 사용함.
+- 변수 이름이 메모리 주소 그 자체는 아님.
+
+> `=`는 오른쪽 값을 왼쪽 이름에 연결하는 대입임.
+
+
+## 12. 대입: 오른쪽부터 처리
+
+```{python}
+count = 3
+count = count + 1
+print(count)
+```
+
+::: {.code-explanation}
+현재 count의 값 3 → 3 + 1 계산 → 결과 4를 count에 다시 연결
+:::
+
+## 13. 다른 변수에 대입한 뒤 변경하기
+
+```{python}
+original_score = 80
+copied_score = original_score
+copied_score = 95
+print(original_score)
+print(copied_score)
+```
+
+::: {.code-explanation}
+처음에는 두 이름이 같은 정수 80을 참조함. 재대입 후 copied_score만 95에 연결됨.
+:::
+> 이 예제에서 `copied_score`를 다시 대입해도 `original_score`의 값은 80으로 유지됨.
+
+## 14. 두 값을 교환하는 순서
+
+```{python}
+left = "A구역"
+right = "B구역"
+left, right = right, left
+print(left)
+print(right)
+```
+
+::: {.code-explanation}
+오른쪽의 기존 두 값을 먼저 준비한 다음 왼쪽 이름에 연결함.
+:::
+
+
+## 15. 읽을 수 있는 이름과 주석
+
+| 기준 | 사용 예 / 주의 |
+|---|---|
+| 문자·숫자·밑줄 | `total_price`, `score2` |
+| 숫자로 시작 불가 | `2score` 사용 불가 |
+| 대소문자 구분 | `Score`와 `score`는 다른 이름 |
+| 예약어 사용 불가 | `class`, `for` |
+| 역할이 드러나는 이름 | `student_count` 권장 |
+
+```{python}
+#| eval: false
+# 배송비는 주문마다 한 번만 더함.
+total_price = subtotal + delivery_fee
+```
+
+> 한글 이름도 가능함. 코드 공유와 가독성을 위해 영문 소문자와 밑줄 사용을 권장함.
+
+
+## 16. input()의 반환값은 문자열
+
+```{python}
+#| include: false
+_demo_inputs(["20"])
+```
+
+```{python}
+age_text = input("나이: ")
+print(age_text, type(age_text))
+```
+
+::: {.code-explanation}
+이 실행 예에서는 사용자가 20을 입력함. 입력값은 문자열 "20"임.
+:::
+
+
+## 17. 입력 → 변환 → 계산
+
+```{python}
+#| include: false
+_demo_inputs(["20"])
+```
+
+```{python}
+age_text = input("나이: ")
+age = int(age_text)
+next_age = age + 1
+print(f"내년 나이: {next_age}세")
+```
+
+::: {.code-explanation}
+"20" (str) → 20 (int) → 21 (int)
+:::
+
+
+## 18. 네 가지 변환 함수
+
+```{python}
+print(int("25"))
+print(float("3.5"))
+print(str(25) + "세")
+print(bool(""))
+print(bool("False"))
+```
+
+::: {.code-explanation}
+빈 문자열은 False, 비어 있지 않은 문자열은 True임. "False"의 뜻을 해석하는 변환이 아님.
+:::
+
+
+## 19. 자료형 변환의 조건
+
+| 표현 | 결과 | 이유 |
+|---|---|---|
+| `int("3")` | `3` | 정수 형식 문자열 |
+| `float("3.5")` | `3.5` | 실수 형식 문자열 |
+| `int("3.5")` | `ValueError` | 정수 문자열 형식이 아님 |
+| `int("세 개")` | `ValueError` | 숫자로 해석할 수 없음 |
+| `int(3.9)` | `3` | 실수에서 소수 부분 제거 |
+
+> `int(3.9)`는 반올림이 아님. 입력 형식과 계산 목적을 함께 확인함.
+
+
+## 20. f-string으로 값과 문장 연결
+
+```{python}
+name = "서연"
+score = 87
+print(f"{name} 학생의 점수는 {score}점임.")
+weight = 3.5
+print(f"무게: {weight:.1f}kg")
+```
+
+::: {.code-explanation}
+문자열 앞 f + 중괄호 안 변수
+
+:.1f는 소수점 아래 한 자리로 표시함.
+:::
+
+
+## 21. 수강신청 확인 문장 만들기
+
+```{python}
+#| include: false
+_demo_inputs(["이서연","컴퓨팅적사고","seoyeon@example.com"])
+```
+
+```{python}
+student_name = input("학생 이름: ")
+subject_name = input("신청 과목: ")
+email = input("메일 주소: ")
+print(f"받는 사람: {email}")
+print(f"{student_name}: {subject_name} 접수 완료")
+```
+
+::: {.code-explanation}
+세 입력은 계산하지 않으므로 문자열로 사용함.
+:::
+> 화면에 안내문을 출력하는 예제임. 실제 메일을 보내는 기능은 없음.
+
+
+## 22. 택배 안내: 입력마다 자료형 고르기
+
+```{python}
+#| include: false
+_demo_inputs(["홍길동","서울시 종로구","2","3.5"])
+```
+
+```{python}
+receiver = input("받는 사람: ")
+address = input("배송지: ")
+box_count = int(input("상자 수: "))
+weight = float(input("무게(kg): "))
+print(f"{receiver} / {address}")
+print(f"상자 {box_count}개, 무게 {weight:.1f}kg")
+```
+
+::: {.code-explanation}
+이름·주소: str
+
+개수: int / 무게: float
+:::
+
+
+## 23. 직접 예측: 입력 4의 처리 결과
+
+```{python}
+#| include: false
+_demo_inputs(["20"])
+```
+
+```{python}
+quantity_text = "4"  # input()으로 4를 입력받은 상황
+print(quantity_text * 2)
+print(int(quantity_text) * 2)
+```
+
+두 출력값과 차이가 나는 이유 작성
+
+::: {.fragment}
+
+첫 줄은 문자열 반복, 둘째 줄은 정수 곱셈임.
+:::
+
+
+## 24. 산술 연산자 한눈에 보기
+
+| 연산자 | 의미 | 식 → 결과 |
+|---|---|---|
+| `+`, `-`, `*` | 더하기·빼기·곱하기 | `7 + 3 → 10` |
+| `/` | 나누기 | `7 / 2 → 3.5` |
+| `//` | 나눈 결과를 내림 | `7 // 2 → 3` |
+| `%` | 나머지 | `7 % 2 → 1` |
+| `**` | 거듭제곱 | `2 ** 3 → 8` |
+
+> 정수끼리 나누어도 `/`의 결과는 실수임: `8 / 2 → 4.0`.
+
+
+## 25. 몫과 나머지를 문제에 적용
+
+```{python}
+candies = 17
+people = 5
+per_person = candies // people
+leftover = candies % people
+print(per_person, leftover)
+print(-7 // 2)
+```
+
+::: {.code-explanation}
+17개를 5명에게 → 3개씩, 2개 남음
+
+-3.5를 내리면 -4임. //는 단순 소수 부분 제거가 아님.
+:::
+
+
+## 26. 괄호로 계산 순서를 드러내기
+
+```{python}
+print(3 + 4 * 2)
+print((3 + 4) * 2)
+print(2 ** 3 * 4)
+```
+
+::: {.code-explanation}
+이 예에서는 괄호 → 거듭제곱 → 곱셈·나눗셈 → 덧셈·뺄셈 순서로 읽음.
+:::
+
+
+## 27. 복합 대입도 한 줄씩 추적
+
+```{python}
+points = 10
+points += 5
+points *= 2
+print(points)
+```
+
+::: {.code-explanation}
+10 → 15 → 30
+
+이 숫자 예제에서 points += 5는 points = points + 5와 같음.
+:::
+> `-=`, `*=`, `/=`도 현재 값을 계산한 뒤 다시 대입함.
+
+
+## 28. 문자열과 숫자를 함께 출력하려면
+
+| 표현 | 결과 |
+|---|---|
+| `"컴퓨팅" + "사고"` | `"컴퓨팅사고"` |
+| `"짝" * 3` | `"짝짝짝"` |
+| `"나이: " + 20` | `TypeError` |
+| `"나이: " + str(20)` | `"나이: 20"` |
+| `f"나이: {20}"` | `"나이: 20"` |
+
+> 연산자만 보지 말고 양쪽 값의 자료형을 먼저 확인함.
+
+
+## 29. 계산 결과 예측하기
+
+```{python}
+total = 17
+people = 5
+share = total // people
+share += 1
+print(share, total % people)
+```
+
+몫 → 재대입 → 나머지 순서로 추적
+
+::: {.fragment}
+
+`share`만 3에서 4로 바뀜. `total`은 17 그대로임.
+:::
+
+
+## 30. 오류 이름으로 점검 위치 확인
+
+아래 예는 **각각 따로**, 새 실행 환경에서 확인함.
+
+| 잘못된 코드 | 오류 이름 | 수정 방향 |
+|---|---|---|
+| `print("안녕)` | `SyntaxError` | 닫는 따옴표 추가 |
+| `print(missing_total)` | `NameError` | 먼저 대입·철자 확인 |
+| `"수량: " + 3` | `TypeError` | str() 또는 f-string |
+| `int("세 개")` | `ValueError` | 정수 형식 입력 확인 |
+
+> 오류의 마지막 줄 → 지목한 코드 줄 → 원인 하나 수정 → 다시 실행
+
+
+## 31. 오류를 고쳐 설명하기
+
+```{python}
+count_text = "3"
+# print(count_text + 2)  # 그대로 실행하면 TypeError
+count = int(count_text)
+print(count + 2)
+```
+
+
+- 수량 계산이 목적이므로 숫자로 변환함.
+- 연결이 목적이라면 `count_text + "2"`의 결과는 `"32"`임.
+
+> 실행된다는 사실과 의도한 결과가 나온다는 사실을 구분함.
+
+
+## 32. 마무리: 세 문장 완성
+
+1. `input()`으로 15를 입력하면 자료형은 ______임.
+2. `a = 3; b = a; a = 7` 뒤 `b`는 ______임.
+3. `"3" + "2"`와 `3 + 2`의 결과는 각각 ______임.
+
+::: {.fragment}
+**정답:** `str` / `3` / `"32"`와 `5`
+:::
+
+::: {.big-claim}
+코드를 읽을 때 실행 순서·현재 값·자료형을 함께 확인함.
+:::
+
+입력값과 계산식을 바꾸어 결과 변화를 직접 확인함.

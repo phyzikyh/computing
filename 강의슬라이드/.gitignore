@@ -1,2 +1,5 @@
 /.quarto/
 **/*.quarto_ipynb
+# preview 프로파일(output-dir: .)이 슬라이드 폴더에 만드는 산출 HTML.
+# 배포 대상은 _site/ 이므로 폴더 루트의 preview HTML은 추적하지 않는다.
+/*_slide.html

@@ -1,0 +1,5 @@
+# Windows에서 렌더 직후 HTML을 이동할 때 발생하는 파일 잠금 회피.
+# 사용: quarto preview week04_slide.qmd --profile preview
+# 일반 render의 최종 출력 위치(_site)는 유지한다.
+project:
+  output-dir: .
