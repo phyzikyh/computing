@@ -58,11 +58,11 @@ main.content { max-width: 760px; }
   padding: 0.9rem 1.05rem;
   border-radius: 7px;
 }
-.checkpoint { border-left: 4px solid #2878e5; background: #f3f7fd; }
-.worked-example { border-left: 4px solid #1AB18B; background: #f2fbf8; }
-.misconception { border-left: 4px solid #E8402E; background: #fdf3f2; }
-.transfer { border-left: 4px solid #F08C1D; background: #fff8ee; }
-.completion-check { border: 1px dashed #8c98a8; background: #fafbfc; }
+.checkpoint { border-left: 4px solid #c9d1da; background: #f7f8fa; }
+.worked-example { border-left: 4px solid #c9d1da; background: #f7f8fa; }
+.misconception { border-left: 4px solid #c9d1da; background: #f7f8fa; }
+.transfer { border-left: 4px solid #c9d1da; background: #f7f8fa; }
+.completion-check { border: 1px dashed #c9d1da; background: #fafbfc; }
 .checkpoint > :first-child, .worked-example > :first-child,
 .misconception > :first-child, .transfer > :first-child,
 .completion-check > :first-child { margin-top: 0; }
@@ -263,6 +263,14 @@ div.mermaid svg {
 }
 .mermaid .cluster-label span,
 .mermaid .cluster-label { font-size: 16px !important; font-weight: 700 !important; }
+
+/* 특정 다이어그램을 열 폭의 60% 크기로 축소(::: {.diagram-60} 으로 감쌈) */
+.diagram-60 .cell-output-display svg,
+.diagram-60 pre.mermaid svg,
+.diagram-60 div.mermaid svg {
+  width: 60% !important;
+  max-width: 60% !important;
+}
 
 /* ══════════════════════════════════════════════════════════
    인터랙티브 연습문제 채점 UI (컴퓨팅 책 전용 마크업 — 유지)

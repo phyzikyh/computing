@@ -1,4 +1,4 @@
-# 개념 이해 {.unnumbered #sec-ch7}
+# 이론 {#sec-ch7}
 
 ## 왜 자료구조인가: 데이터 컬렉션의 필연성 {#sec-why-data-structures}
 

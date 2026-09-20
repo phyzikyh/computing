@@ -1,117 +1,264 @@
-# 코딩 실습 {.unnumbered #sec-ch5-lab}
+# 코딩실습 {#sec-ch5-lab}
 
-## 예제 1. 단일 조건
-```python
-score=85
-if score>=60: print("통과")
+## 비교 결과를 변수에 저장하기
+
+비교 연산의 결과는 `True` 또는 `False`인 불리언 값입니다.
+
+```{python}
+#| echo: true
+waiting = 45
+capacity = 40
+
+is_full = waiting >= capacity
+has_extra_seat = waiting < capacity
+
+print("정원 이상인가:", is_full)
+print("자리가 남았는가:", has_extra_seat)
+print("정확히 같은가:", waiting == capacity)
 ```
+
 ```text
-통과
+정원 이상인가: True
+자리가 남았는가: False
+정확히 같은가: False
 ```
-## 예제 2. 양자택일
-```python
-age=17
-print("성인" if age>=19 else "미성년")
+
+`=`는 값을 저장하고 `==`는 두 값이 같은지 비교합니다. 비교 결과도 변수에 저장하면 뒤의 조건문이나 출력에서 다시 사용할 수 있습니다.
+
+## if와 if-else로 실행 흐름 나누기
+
+```{python}
+#| echo: true
+height = 145
+
+if height >= 140:
+    message = "탑승할 수 있습니다."
+else:
+    message = "탑승할 수 없습니다."
+
+print(message)
 ```
+
 ```text
-미성년
+탑승할 수 있습니다.
 ```
-## 예제 3. 다중 조건
-```python
-score=87
-if score>=90: grade="A"
-elif score>=80: grade="B"
-else: grade="C"
-print(grade)
+
+조건식이 참이면 `if` 블록을 실행하고, 거짓이면 `else` 블록을 실행합니다. 조건에 속한 문장은 같은 크기로 들여쓰기합니다.
+
+::: {.diagram-60}
+```{mermaid}
+%%| echo: false
+%%| fig-cap: "if-else의 실행 흐름"
+flowchart TD
+    A[키 입력] --> B{height >= 140?}
+    B -->|참| C[탑승 가능 출력]
+    B -->|거짓| D[탑승 불가 출력]
+    classDef input fill:#e8f1ff,stroke:#2563eb,color:#172554
+    classDef decision fill:#fff4d6,stroke:#d97706,color:#451a03
+    classDef result fill:#e8f8ee,stroke:#16a34a,color:#052e16
+    class A input
+    class B decision
+    class C,D result
 ```
+:::
+
+## elif로 여러 구간 판정하기
+
+```{python}
+#| echo: true
+age = 15
+
+if age >= 20:
+    fee = 15000
+    category = "성인"
+elif age >= 14:
+    fee = 12000
+    category = "청소년"
+else:
+    fee = 8000
+    category = "어린이"
+
+print(f"{category} 입장료: {fee:,}원")
+```
+
 ```text
-B
+청소년 입장료: 12,000원
 ```
-## 예제 4. 논리곱
-```python
-average,minimum=72,45
-print(average>=60 and minimum>=40)
+
+조건은 위에서 아래로 확인합니다. `age`가 15이면 첫 조건은 거짓이고 두 번째 조건이 참이므로 그 블록만 실행합니다. 범위 조건은 큰 기준부터 배치해야 합니다.
+
+## and·or·not으로 조건 조합하기
+
+```{python}
+#| echo: true
+height = 132
+with_guardian = True
+has_ticket = True
+
+height_ok = height >= 140
+guardian_ok = with_guardian
+ticket_ok = has_ticket
+
+print("키 조건:", height_ok)
+print("보호자 조건:", guardian_ok)
+print("티켓 조건:", ticket_ok)
+print("보호자와 함께 탑승:", height_ok or guardian_ok)
+print("티켓을 가진 성인 탑승:", height_ok and ticket_ok)
+print("보호자가 없는가:", not guardian_ok)
 ```
+
 ```text
-True
+키 조건: False
+보호자 조건: True
+티켓 조건: True
+보호자와 함께 탑승: True
+티켓을 가진 성인 탑승: False
+보호자가 없는가: False
 ```
-## 예제 5. 논리합
-```python
-is_child,is_senior=False,True
-print(is_child or is_senior)
+
+`and`는 양쪽이 모두 참일 때 참이고, `or`는 하나라도 참이면 참입니다. `not`은 불리언 결과를 반대로 바꿉니다. 범위는 `18 <= temperature <= 26`처럼 표현할 수 있습니다.
+
+## 결정표를 중첩 조건문으로 옮기기
+
+성인 여부와 회원 여부를 동시에 판단하면 네 가지 경우가 생깁니다.
+
+| 성인 여부 | 회원 여부 | 입장료 |
+|---|---|---:|
+| 성인 | 회원 | 12,000원 |
+| 성인 | 비회원 | 15,000원 |
+| 청소년 | 회원 | 6,000원 |
+| 청소년 | 비회원 | 8,000원 |
+
+```{python}
+#| echo: true
+age = 22
+member = True
+
+if age >= 20:
+    if member:
+        fee = 12000
+    else:
+        fee = 15000
+else:
+    if member:
+        fee = 6000
+    else:
+        fee = 8000
+
+print(f"입장료: {fee:,}원")
 ```
+
 ```text
-True
+입장료: 12,000원
 ```
-## 예제 6. not
-```python
-is_closed=False
-if not is_closed: print("입장 가능")
+
+바깥 `if`가 성인 여부를 먼저 나누고, 안쪽 `if`가 회원 여부를 나눕니다. 결정표의 네 행은 코드의 네 경로에 대응합니다.
+
+## 입력값을 검증한 뒤 판단하기
+
+점수는 0 이상 100 이하만 정상 입력으로 처리합니다.
+
+```{python}
+#| echo: true
+score = 105
+
+if 0 <= score <= 100:
+    if score >= 60:
+        result = "통과"
+    else:
+        result = "재검사"
+    print("결과:", result)
+else:
+    print("입력 오류: 점수는 0에서 100 사이여야 합니다.")
 ```
+
 ```text
-입장 가능
+입력 오류: 점수는 0에서 100 사이여야 합니다.
 ```
-## 예제 7. 범위 비교
-```python
-temperature=23
-print(18<=temperature<=26)
+
+검증을 먼저 하면 범위를 벗어난 값이 뒤의 판단으로 넘어가지 않습니다. `0`, `60`, `100`은 경계값이고 `-3`, `105`는 예외값입니다.
+
+## 판단을 함수로 묶어 재사용하기
+
+```{python}
+#| echo: true
+def entry_fee(age, member):
+    if age >= 20:
+        if member:
+            return 12000
+        return 15000
+    if member:
+        return 6000
+    return 8000
+
+adult_member_fee = entry_fee(22, True)
+teen_nonmember_fee = entry_fee(15, False)
+
+print(f"성인 회원: {adult_member_fee:,}원")
+print(f"청소년 비회원: {teen_nonmember_fee:,}원")
 ```
+
 ```text
-True
-```
-## 예제 8. 중첩 조건
-```python
-member,amount=True,60000
-discount=0.1 if member and amount>=50000 else 0
-print(discount)
-```
-```text
-0.1
-```
-## 예제 9. 입력 검증
-```python
-score=105
-if 0<=score<=100: print("정상")
-else: print("입력 오류")
-```
-```text
-입력 오류
-```
-## 예제 10. 함수로 판단 재사용
-```python
-def is_even(number): return number%2==0
-print(is_even(14))
-```
-```text
-True
+성인 회원: 12,000원
+청소년 비회원: 8,000원
 ```
 
-## 문제 1. 홀짝 판정
-정수를 입력받아 홀수 또는 짝수를 출력한다.
+함수는 입력을 매개변수로 받고 `return`으로 결과를 돌려줍니다. 같은 판단을 여러 번 사용할 때 조건문 전체를 반복하지 않고 함수 이름을 호출합니다.
 
-## 문제 2. 성인 요금
-나이에 따라 성인·청소년·어린이 요금을 출력한다.
+## 실습 문제
 
-## 문제 3. 학점 계산
-점수를 입력받아 A부터 F까지 판정한다.
+### 짝수·홀수 판정하기
 
-## 문제 4. 합격과 과락
-평균 60 이상이며 모든 과목이 40 이상일 때만 합격을 출력한다.
+정수를 입력받아 짝수인지 홀수인지 판정하는 프로그램을 작성하세요.
 
-## 문제 5. 윤년 판정
-4의 배수이면서 100의 배수가 아니거나 400의 배수인 연도를 찾는다.
+- 변수 이름은 `number`를 사용하고, `int(input(...))`으로 입력받습니다.
+- `number`를 2로 나눈 나머지가 `0`이면 `"짝수입니다."`, 아니면 `"홀수입니다."`를 출력합니다.
+- `if`와 `else`를 사용합니다.
 
-## 문제 6. 할인 계산
-회원 여부와 구매 금액을 이용해 할인율과 최종 금액을 출력한다.
+### 성적 등급 계산기 만들기
 
-## 문제 7. 입력 범위 검증
-0~100 밖의 점수에는 입력 오류를 출력한다.
+점수를 입력받아 등급을 출력하는 프로그램을 작성하세요.
 
-## 문제 8. 세 수 비교
-세 수 중 가장 큰 값을 조건문만으로 구한다.
+- 점수가 0 이상 100 이하인지 먼저 확인합니다.
+- 90점 이상은 `A`, 80점 이상은 `B`, 70점 이상은 `C`, 그 미만은 `D`를 출력합니다.
+- 범위를 벗어나면 `"점수는 0에서 100 사이여야 합니다."`를 출력합니다.
+- `if`, `elif`, `else`를 사용합니다.
+- 점수 `0`, `70`, `80`, `90`, `100`, `105`를 각각 시험합니다.
 
-## 문제 9. 계절 판정
-월을 입력받아 계절을 출력하고 잘못된 월을 구분한다.
+### 행사 입장 조건 판정하기
 
-## 문제 10. 배송비 함수
-주문 금액과 회원 여부를 받아 배송비를 반환하는 함수를 작성한다.
+나이, 티켓 보유 여부, 보호자 동반 여부를 입력받아 입장 가능 여부를 출력하세요.
+
+- 나이는 정수로 입력받습니다.
+- 티켓 보유 여부와 보호자 동반 여부는 `True` 또는 `False`로 저장합니다.
+- `age >= 20 and has_ticket`이면 입장할 수 있습니다.
+- 또는 `age < 20 and has_ticket and with_guardian`이면 입장할 수 있습니다.
+- 그 외에는 입장할 수 없다고 출력합니다.
+- 성인 회원, 티켓이 없는 성인, 보호자와 함께 온 청소년, 보호자 없는 청소년을 시험합니다.
+
+### 회원·나이별 입장료 계산기
+
+나이와 회원 여부를 입력받아 결정표에 따라 입장료를 계산하세요.
+
+| 성인 여부 | 회원 여부 | 입장료 |
+|---|---|---:|
+| 성인 | 회원 | 12,000원 |
+| 성인 | 비회원 | 15,000원 |
+| 청소년 | 회원 | 6,000원 |
+| 청소년 | 비회원 | 8,000원 |
+
+- 나이는 정수로 입력받습니다.
+- 회원 여부는 불리언 값으로 저장합니다.
+- 중첩 조건문을 사용하거나, 조건을 함수로 만들어 결과를 반환합니다.
+- 네 가지 경우를 모두 시험합니다.
+
+### 배송비 함수 만들기
+
+주문 금액과 회원 여부로 배송비를 계산하는 함수를 작성하세요.
+
+- 함수 이름은 `delivery_fee`로 정합니다.
+- 매개변수는 주문 금액 `amount`와 회원 여부 `is_member`입니다.
+- 주문 금액이 30,000원 이상이거나 회원이면 배송비는 0원입니다.
+- 그 외에는 배송비 3,000원을 반환합니다.
+- 서로 다른 조건의 주문을 세 번 이상 함수에 전달하고 결과를 출력합니다.
+- 주문 금액이 30,000원 미만인 비회원, 30,000원 이상인 비회원, 30,000원 미만인 회원을 모두 시험합니다.

@@ -1,4 +1,4 @@
-# 개념 이해 {.unnumbered #sec-ch6}
+# 이론 {#sec-ch6}
 
 ## 반복 구조의 본질: 인간과 컴퓨터의 차이 {#sec-loop-concept}
 
