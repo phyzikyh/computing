@@ -1,253 +1,72 @@
-# 연습문제 {#sec-ch5-quiz}
+# 연습문제 {.unnumbered #sec-ch5-quiz}
 
----
+<div id="week05-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week05">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week05">다시 풀기</button><span class="quiz-score" id="score-week05" aria-live="polite"></span></div>
 
-**1.** 놀이기구는 키가 140cm **이상**인 사람만 탈 수 있습니다. 키가 정확히 140cm인 사람도 탑승할 수 있게 하는 조건식은?
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["놀이기구는 키가 140cm <strong>이상</strong>인 사람만 탈 수 있습니다. 키가 정확히 140cm인 사람도 탑승할 수 있게 하는 조건식은?", ["<code>height &gt; 140</code>", "<code>height &gt;= 140</code>", "<code>height == 141</code>", "<code>height &lt;= 140</code>"], 2, "‘이상’은 기준값을 포함하므로 <code>&gt;=</code>를 사용한다. <code>&gt;</code>를 쓰면 경계값 140이 제외된다."],
+    ["다음 두 문장의 역할을 바르게 설명한 것은?<pre><code>age = 20\nage == 20</code></pre>", ["둘 다 <code>age</code>에 20을 저장한다.", "첫 문장은 값을 비교하고, 둘째 문장은 값을 저장한다.", "둘 다 조건문이어서 참일 때만 실행된다.", "첫 문장은 값을 대입하고, 둘째 문장은 두 값이 같은지 비교한다."], 4, "등호 하나(<code>=</code>)는 대입, 등호 두 개(<code>==</code>)는 같은지 비교하는 연산자다."],
+    ["다음 코드를 실행하면 어떤 문장이 출력됩니까?<pre><code>height = 138\nif height &gt;= 140:\n    print(\"탑승 가능\")\nprint(\"안내 종료\")</code></pre>", ["<code>안내 종료</code>만 출력된다.", "<code>탑승 가능</code>만 출력된다.", "두 문장이 모두 출력된다.", "아무 문장도 출력되지 않는다."], 1, "조건이 거짓이므로 들여쓴 출력문은 건너뛴다. 마지막 문장은 조건문 밖에 있어 항상 실행된다."],
+    ["탑승 조건이 참이면 ‘탑승 가능’, 거짓이면 ‘탑승 불가’를 출력하려고 합니다. <code>if</code>와 함께 필요한 키워드는?", ["<code>elif</code>", "<code>and</code>", "<code>else</code>", "<code>return</code>"], 3, "참과 거짓 두 갈래를 만들 때 <code>if-else</code>를 사용한다."],
+    ["다음 코드에서 <code>age = 22</code>일 때 잘못된 요금이 적용되는 이유는?<pre><code>if age &gt;= 14:\n    fee = 12000\nelif age &gt;= 20:\n    fee = 15000\nelse:\n    fee = 8000</code></pre>", ["먼저 참이 된 <code>age &gt;= 14</code> 갈래만 실행되므로 성인 조건에 도달하지 않는다.", "<code>elif</code>는 아래에서 위로 검사한다.", "<code>age &gt;= 20</code>은 22에서 거짓이다.", "<code>else</code>가 언제나 앞의 요금을 덮어쓴다."], 1, "<code>if-elif-else</code>는 위에서부터 검사해 처음 참인 갈래 하나만 실행한다. 겹치는 나이 조건은 큰 기준부터 검사해야 한다."],
+    ["출석률이 80% 이상<strong>이고</strong> 과제 점수가 70점 이상이어야 통과합니다. 올바른 조건식은?", ["<code>attendance &gt;= 80 or assignment &gt;= 70</code>", "<code>attendance &gt; 80 and assignment &gt; 70</code>", "<code>not (attendance &gt;= 80 and assignment &gt;= 70)</code>", "<code>attendance &gt;= 80 and assignment &gt;= 70</code>"], 4, "두 기준을 모두 만족해야 하므로 <code>and</code>를 쓰고, ‘이상’은 <code>&gt;=</code>로 표현한다."],
+    ["<code>A = True</code>, <code>B = False</code>, <code>C = False</code>일 때 <code>not A or B and C</code>의 결과는? (<code>not</code> → <code>and</code> → <code>or</code> 순서로 계산합니다.)", ["<code>True</code>", "<code>False</code>", "<code>None</code>", "조건에 따라 달라진다."], 2, "<code>not A</code>는 거짓이고 <code>B and C</code>도 거짓이므로, 최종 결과는 <code>False</code>다."],
+    ["다음 코드를 실행할 때 <code>1000 / tickets</code>가 계산됩니까?<pre><code>tickets = 0\nresult = tickets &gt; 0 and 1000 / tickets &gt; 200</code></pre>", ["계산되며 0으로 나누는 오류가 난다.", "계산되지만 결과는 <code>False</code>가 된다.", "계산되지 않는다. 앞 조건이 거짓이어서 <code>and</code>의 결과가 확정된다.", "계산되지 않는다. 파이썬이 나눗셈을 모두 무시하기 때문이다."], 3, "<code>and</code>는 앞 조건이 거짓이면 전체 결과가 거짓으로 확정되어 뒤 조건을 계산하지 않는다. 이를 단락 평가라고 한다."],
+    ["다음 결정표를 사용할 때 성인 회원의 입장료는 얼마입니까? 성인은 20세 이상입니다.<table><thead><tr><th>성인 여부</th><th>회원 여부</th><th>입장료</th></tr></thead><tbody><tr><td>성인</td><td>회원</td><td>12,000원</td></tr><tr><td>성인</td><td>비회원</td><td>15,000원</td></tr><tr><td>청소년</td><td>회원</td><td>6,000원</td></tr><tr><td>청소년</td><td>비회원</td><td>8,000원</td></tr></tbody></table>", ["6,000원", "8,000원", "15,000원", "12,000원"], 4, "결정표에서 ‘성인·회원’ 행에 대응하는 결과는 12,000원이다."],
+    ["위 결정표를 다음 코드로 표현했습니다. <code>age = 17</code>, <code>member = False</code>일 때 <code>fee</code>의 값은?<pre><code>if age &gt;= 20:\n    if member:\n        fee = 12000\n    else:\n        fee = 15000\nelse:\n    if member:\n        fee = 6000\n    else:\n        fee = 8000</code></pre>", ["6,000원", "8,000원", "12,000원", "15,000원"], 2, "17세는 청소년이고 회원이 아니므로 ‘청소년·비회원’ 경로의 8,000원이 적용된다."],
+    ["‘20세 이상은 성인’이라는 규칙을 <code>if age &gt; 20:</code>으로 작성했습니다. 잘못 분류되는 경계값과 올바른 조건식을 고른 것은?", ["<code>20</code>, <code>age &gt;= 20</code>", "<code>19</code>, <code>age &gt;= 20</code>", "<code>20</code>, <code>age == 20</code>", "<code>21</code>, <code>age &gt; 20</code>"], 1, "<code>&gt;</code>는 20을 제외한다. 기준값 20도 성인이므로 <code>age &gt;= 20</code>으로 고쳐야 한다."],
+    ["나이가 음수이면 오류 안내를 하고, 그렇지 않을 때만 성인 여부를 판단하려고 합니다. 가장 먼저 검사할 조건은?", ["<code>age &gt;= 20</code>", "<code>age == 20</code>", "<code>age &lt; 0</code>", "<code>age != 0</code>"], 3, "입력값 검증을 먼저 수행해 음수인 나이가 뒤의 성인 여부 판단으로 넘어가지 않게 해야 한다."],
+    ["‘20세 이상은 성인, 음수는 잘못된 입력’이라는 조건문을 시험합니다. 정상값·경계값·예외값을 모두 확인할 입력 묶음으로 가장 적절한 것은?", ["<code>21, 22, 23</code>", "<code>25, 20, -3</code>", "<code>18, 19, 20</code>", "<code>-3, -2, -1</code>"], 2, "25는 정상값, 20은 기준에 걸친 경계값, -3은 허용 범위를 벗어난 예외값이다."],
+    ["다음 함수에서 <code>age</code>와 <code>return</code>의 역할을 바르게 설명한 것은?<pre><code>def is_adult(age):\n    return age &gt;= 20</code></pre>", ["<code>age</code>는 함수 이름이고, <code>return</code>은 입력을 받는다.", "<code>age</code>는 출력값이고, <code>return</code>은 조건을 반복한다.", "<code>age</code>는 함수 밖에서만 쓸 수 있고, <code>return</code>은 화면에 출력한다.", "<code>age</code>는 전달받는 매개변수이고, <code>return</code>은 판단 결과를 돌려준다."], 4, "매개변수 <code>age</code>는 호출할 때 전달한 값을 받고, <code>return</code>은 비교 결과를 호출한 곳으로 돌려준다."],
+    ["다음 코드의 출력 결과는?<pre><code>def is_adult(age):\n    return age &gt;= 20\n\nprint(is_adult(20))</code></pre>", ["<code>True</code>", "<code>False</code>", "<code>20</code>", "<code>성인</code>"], 1, "20은 ‘20세 이상’에 포함되므로 비교 결과인 <code>True</code>가 반환되고 출력된다."],
+    ["나이 구간은 성인·청소년·어린이 중 하나로 나뉘지만, 성인 여부와 회원 여부는 동시에 성립할 수 있습니다. 두 조건의 관계를 바르게 설명한 것은?", ["나이 구간과 회원 여부는 모두 배타적 조건이다.", "나이 구간과 회원 여부는 모두 독립 조건이다.", "나이 구간은 배타적 조건이고, 성인 여부와 회원 여부는 독립 조건이다.", "성인 여부와 회원 여부는 한 사람이 동시에 만족할 수 없다."], 3, "나이 구간은 한 사람이 동시에 둘 이상일 수 없는 배타적 조건이다. 성인 여부와 회원 여부는 각각 참·거짓이 될 수 있는 독립 조건이다."],
+    ["성인 여부와 회원 여부로 요금을 정하려고 다음 세 경우만 적었습니다. 결정표에서 빠진 경우는?<table><thead><tr><th>성인 여부</th><th>회원 여부</th></tr></thead><tbody><tr><td>성인</td><td>회원</td></tr><tr><td>성인</td><td>비회원</td></tr><tr><td>청소년</td><td>회원</td></tr></tbody></table>", ["청소년·비회원", "성인·회원", "성인·비회원", "청소년·회원"], 1, "성인 여부와 회원 여부를 조합하면 네 경우가 필요하다. 표에는 ‘청소년·비회원’이 빠져 있다."],
+    ["다음 코드가 실행되지 않는 직접적인 이유는?<pre><code>age = 20\nif age &gt;= 20\n    print(\"성인입니다.\")</code></pre>", ["<code>age</code>는 변수명으로 사용할 수 없다.", "<code>if</code> 조건식 끝에 콜론(<code>:</code>)이 없다.", "<code>print()</code>에는 문자열을 넣을 수 없다.", "<code>&gt;=</code>는 비교 연산자가 아니다."], 2, "파이썬 조건문의 조건식 끝에는 콜론이 필요하다. 이 코드에는 콜론이 빠져 문법 오류가 발생한다."],
+    ["키가 140cm 이상<strong>이거나</strong> 보호자를 동반하면 탑승할 수 있습니다. 키가 132cm이고 보호자를 동반한 방문객을 잘못 거절하는 조건식은?", ["<code>height &gt;= 140 or with_guardian</code>", "<code>with_guardian or height &gt;= 140</code>", "<code>not (height &lt; 140 and not with_guardian)</code>", "<code>height &gt;= 140 and with_guardian</code>"], 4, "규칙은 둘 중 하나만 참이어도 통과하는 <code>or</code>다. <code>and</code>를 쓰면 키와 보호자 조건을 모두 요구해 이 방문객을 잘못 거절한다."],
+    ["같은 성인 판단 기준을 프로그램 여러 곳에서 사용합니다. 이를 <code>is_adult(age)</code> 함수로 묶어 두는 주된 이점은?", ["모든 입력이 자동으로 올바른 값으로 바뀐다.", "조건문의 경계값을 시험하지 않아도 된다.", "판단 기준을 한 곳에서 재사용하고, 기준이 바뀌면 그곳을 수정할 수 있다.", "함수를 호출하면 모든 갈래가 동시에 실행된다."], 3, "반복되는 판단을 함수로 묶으면 같은 코드를 되풀이하지 않고 재사용할 수 있으며, 기준 변경도 함수 한 곳에서 처리할 수 있다."]
+  ];
 
-① `height > 140`  
-② `height >= 140`  
-③ `height == 141`  
-④ `height <= 140`
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week05-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w5q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
 
----
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week05");
 
-**2.** 다음 두 문장의 역할을 바르게 설명한 것은?
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
 
-```python
-age = 20
-age == 20
+  document.getElementById("check-week05").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+
+  document.getElementById("reset-week05").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
+});
+</script>
 ```
-
-① 둘 다 `age`에 20을 저장한다.  
-② 첫 문장은 값을 비교하고, 둘째 문장은 값을 저장한다.  
-③ 둘 다 조건문이어서 참일 때만 실행된다.  
-④ 첫 문장은 값을 대입하고, 둘째 문장은 두 값이 같은지 비교한다.
-
----
-
-**3.** 다음 코드를 실행하면 어떤 문장이 출력됩니까?
-
-```python
-height = 138
-if height >= 140:
-    print("탑승 가능")
-print("안내 종료")
-```
-
-① `안내 종료`만 출력된다.  
-② `탑승 가능`만 출력된다.  
-③ 두 문장이 모두 출력된다.  
-④ 아무 문장도 출력되지 않는다.
-
----
-
-**4.** 탑승 조건이 참이면 "탑승 가능", 거짓이면 "탑승 불가"를 출력하려고 합니다. `if`와 함께 필요한 키워드는?
-
-① `elif`  
-② `and`  
-③ `else`  
-④ `return`
-
----
-
-**5.** 다음 코드에서 `age = 22`일 때 잘못된 요금이 적용되는 이유는?
-
-```python
-if age >= 14:
-    fee = 12000
-elif age >= 20:
-    fee = 15000
-else:
-    fee = 8000
-```
-
-① 먼저 참이 된 `age >= 14` 갈래만 실행되므로 성인 조건에 도달하지 않는다.  
-② `elif`는 위에서 아래가 아니라 아래에서 위로 검사한다.  
-③ `age >= 20`은 22에서 거짓이다.  
-④ `else`가 언제나 앞의 요금을 덮어쓴다.
-
----
-
-**6.** 출석률이 80% 이상**이고** 과제 점수가 70점 이상이어야 통과합니다. 올바른 조건식은?
-
-① `attendance >= 80 or assignment >= 70`  
-② `attendance > 80 and assignment > 70`  
-③ `not (attendance >= 80 and assignment >= 70)`  
-④ `attendance >= 80 and assignment >= 70`
-
----
-
-**7.** `A = True`, `B = False`, `C = False`일 때 `not A or B and C`의 결과는? (`not` → `and` → `or` 순서로 계산합니다.)
-
-① `True`  
-② `False`  
-③ `None`  
-④ 조건에 따라 달라진다.
-
----
-
-**8.** 다음 코드를 실행할 때 `1000 / tickets`가 계산됩니까?
-
-```python
-tickets = 0
-result = tickets > 0 and 1000 / tickets > 200
-```
-
-① 계산되며 0으로 나누는 오류가 난다.  
-② 계산되지만 결과는 `False`가 된다.  
-③ 계산되지 않는다. 앞 조건이 거짓이어서 `and`의 결과가 확정된다.  
-④ 계산되지 않는다. 파이썬이 나눗셈을 모두 무시하기 때문이다.
-
----
-
-**9.** 다음 결정표를 사용할 때, 성인 회원의 입장료는 얼마입니까? 성인은 20세 이상입니다.
-
-| 성인 여부 | 회원 여부 | 입장료 |
-|:---:|:---:|---:|
-| 성인 | 회원 | 12,000원 |
-| 성인 | 비회원 | 15,000원 |
-| 청소년 | 회원 | 6,000원 |
-| 청소년 | 비회원 | 8,000원 |
-
-① 6,000원  
-② 8,000원  
-③ 15,000원  
-④ 12,000원
-
----
-
-**10.** 위 결정표를 다음 코드로 표현했습니다. `age = 17`, `member = False`일 때 `fee`의 값은?
-
-```python
-if age >= 20:
-    if member:
-        fee = 12000
-    else:
-        fee = 15000
-else:
-    if member:
-        fee = 6000
-    else:
-        fee = 8000
-```
-
-① 6,000원  
-② 8,000원  
-③ 12,000원  
-④ 15,000원
-
----
-
-**11.** "20세 이상은 성인"이라는 규칙을 `if age > 20:`으로 작성했습니다. 잘못 분류되는 경계값과 올바른 조건식을 고른 것은?
-
-① `20`, `age >= 20`  
-② `19`, `age >= 20`  
-③ `20`, `age == 20`  
-④ `21`, `age > 20`
-
----
-
-**12.** 나이가 음수이면 오류 안내를 하고, 그렇지 않을 때만 성인 여부를 판단하려고 합니다. 가장 먼저 검사할 조건은?
-
-① `age >= 20`  
-② `age == 20`  
-③ `age < 0`  
-④ `age != 0`
-
----
-
-**13.** "20세 이상은 성인, 음수는 잘못된 입력"이라는 조건문을 시험합니다. 정상값·경계값·예외값을 모두 확인할 입력 묶음으로 가장 적절한 것은?
-
-① `21, 22, 23`  
-② `25, 20, -3`  
-③ `18, 19, 20`  
-④ `-3, -2, -1`
-
----
-
-**14.** 다음 함수에서 `age`와 `return`의 역할을 바르게 설명한 것은?
-
-```python
-def is_adult(age):
-    return age >= 20
-```
-
-① `age`는 함수 이름이고, `return`은 입력을 받는다.  
-② `age`는 출력값이고, `return`은 조건을 반복한다.  
-③ `age`는 함수 밖에서만 쓸 수 있고, `return`은 화면에 출력한다.  
-④ `age`는 전달받는 매개변수이고, `return`은 판단 결과를 돌려준다.
-
----
-
-**15.** 다음 코드의 출력 결과는?
-
-```python
-def is_adult(age):
-    return age >= 20
-
-print(is_adult(20))
-```
-
-① `True`  
-② `False`  
-③ `20`  
-④ `성인`
-
----
-
-**16.** 나이 구간은 성인·청소년·어린이 중 하나로 나뉘지만, 성인 여부와 회원 여부는 동시에 성립할 수 있습니다. 두 조건의 관계를 바르게 설명한 것은?
-
-① 나이 구간과 회원 여부는 모두 배타적 조건이다.  
-② 나이 구간과 회원 여부는 모두 독립 조건이다.  
-③ 나이 구간은 배타적 조건이고, 성인 여부와 회원 여부는 독립 조건이다.  
-④ 성인 여부와 회원 여부는 한 사람이 동시에 만족할 수 없다.
-
----
-
-**17.** 성인 여부와 회원 여부로 요금을 정하려고 다음 세 경우만 적었습니다. 결정표에서 빠진 경우는?
-
-| 성인 여부 | 회원 여부 |
-|:---:|:---:|
-| 성인 | 회원 |
-| 성인 | 비회원 |
-| 청소년 | 회원 |
-
-① 청소년·비회원  
-② 성인·회원  
-③ 성인·비회원  
-④ 청소년·회원
-
----
-
-**18.** 다음 코드가 실행되지 않는 직접적인 이유는?
-
-```python
-age = 20
-if age >= 20
-    print("성인입니다.")
-```
-
-① `age`는 변수명으로 사용할 수 없다.  
-② `if` 조건식 끝에 콜론(`:`)이 없다.  
-③ `print()`에는 문자열을 넣을 수 없다.  
-④ `>=`는 비교 연산자가 아니다.
-
----
-
-**19.** 키가 140cm 이상**이거나** 보호자를 동반하면 탑승할 수 있습니다. 키가 132cm이고 보호자를 동반한 방문객을 잘못 거절하는 조건식은?
-
-① `height >= 140 or with_guardian`  
-② `with_guardian or height >= 140`  
-③ `not (height < 140 and not with_guardian)`  
-④ `height >= 140 and with_guardian`
-
----
-
-**20.** 같은 성인 판단 기준을 프로그램 여러 곳에서 사용합니다. 이를 `is_adult(age)` 함수로 묶어 두는 주된 이점은?
-
-① 모든 입력이 자동으로 올바른 값으로 바뀐다.  
-② 조건문의 경계값을 시험하지 않아도 된다.  
-③ 판단 기준을 한 곳에서 재사용하고, 기준이 바뀌면 그곳을 수정할 수 있다.  
-④ 함수를 호출하면 모든 갈래가 동시에 실행된다.
-
-<!-- 교사용 정답: 1② 2④ 3① 4③ 5① 6④ 7② 8③ 9④ 10② 11① 12③ 13② 14④ 15① 16③ 17① 18② 19④ 20③ -->
