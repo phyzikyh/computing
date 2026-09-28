@@ -16,6 +16,11 @@ execute:
   max-width: 560px;
   margin: 1.1rem auto 1.6rem auto;
 }
+.figure-half-compact {
+  width: 25%;
+  max-width: 280px;
+  margin: 1.1rem auto 1.6rem auto;
+}
 .figure-wide {
   width: 84%;
   max-width: 940px;
@@ -23,12 +28,14 @@ execute:
 }
 .figure-standard .cell-output-display,
 .figure-compact .cell-output-display,
+.figure-half-compact .cell-output-display,
 .figure-wide .cell-output-display {
   width: 100% !important;
   max-width: none !important;
 }
 .figure-standard .mermaid svg,
 .figure-compact .mermaid svg,
+.figure-half-compact .mermaid svg,
 .figure-wide .mermaid svg {
   width: 100% !important;
   max-width: 100% !important;
@@ -36,6 +43,7 @@ execute:
 }
 .figure-standard figcaption,
 .figure-compact figcaption,
+.figure-half-compact figcaption,
 .figure-wide figcaption {
   text-align: center;
   font-size: 0.9rem;
@@ -43,6 +51,7 @@ execute:
 @media (max-width: 640px) {
   .figure-standard,
   .figure-compact,
+  .figure-half-compact,
   .figure-wide {
     width: 100%;
   }
@@ -333,16 +342,6 @@ for i in range(5, 0, -1):
 1
 ```
 
-::: {.figure-wide}
-```{mermaid}
-%%| echo: false
-%%| label: fig-range-negative
-%%| fig-cap: "감소하는 range의 값 변화"
-flowchart LR
-    A["5"] --> B["4"] --> C["3"] --> D["2"] --> E["1"] --> F["0 직전에서 종료"]
-```
-:::
-
 `step`의 방향과 `start`, `stop`의 관계도 맞아야 합니다. 예를 들어 시작값이 5이고 끝값이 0인데 `step`이 `+1`이라면 0을 향해 갈 수 없으므로 원하는 반복이 만들어지지 않습니다.
 
 ::: {.checkpoint}
@@ -433,19 +432,6 @@ print(total)
 `total`은 반복이 진행될 때마다 이전 값에 새로운 매출을 더해 나갑니다. 이렇게 값을 계속 쌓아 가는 변수를 [누산기(accumulator)]{.key}라고 합니다.
 
 `total = 0`을 반복문 앞에 두는 이유도 중요합니다. 첫 번째 값을 더하기 전에 **누적 결과를 저장할 시작값**이 필요하기 때문입니다.
-
-::: {.figure-wide}
-```{mermaid}
-%%| echo: false
-%%| label: fig-accumulator
-%%| fig-cap: "누산기 total의 값 변화"
-flowchart LR
-    A["0"] --> B["120000"]
-    B --> C["205000"]
-    C --> D["301000"]
-    D --> E["411000"]
-```
-:::
 
 각 단계는 다음 계산을 의미합니다.
 
@@ -609,7 +595,7 @@ while count <= 5:
 
 `count`의 값이 계속 1이므로 `count <= 5`는 영원히 참입니다. 따라서 반복이 끝나지 않습니다.
 
-::: {.figure-compact}
+::: {.figure-half-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-infinite-loop
@@ -809,18 +795,6 @@ print("찾았습니까?", found)
 
 처음에는 아직 찾지 않았으므로 `False`입니다. 반복하면서 `"음료"`를 만나면 `True`로 바꾸고, 이미 원하는 값을 찾았으므로 `break`를 이용해 탐색을 종료합니다.
 
-::: {.figure-wide}
-```{mermaid}
-%%| echo: false
-%%| label: fig-linear-search
-%%| fig-cap: "목록을 앞에서부터 확인하는 선형 탐색"
-flowchart LR
-    A["김밥"] --> B["떡볶이"] --> C["음료"] --> D["찾음"]
-    D --> E["found = True"]
-    E --> F["break"]
-```
-:::
-
 이처럼 데이터를 앞에서부터 하나씩 확인하는 탐색 방법을 [선형 탐색(linear search)]{.key}이라고 합니다.
 
 탐색 문제에서는 다음과 같은 사고 순서를 사용할 수 있습니다.
@@ -855,23 +829,6 @@ print("최댓값:", top)
 
 처음에는 `top`이 30입니다. 이후 80을 만나면 80이 더 크므로 `top`을 80으로 바꿉니다. 45는 80보다 작으므로 그대로 유지합니다. 120을 만나면 다시 `top`을 120으로 갱신합니다.
 
-::: {.figure-wide}
-```{mermaid}
-%%| echo: false
-%%| label: fig-max-update
-%%| fig-cap: "최댓값을 비교하고 갱신하는 과정"
-flowchart LR
-    A["top=30"] --> B["80 비교"]
-    B --> C["top=80"]
-    C --> D["45 비교"]
-    D --> E["top=80"]
-    E --> F["120 비교"]
-    F --> G["top=120"]
-    G --> H["90 비교"]
-    H --> I["최종 120"]
-```
-:::
-
 이 문제의 핵심은 **이전까지 가장 좋은 값을 기억하고 있다가 더 좋은 값이 나타나면 갱신한다**는 것입니다.
 
 최솟값도 같은 방식으로 구할 수 있습니다.
@@ -902,23 +859,6 @@ for hour in range(1, 4):
 ```
 
 바깥쪽 반복문에서 `hour = 1`이 되면 안쪽 반복문은 `booth = 1`, `booth = 2`를 모두 실행합니다. 그다음 바깥쪽 반복이 `hour = 2`로 넘어가고 안쪽 반복은 다시 처음부터 실행됩니다.
-
-::: {.figure-standard}
-```{mermaid}
-%%| echo: false
-%%| label: fig-nested-loop
-%%| fig-cap: "중첩 반복문의 실행 순서"
-flowchart TD
-    A["hour = 1"] --> B["booth = 1"]
-    B --> C["booth = 2"]
-    C --> D["hour = 2"]
-    D --> E["booth = 1"]
-    E --> F["booth = 2"]
-    F --> G["hour = 3"]
-    G --> H["booth = 1"]
-    H --> I["booth = 2"]
-```
-:::
 
 바깥 반복이 3번, 안쪽 반복이 매번 2번 실행되므로 전체 본문 실행 횟수는 다음과 같습니다.
 
@@ -1159,7 +1099,7 @@ for value in data:
 
 최댓값, 최솟값처럼 **현재까지의 결과와 새로운 값을 비교해서 갱신하는 문제**에서 사용합니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-loop-patterns
