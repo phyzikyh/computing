@@ -7,18 +7,45 @@ execute:
 
 <style>
 .figure-standard {
-  width: 100%;
-  max-width: 520px;
+  width: 68%;
+  max-width: 720px;
   margin: 1.1rem auto 1.6rem auto;
 }
-.figure-standard .mermaid svg {
+.figure-compact {
+  width: 50%;
+  max-width: 560px;
+  margin: 1.1rem auto 1.6rem auto;
+}
+.figure-wide {
+  width: 84%;
+  max-width: 940px;
+  margin: 1.1rem auto 1.6rem auto;
+}
+.figure-standard .cell-output-display,
+.figure-compact .cell-output-display,
+.figure-wide .cell-output-display {
   width: 100% !important;
-  max-width: 520px !important;
+  max-width: none !important;
+}
+.figure-standard .mermaid svg,
+.figure-compact .mermaid svg,
+.figure-wide .mermaid svg {
+  width: 100% !important;
+  max-width: 100% !important;
   height: auto !important;
 }
-.figure-standard figcaption {
+.figure-standard figcaption,
+.figure-compact figcaption,
+.figure-wide figcaption {
   text-align: center;
   font-size: 0.9rem;
+}
+@media (max-width: 640px) {
+  .figure-standard,
+  .figure-compact,
+  .figure-wide {
+    width: 100%;
+  }
 }
 </style>
 
@@ -38,7 +65,7 @@ print("3번 부스 정산 완료")
 
 이때 사용하는 것이 [반복문(loop)]{.key}입니다. 반복문은 **같은 형태의 명령을 여러 번 실행하되, 반복할 때마다 필요한 값만 바꾸어 처리하는 문법**입니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-loop-need
@@ -65,7 +92,7 @@ for booth in range(1, 4):
 
 즉, 반복문에서는 **반복해서 실행할 코드**와 **반복할 때마다 바뀌는 값**을 분리해서 생각하는 것이 중요합니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-loop-changing-value
@@ -189,7 +216,7 @@ for name in booths:
 
 `name`은 리스트 전체를 저장하는 변수가 아닙니다. 반복할 때마다 `booths` 안의 원소 하나를 차례로 받는 [반복 변수]{.key}입니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-list-iteration
@@ -254,7 +281,7 @@ for i in range(1, 5):
 
 출력은 1, 2, 3, 4이며 5는 포함되지 않습니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-range
@@ -306,7 +333,7 @@ for i in range(5, 0, -1):
 1
 ```
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-range-negative
@@ -367,7 +394,7 @@ for number, name in enumerate(booths, start=1):
 3 음료
 ```
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-enumerate
@@ -407,7 +434,7 @@ print(total)
 
 `total = 0`을 반복문 앞에 두는 이유도 중요합니다. 첫 번째 값을 더하기 전에 **누적 결과를 저장할 시작값**이 필요하기 때문입니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-accumulator
@@ -456,7 +483,7 @@ for money in sales:
 print(over)
 ```
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-counter
@@ -519,7 +546,7 @@ while count <= 5:
 
 `count`가 6이 되면 `count <= 5`가 거짓이 되고 반복이 종료됩니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-while-basic
@@ -582,7 +609,7 @@ while count <= 5:
 
 `count`의 값이 계속 1이므로 `count <= 5`는 영원히 참입니다. 따라서 반복이 끝나지 않습니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-infinite-loop
@@ -649,7 +676,7 @@ for score in scores:
 
 이 코드에서는 반복문이 점수를 하나씩 가져오는 역할을 하고, 조건문은 가져온 점수를 어떻게 처리할지 결정합니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-loop-if
@@ -782,7 +809,7 @@ print("찾았습니까?", found)
 
 처음에는 아직 찾지 않았으므로 `False`입니다. 반복하면서 `"음료"`를 만나면 `True`로 바꾸고, 이미 원하는 값을 찾았으므로 `break`를 이용해 탐색을 종료합니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-linear-search
@@ -828,7 +855,7 @@ print("최댓값:", top)
 
 처음에는 `top`이 30입니다. 이후 80을 만나면 80이 더 크므로 `top`을 80으로 바꿉니다. 45는 80보다 작으므로 그대로 유지합니다. 120을 만나면 다시 `top`을 120으로 갱신합니다.
 
-::: {.figure-standard}
+::: {.figure-wide}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-max-update
@@ -925,7 +952,7 @@ for i in range(3):
 
 안쪽 `for j`에서 `break`가 실행되면 안쪽 반복문만 종료됩니다. 바깥쪽 `for i`는 다음 반복을 계속 수행합니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-nested-break
@@ -992,7 +1019,7 @@ Python에서는 들여쓰기가 단순한 보기 좋은 정렬이 아니라 **�
 
 ### 4. `break`와 `continue`를 혼동하기
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-break-continue-choice
@@ -1041,7 +1068,7 @@ print("저녁 합계:", booth_total(evening))
 
 함수 안에 반복문의 처리 규칙을 한 번만 정의하고, 필요한 데이터만 매개변수로 전달합니다.
 
-::: {.figure-standard}
+::: {.figure-compact}
 ```{mermaid}
 %%| echo: false
 %%| label: fig-loop-function
