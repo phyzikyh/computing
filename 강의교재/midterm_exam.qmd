@@ -1,0 +1,87 @@
+# 중간고사 {.unnumbered #sec-midterm}
+
+<div id="midterm-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-midterm">정답 확인</button><button type="button" class="quiz-button reset" id="reset-midterm">다시 풀기</button><span class="quiz-score" id="score-midterm" aria-live="polite"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["[1주차] 컴퓨팅 사고와 프로그래밍의 관계를 올바르게 설명한 것은?", ["컴퓨팅 사고와 프로그래밍은 완전히 같은 개념이다", "프로그래밍 없이는 컴퓨팅 사고를 연습할 수 없다", "컴퓨팅 사고는 사고 과정이고, 프로그래밍은 그것을 컴퓨터에 전달하는 수단이다", "프로그래밍을 잘 하면 컴퓨팅 사고는 필요 없다"], 3, "컴퓨팅 사고는 \"어떻게 풀 것인가\"를 정리하는 사고 과정이며, 프로그래밍은 그 생각을 코드로 표현하는 수단입니다. 둘은 구분됩니다."],
+    ["[1주차] 소프트웨어 개발 6단계를 올바른 순서로 나열한 것은?", ["설계 → 문제 분석 → 프로그래밍 → 테스트 → 사용 → 유지보수", "문제 분석 → 설계 → 프로그래밍 → 테스트 → 사용 → 유지보수", "프로그래밍 → 설계 → 문제 분석 → 테스트 → 유지보수 → 사용", "문제 분석 → 프로그래밍 → 설계 → 테스트 → 사용 → 유지보수"], 2, "올바른 순서는 문제 분석(무엇을) → 설계(어떻게) → 프로그래밍(구현) → 테스트(검증) → 사용(배포) → 유지보수(개선)입니다."],
+    ["[1주차] 컴퓨팅 사고의 4단계 중 \"큰 문제를 작은 문제로 나누는 것\"은?", ["패턴 인식", "추상화", "문제 분해", "알고리즘"], 3, "문제 분해(Decomposition)는 복잡한 문제를 관리 가능한 작은 부분 문제로 나누는 단계입니다."],
+    ["[1주차] 알고리즘(Algorithm)의 정의로 가장 적절한 것은?", ["프로그래밍 언어의 문법 규칙", "컴퓨터 하드웨어 구동 방식", "특정 문제를 해결하기 위한 명확하고 순서가 있는 명령어의 집합", "데이터를 저장하는 자료구조"], 3, "알고리즘은 문제 해결을 위한 명확하고 유한하며 순서가 있는 절차 또는 명령어의 집합입니다."],
+    ["[1주차] 다음 중 알고리즘을 표현하는 방법이 <strong>아닌</strong> 것은?", ["자연어(우리말 설명)", "순서도(Flowchart)", "의사코드(Pseudocode)", "컴파일러(Compiler)"], 4, "컴파일러는 소스코드를 실행 가능한 형태로 변환하는 도구이며, 알고리즘 표현 방법이 아닙니다. 알고리즘은 자연어·순서도·의사코드로 표현합니다."],
+    ["[2주차] 문제 분해에 대한 설명으로 가장 적절한 것은?", ["담당자를 무조건 여러 명 배정하는 방법", "세부 작업을 가능한 한 많이 만드는 활동", "해결책 하나를 먼저 선택하는 과정", "복잡한 문제를 해결 가능한 작은 문제로 나누고 결과를 다시 결합하는 사고"], 4, "문제 분해는 작은 문제를 만드는 데서 끝나지 않고 각 결과를 다시 연결해 전체 문제를 해결하는 사고다."],
+    ["[2주차] 일반화에 대한 설명으로 가장 적절한 것은?", ["한 사례의 숫자를 그대로 외우는 것", "예외 사례를 모두 제거하는 것", "공통 해결 구조를 새로운 문제에 맞게 재사용하는 것", "큰 문제를 담당자별로 배정하는 것"], 3, "일반화는 발견한 공통 구조를 유지하면서 새로운 문제의 조건에 맞게 고쳐 적용하는 과정이다."],
+    ["[2주차] 문제 분해와 패턴 인식의 관계를 가장 정확하게 설명한 것은?", ["분해는 패턴 인식이 끝난 뒤 한 번만 한다", "분해로 반복 구조를 찾고, 발견한 패턴으로 분해를 다시 개선할 수 있다", "두 사고는 서로 관련이 없다", "패턴을 찾으면 분해 결과를 결합하지 않아도 된다"], 2, "두 사고는 한 방향으로만 진행되지 않으며 서로의 결과를 이용해 반복적으로 개선할 수 있다."],
+    ["[3주차] 추상화의 핵심 설명은?", ["세부사항을 모두 보존한다", "코드를 다른 언어로 번역한다", "자료를 무작위로 제거한다", "목적에 필요한 특징만 남긴다"], 4, "추상화는 해결 목적에 필요한 특징을 남기고 불필요한 세부사항을 감춘다."],
+    ["[3주차] 여러 사례에서 공통 규칙을 만들어 새로운 사례에 적용하는 과정은?", ["일반화", "복사", "삭제", "분해"], 1, "일반화는 여러 사례의 공통 구조를 규칙으로 만들고 다른 상황에 재사용하는 과정이다."],
+    ["[3주차] '충분히 뜨거우면 잠시 기다린다'를 명확하게 고친 것은?", ["적당히 식을 때까지 기다린다", "가능하면 기다린다", "조금 기다린다", "온도가 60°C 이하가 될 때까지 1분마다 확인한다"], 4, "측정 기준과 반복 간격, 종료 조건이 있어야 실행 가능한 명령이 된다."],
+    ["[3주차] 패턴 인식과 일반화의 차이를 바르게 설명한 것은?", ["패턴 인식은 문제를 나누는 과정이고, 일반화는 나눈 문제를 삭제하는 과정이다", "패턴 인식은 알고리즘을 실행하는 과정이고, 일반화는 실행을 중단하는 과정이다", "패턴 인식은 공통점을 찾는 과정이고, 일반화는 그 공통점을 재사용 가능한 규칙으로 만드는 과정이다", "패턴 인식과 일반화는 이름만 다를 뿐 완전히 같은 과정이다"], 3, "패턴 인식에서는 여러 사례의 공통점을 발견한다. 일반화에서는 발견한 공통점을 새로운 문제에도 적용할 수 있는 규칙이나 절차로 정리한다."],
+    ["[4주차] 파이썬 변수에 대한 설명으로 옳은 것은?", ["값 객체를 가리키는 이름이다", "메모리 주소 그 자체다", "한 번 정한 자료형을 바꿀 수 없다", "숫자만 저장할 수 있다"], 1, "변수는 메모리 주소나 상자가 아니라, 값을 가진 객체를 참조하는 이름이다."],
+    ["[4주차] 학생 수를 담을 변수 이름으로 알맞은 것은?", ["student_count", "2nd_count", "student-count", "class"], 1, "숫자로 시작하거나(2nd_count) 하이픈을 쓰거나(student-count) 예약어(class)인 이름은 쓸 수 없다. 의미가 드러나는 student_count가 알맞다."],
+    ["[4주차] 사용자가 15를 입력했을 때 age = input()의 age는 어떤 자료형인가?", ["int", "str", "float", "bool"], 2, "input()은 입력을 항상 문자열(str)로 돌려준다. 숫자로 쓰려면 변환이 필요하다."],
+    ["[4주차] 나눗셈의 나머지를 구할 때 사용하는 연산자는?", ["//", "**", "/", "%"], 4, "%는 나머지, //는 몫, **는 거듭제곱, /는 실수 나눗셈이다."],
+    ["[4주차] points = 10 을 실행한 뒤 points += 5, 이어서 points *= 2 를 실행하면 points의 값은?", ["30", "15", "20", "25"], 1, "points += 5로 15가 되고, points *= 2로 30이 된다. 복합 대입은 현재 값에 연산한 결과를 다시 대입한다."],
+    ["[4주차] print('수량: ' + 3) 을 실행하면?", ["TypeError가 발생한다", "'수량: 3'이 출력된다", "'수량: '이 출력된다", "NameError가 발생한다"], 1, "문자열과 정수는 +로 바로 이을 수 없어 TypeError가 난다. f-string이나 str()로 자료형을 맞춰야 한다."],
+    ["[4주차] number = int('3.5') 를 실행하면?", ["3이 저장된다", "ValueError가 발생한다", "3.5가 저장된다", "TypeError가 발생한다"], 2, "'3.5'는 정수 형식의 문자열이 아니라 int()로 바로 바꿀 수 없어 ValueError가 난다. float('3.5')는 가능하다."],
+    ["[4주차] 앞자리에 0이 올 수 있는 학번을 저장하기에 알맞은 자료형은?", ["정수 int", "문자열 str", "실수 float", "불리언 bool"], 2, "학번은 계산 대상이 아니고 앞자리 0도 보존해야 하므로 문자열 str로 다루는 것이 알맞다."],
+    ["[5주차] 놀이기구는 키가 140cm <strong>이상</strong>인 사람만 탈 수 있습니다. 키가 정확히 140cm인 사람도 탑승할 수 있게 하는 조건식은?", ["<code>height &gt; 140</code>", "<code>height &gt;= 140</code>", "<code>height == 141</code>", "<code>height &lt;= 140</code>"], 2, "‘이상’은 기준값을 포함하므로 <code>&gt;=</code>를 사용한다. <code>&gt;</code>를 쓰면 경계값 140이 제외된다."],
+    ["[5주차] 다음 두 문장의 역할을 바르게 설명한 것은?<pre><code>age = 20\nage == 20</code></pre>", ["둘 다 <code>age</code>에 20을 저장한다.", "첫 문장은 값을 비교하고, 둘째 문장은 값을 저장한다.", "둘 다 조건문이어서 참일 때만 실행된다.", "첫 문장은 값을 대입하고, 둘째 문장은 두 값이 같은지 비교한다."], 4, "등호 하나(<code>=</code>)는 대입, 등호 두 개(<code>==</code>)는 같은지 비교하는 연산자다."],
+    ["[5주차] 다음 코드를 실행하면 어떤 문장이 출력됩니까?<pre><code>height = 138\nif height &gt;= 140:\n    print(\"탑승 가능\")\nprint(\"안내 종료\")</code></pre>", ["<code>안내 종료</code>만 출력된다.", "<code>탑승 가능</code>만 출력된다.", "두 문장이 모두 출력된다.", "아무 문장도 출력되지 않는다."], 1, "조건이 거짓이므로 들여쓴 출력문은 건너뛴다. 마지막 문장은 조건문 밖에 있어 항상 실행된다."],
+    ["[5주차] 다음 코드에서 <code>age = 22</code>일 때 잘못된 요금이 적용되는 이유는?<pre><code>if age &gt;= 14:\n    fee = 12000\nelif age &gt;= 20:\n    fee = 15000\nelse:\n    fee = 8000</code></pre>", ["먼저 참이 된 <code>age &gt;= 14</code> 갈래만 실행되므로 성인 조건에 도달하지 않는다.", "<code>elif</code>는 아래에서 위로 검사한다.", "<code>age &gt;= 20</code>은 22에서 거짓이다.", "<code>else</code>가 언제나 앞의 요금을 덮어쓴다."], 1, "<code>if-elif-else</code>는 위에서부터 검사해 처음 참인 갈래 하나만 실행한다. 겹치는 나이 조건은 큰 기준부터 검사해야 한다."],
+    ["[5주차] 출석률이 80% 이상<strong>이고</strong> 과제 점수가 70점 이상이어야 통과합니다. 올바른 조건식은?", ["<code>attendance &gt;= 80 or assignment &gt;= 70</code>", "<code>attendance &gt; 80 and assignment &gt; 70</code>", "<code>not (attendance &gt;= 80 and assignment &gt;= 70)</code>", "<code>attendance &gt;= 80 and assignment &gt;= 70</code>"], 4, "두 기준을 모두 만족해야 하므로 <code>and</code>를 쓰고, ‘이상’은 <code>&gt;=</code>로 표현한다."],
+    ["[5주차] 다음 함수에서 <code>age</code>와 <code>return</code>의 역할을 바르게 설명한 것은?<pre><code>def is_adult(age):\n    return age &gt;= 20</code></pre>", ["<code>age</code>는 함수 이름이고, <code>return</code>은 입력을 받는다.", "<code>age</code>는 출력값이고, <code>return</code>은 조건을 반복한다.", "<code>age</code>는 함수 밖에서만 쓸 수 있고, <code>return</code>은 화면에 출력한다.", "<code>age</code>는 전달받는 매개변수이고, <code>return</code>은 판단 결과를 돌려준다."], 4, "매개변수 <code>age</code>는 호출할 때 전달한 값을 받고, <code>return</code>은 비교 결과를 호출한 곳으로 돌려준다."],
+    ["[5주차] 다음 코드의 출력 결과는?<pre><code>def is_adult(age):\n    return age &gt;= 20\n\nprint(is_adult(20))</code></pre>", ["<code>True</code>", "<code>False</code>", "<code>20</code>", "<code>성인</code>"], 1, "20은 ‘20세 이상’에 포함되므로 비교 결과인 <code>True</code>가 반환되고 출력된다."],
+    ["[5주차] 키가 140cm 이상<strong>이거나</strong> 보호자를 동반하면 탑승할 수 있습니다. 키가 132cm이고 보호자를 동반한 방문객을 잘못 거절하는 조건식은?", ["<code>height &gt;= 140 or with_guardian</code>", "<code>with_guardian or height &gt;= 140</code>", "<code>not (height &lt; 140 and not with_guardian)</code>", "<code>height &gt;= 140 and with_guardian</code>"], 4, "규칙은 둘 중 하나만 참이어도 통과하는 <code>or</code>다. <code>and</code>를 쓰면 키와 보호자 조건을 모두 요구해 이 방문객을 잘못 거절한다."],
+    ["[5주차] 다음 코드의 세 빈칸에 순서대로 들어갈 키워드로 알맞은 것은?<pre><code>age = 15\n\n_____ age &gt;= 20:\n    fee = 15000\n    category = \"성인\"\n_____ age &gt;= 14:\n    fee = 12000\n    category = \"청소년\"\n_____:\n    fee = 8000\n    category = \"어린이\"</code></pre>", ["<code>if, else, elif</code>", "<code>if, elif, else</code>", "<code>elif, if, else</code>", "<code>if, if, else</code>"], 2, "가장 먼저 좁은 조건을 <code>if</code>로, 이어지는 배타 조건을 <code>elif</code>로, 나머지를 <code>else</code>로 처리한다."],
+    ["[5주차] 다음 코드가 나이를 받아 성인 여부를 반환하도록 두 빈칸에 들어갈 키워드는?<pre><code>_____ is_adult(age):\n    _____ age &gt;= 20\n\nprint(is_adult(22))</code></pre>", ["<code>def, return</code>", "<code>def, print</code>", "<code>function, return</code>", "<code>def, yield</code>"], 1, "함수 정의는 <code>def</code>, 결과를 호출한 곳으로 돌려주는 것은 <code>return</code>이다."],
+    ["[6주차] 다음 코드의 실행이 끝난 뒤 <code>total</code>에 저장되는 값은?<pre><code>sales = [120000, 85000, 96000, 110000]\n\ntotal = 0\nfor money in sales:\n    total += money\n\nprint(total)</code></pre>", ["401000", "120000", "411000", "96000"], 3, "0에서 시작해 네 매출을 더하면 120000+85000+96000+110000 = 411000이다."],
+    ["[6주차] 60점 이상이면 ‘합격’, 아니면 ‘불합격’을 출력하려면 빈칸에 들어갈 조건문은?<pre><code>scores = [85, 45, 70, 30, 90]\n\nfor score in scores:\n    ____________:\n        print(score, \"합격\")\n    else:\n        print(score, \"불합격\")</code></pre>", ["<code>if score &gt;= 60</code>", "<code>if score &gt; 60</code>", "<code>while score &gt;= 60</code>", "<code>elif score &gt;= 60</code>"], 1, "60점 ‘이상’은 경계값 60을 포함하므로 <code>&gt;=</code>, 각 점수를 한 번 판단하므로 <code>if</code>를 쓴다."],
+    ["[6주차] 매출이 5만 원 미만이면 출력하지 않고 다음 매출로 넘어가도록 빈칸에 들어갈 키워드는?<pre><code>sales = [120000, 45000, 98000, 30000, 150000]\n\nfor money in sales:\n    if money &lt; 50000:\n        __________\n    print(f\"{money}원 - 목표 달성\")</code></pre>", ["<code>break</code>", "<code>pass</code>", "<code>return</code>", "<code>continue</code>"], 4, "현재 반복의 남은 코드를 건너뛰고 다음 반복으로 넘어가므로 <code>continue</code>다. <code>break</code>는 반복 자체를 끝낸다."],
+    ["[4주차] 다음 코드에서 <code>print(total)</code>이 출력하는 값은?<pre><code>price = 18000\nquantity = 2\ntotal = price * quantity\nprint(total)</code></pre>", ["18000", "36000", "20000", "9000"], 2, "<code>total</code>에는 18000 × 2 = 36000이 저장되어 출력된다."],
+    ["[6주차] <code>i</code>가 1부터 4까지 출력되도록 빈칸에 들어갈 값은?<pre><code>for i in range(1, _____):\n    print(i)</code></pre>", ["4", "6", "5", "10"], 3, "<code>range(1, 5)</code>는 1, 2, 3, 4를 만든다. 끝값은 포함되지 않는다."]
+  ];
+
+  const marks = ["\u2460", "\u2461", "\u2462", "\u2463"];
+  const root = document.getElementById("midterm-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="mq${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>\uc815\ub2f5 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-midterm");
+
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+
+  document.getElementById("check-midterm").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `\uc810\uc218: ${correctCount} / ${questions.length}`;
+  });
+
+  document.getElementById("reset-midterm").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
+});
+</script>
+```

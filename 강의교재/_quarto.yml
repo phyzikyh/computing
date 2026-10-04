@@ -62,6 +62,10 @@ book:
           text: "연습문제"
         - href: week06_code.qmd
           text: "코딩실습"
+    - part: "중간고사"
+      chapters:
+        - href: midterm_exam.qmd
+          text: "중간고사 문제"
     - part: "7주차 · 복합 자료구조"
       chapters:
         - href: week07_lecture.qmd
