@@ -1,5 +1,9 @@
 # 중간고사 {.unnumbered #sec-midterm}
 
+::: {.callout-note}
+보기 및 순서는 달라질 수 있습니다.
+:::
+
 <div id="midterm-quiz"></div>
 <div class="quiz-actions"><button type="button" class="quiz-button check" id="check-midterm">정답 확인</button><button type="button" class="quiz-button reset" id="reset-midterm">다시 풀기</button><span class="quiz-score" id="score-midterm" aria-live="polite"></span></div>
 
