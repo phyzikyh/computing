@@ -1,12 +1,12 @@
-# 연습문제 {#sec-ch4-quiz}
+# 연습문제 {.unnumbered #sec-ch4-quiz}
 
 <div id="week04-quiz"></div>
-<div class="quiz-actions"><button class="quiz-button check" id="check-week04">정답 확인</button><button class="quiz-button reset" id="reset-week04">다시 풀기</button><span class="quiz-score" id="score-week04"></span></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week04">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week04">다시 풀기</button><span class="quiz-score" id="score-week04" aria-live="polite"></span></div>
 
 ```{=html}
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
-const items=[
+document.addEventListener("DOMContentLoaded", () => {
+  const items=[
 ["파이썬 변수에 대한 설명으로 옳은 것은?",["값 객체를 가리키는 이름이다","메모리 주소 그 자체다","한 번 정한 자료형을 바꿀 수 없다","숫자만 저장할 수 있다"],1,"변수는 메모리 주소나 상자가 아니라, 값을 가진 객체를 참조하는 이름이다."],
 ["number = 2026, text = '2026' 일 때 옳은 것은?",["둘 다 int다","둘 다 str다","number는 int, text는 str로 자료형이 다르다","둘은 완전히 같은 값이다"],3,"따옴표 없는 2026은 정수 int, 따옴표로 감싼 '2026'은 문자열 str이다. 화면 표시가 같아도 종류가 다르다."],
 ["학생 수를 담을 변수 이름으로 알맞은 것은?",["student_count","2nd_count","student-count","class"],1,"숫자로 시작하거나(2nd_count) 하이픈을 쓰거나(student-count) 예약어(class)인 이름은 쓸 수 없다. 의미가 드러나는 student_count가 알맞다."],
@@ -27,6 +27,45 @@ const items=[
 ["파이썬에서 x = x + 1 이 정상 실행되는 이유는?",["수학처럼 양변이 같다는 뜻이기 때문","x가 항상 0이기 때문","문법 오류라서 실행되지 않기 때문","= 는 오른쪽을 먼저 계산한 결과를 왼쪽 이름에 대입하는 기호이기 때문"],4,"대입문의 =는 등식이 아니라 오른쪽 값을 왼쪽 이름에 연결하라는 뜻이다. 현재 x에 1을 더한 결과를 다시 x에 대입한다."],
 ["print(0.1 + 0.2)의 결과로 알맞은 설명은?",["정확히 0.3이 출력된다","오류가 발생한다","0.30000000000000004처럼 미세한 오차가 나타날 수 있다","0이 출력된다"],3,"컴퓨터가 일부 소수를 이진수로 정확히 표현하지 못해 실수 계산에 작은 표현 오차가 생길 수 있다."],
 ["앞자리에 0이 올 수 있는 학번을 저장하기에 알맞은 자료형은?",["정수 int","문자열 str","실수 float","불리언 bool"],2,"학번은 계산 대상이 아니고 앞자리 0도 보존해야 하므로 문자열 str로 다루는 것이 알맞다."]];
-const marks=["①","②","③","④"],root=document.getElementById("week04-quiz");root.innerHTML=items.map((x,i)=>`<section class="quiz-question" data-answer="${x[2]}"><p>${i+1}. ${x[0]}</p><div class="quiz-options">${x[1].map((c,j)=>`<label class="quiz-option"><input type="radio" name="w4q${i}" value="${j+1}">${marks[j]} ${c}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[x[2]-1]}</strong> ${x[3]}</div></section>`).join("");const qs=[...root.querySelectorAll(".quiz-question")],score=document.getElementById("score-week04");root.addEventListener("change",e=>{if(!e.target.matches("input"))return;const q=e.target.closest(".quiz-question");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected"));e.target.closest(".quiz-option").classList.add("selected")});document.getElementById("check-week04").onclick=()=>{let n=0;qs.forEach(q=>{q.classList.add("checked");q.classList.remove("unanswered");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("is-correct","is-incorrect"));const a=q.dataset.answer,s=q.querySelector("input:checked");q.querySelector(`input[value="${a}"]`).closest(".quiz-option").classList.add("is-correct");if(!s)q.classList.add("unanswered");else if(s.value===a)n++;else s.closest(".quiz-option").classList.add("is-incorrect")});score.textContent=`점수: ${n} / 20`};document.getElementById("reset-week04").onclick=()=>{qs.forEach(q=>{q.className="quiz-question";q.querySelectorAll("input").forEach(i=>i.checked=false);q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected","is-correct","is-incorrect"))});score.textContent=""};});
+
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week04-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w4q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week04");
+
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+
+  document.getElementById("check-week04").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+
+  document.getElementById("reset-week04").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
+});
 </script>
 ```

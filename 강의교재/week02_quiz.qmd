@@ -1,4 +1,4 @@
-# 연습문제 {#sec-ch2-quiz}
+# 연습문제 {.unnumbered #sec-ch2-quiz}
 
 <div id="week02-quiz"></div>
 <div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week02">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week02">다시 풀기</button><span class="quiz-score" id="score-week02" aria-live="polite"></span></div>
@@ -28,24 +28,29 @@ document.addEventListener("DOMContentLoaded", () => {
     ["도서관 세미나실 예약, 체육관 코트 예약, 학교 버스 좌석 예약에서 공통으로 재사용할 수 있는 처리 구조는?", ["청소 → 개방 → 요금 인상 → 폐쇄", "예약 취소 → 조건 삭제 → 무조건 승인", "신청 접수 → 이용 가능 여부 확인 → 배정·대기 결정 → 결과 안내", "촬영 → 홍보 → 만족도 조사 → 예산 편성"], 3, "세 예약 업무는 대상이 달라도 ‘접수 → 가능 여부 확인 → 배정·대기 결정 → 안내’ 구조를 공유한다. 이 공통 구조를 새 문제에 다시 쓰는 것이 일반화다."],
     ["‘동아리 MT 준비’를 같은 수준의 하위 문제로 알맞게 나눈 것은?", ["숙소 예약, 교통 준비, 식사 계획, 예산 관리, 프로그램 구성", "숙소 예약, 교통 준비, 김밥 재료 색깔 고르기", "즐거운 일·귀찮은 일·어려운 일", "1일차·2일차·집에 온 뒤"], 1, "다섯 항목은 모두 MT 준비의 큰 기능으로 크기가 비슷하다. ‘김밥 재료 색깔’은 식사 계획 아래의 세부 작업이고, 나머지 보기는 기능이 아니라 감정·시간으로만 나눈 분류다."]
   ];
+
   const marks = ["①", "②", "③", "④"];
   const root = document.getElementById("week02-quiz");
-  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, c) => `<label class="quiz-option"><input type="radio" name="q${index + 1}" value="${c + 1}">${marks[c]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w2q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+
   const questions = [...root.querySelectorAll(".quiz-question")];
   const score = document.getElementById("score-week02");
+
   root.addEventListener("change", (event) => {
     if (!event.target.matches('input[type="radio"]')) return;
     const question = event.target.closest(".quiz-question");
-    question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected"));
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
     event.target.closest(".quiz-option").classList.add("selected");
   });
+
   document.getElementById("check-week02").addEventListener("click", () => {
     let correctCount = 0;
     questions.forEach((question) => {
-      question.classList.add("checked"); question.classList.remove("unanswered");
-      question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("is-correct", "is-incorrect"));
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
       const answer = question.dataset.answer;
-      const selected = question.querySelector("input:checked");
+      const selected = question.querySelector('input[type="radio"]:checked');
       question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
       if (!selected) question.classList.add("unanswered");
       else if (selected.value === answer) correctCount += 1;
@@ -53,8 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     score.textContent = `점수: ${correctCount} / ${questions.length}`;
   });
+
   document.getElementById("reset-week02").addEventListener("click", () => {
-    questions.forEach((question) => { question.classList.remove("checked", "unanswered"); question.querySelectorAll("input").forEach(i => i.checked = false); question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected", "is-correct", "is-incorrect")); });
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
     score.textContent = "";
   });
 });

@@ -1,4 +1,4 @@
-# 연습문제 {#sec-ch3-quiz}
+# 연습문제 {.unnumbered #sec-ch3-quiz}
 
 <div id="week03-quiz"></div>
 <div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week03">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week03">다시 풀기</button><span class="quiz-score" id="score-week03" aria-live="polite"></span></div>
@@ -6,7 +6,7 @@
 ```{=html}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
- const items = [
+  const items = [
  ["추상화의 핵심 설명은?",["세부사항을 모두 보존한다","코드를 다른 언어로 번역한다","자료를 무작위로 제거한다","목적에 필요한 특징만 남긴다"],4,"추상화는 해결 목적에 필요한 특징을 남기고 불필요한 세부사항을 감춘다."],
  ["지하철 노선도에서 가장 중요하게 남겨야 할 정보는?",["건물 외벽 색상","역의 순서와 환승 관계","실제 도로의 굴곡","상점의 영업시간"],2,"노선도의 목적은 이동 경로 파악이므로 역의 연결과 환승 관계가 핵심이다."],
  ["블랙박스 모델의 특징은?",["모든 내부 코드를 공개해야 한다","입력 없이 출력만 만든다","입력·출력 규칙을 알면 내부 구현을 몰라도 사용할 수 있다","오류를 자동으로 없앤다"],3,"블랙박스는 내부 구현보다 외부에서 관찰되는 입력, 처리 결과, 인터페이스에 집중한다."],
@@ -28,12 +28,45 @@ document.addEventListener("DOMContentLoaded", () => {
  ["패턴 인식과 일반화의 차이를 바르게 설명한 것은?",["패턴 인식은 문제를 나누는 과정이고, 일반화는 나눈 문제를 삭제하는 과정이다","패턴 인식은 알고리즘을 실행하는 과정이고, 일반화는 실행을 중단하는 과정이다","패턴 인식은 공통점을 찾는 과정이고, 일반화는 그 공통점을 재사용 가능한 규칙으로 만드는 과정이다","패턴 인식과 일반화는 이름만 다를 뿐 완전히 같은 과정이다"],3,"패턴 인식에서는 여러 사례의 공통점을 발견한다. 일반화에서는 발견한 공통점을 새로운 문제에도 적용할 수 있는 규칙이나 절차로 정리한다."],
  ["다음 중 알고리즘의 명확성·유한성·실행 가능성을 모두 만족하는 축제 운영 지시는?",["관람객이 많으면 적당히 입장시킨다","매시 정각에 출입구별 대기 인원을 세어 운영본부에 보고한다","행사가 조용해질 때까지 계속 안내한다","필요하면 존재하지 않는 제3창고에서 의자를 가져온다"],2,"측정 시점, 확인할 대상, 수행할 행동이 분명하고 실제로 실행할 수 있으며 한 번의 보고 절차가 끝나는 지시다."]
  ];
- const marks=["①","②","③","④"], root=document.getElementById("week03-quiz");
- root.innerHTML=items.map((x,i)=>`<section class="quiz-question" data-answer="${x[2]}"><p>${i+1}. ${x[0]}</p><div class="quiz-options">${x[1].map((c,j)=>`<label class="quiz-option"><input type="radio" name="w3q${i+1}" value="${j+1}">${marks[j]} ${c}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[x[2]-1]}</strong> ${x[3]}</div></section>`).join("");
- const qs=[...root.querySelectorAll(".quiz-question")], score=document.getElementById("score-week03");
- root.addEventListener("change",e=>{if(!e.target.matches('input[type="radio"]'))return;const q=e.target.closest(".quiz-question");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected"));e.target.closest(".quiz-option").classList.add("selected");});
- document.getElementById("check-week03").addEventListener("click",()=>{let n=0;qs.forEach(q=>{q.classList.add("checked");q.classList.remove("unanswered");q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("is-correct","is-incorrect"));const a=q.dataset.answer,s=q.querySelector("input:checked");q.querySelector(`input[value="${a}"]`).closest(".quiz-option").classList.add("is-correct");if(!s)q.classList.add("unanswered");else if(s.value===a)n++;else s.closest(".quiz-option").classList.add("is-incorrect");});score.textContent=`점수: ${n} / ${qs.length}`;});
- document.getElementById("reset-week03").addEventListener("click",()=>{qs.forEach(q=>{q.classList.remove("checked","unanswered");q.querySelectorAll("input").forEach(i=>i.checked=false);q.querySelectorAll(".quiz-option").forEach(o=>o.classList.remove("selected","is-correct","is-incorrect"));});score.textContent="";});
+
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week03-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w3q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week03");
+
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+
+  document.getElementById("check-week03").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+
+  document.getElementById("reset-week03").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
 });
 </script>
 ```
