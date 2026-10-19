@@ -1,0 +1,62 @@
+# 연습문제 {#sec-ch2-quiz}
+
+<div id="week02-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week02">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week02">다시 풀기</button><span class="quiz-score" id="score-week02" aria-live="polite"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["‘축제 입장 줄이 길다’와 ‘입구를 하나 더 만들자’ 사이에 먼저 규정해야 할 것은?", ["홍보 문구", "행사 후기", "해결해야 할 문제", "담당자의 이름"], 3, "긴 줄은 관찰된 현상이고 입구 추가는 해결책이다. 그 사이에서 먼저 규정할 것은 현재 상태와 목표가 포함된 ‘해결해야 할 문제’다."],
+    ["‘축제 입장을 편리하게 만들자’를 측정 가능한 문제로 바꿀 때 가장 적절한 문장은?", ["개막 전후 평균 대기시간을 20분에서 8분 이하로 줄인다", "모두가 만족하는 축제를 만든다", "입구를 무조건 두 개 늘린다", "입장 담당자가 더 열심히 일한다"], 1, "현재값 20분, 목표값 8분 이하, 측정 범위가 들어 있어 해결 여부를 확인할 수 있다."],
+    ["문제 분해에 대한 설명으로 가장 적절한 것은?", ["담당자를 무조건 여러 명 배정하는 방법", "세부 작업을 가능한 한 많이 만드는 활동", "해결책 하나를 먼저 선택하는 과정", "복잡한 문제를 해결 가능한 작은 문제로 나누고 결과를 다시 결합하는 사고"], 4, "문제 분해는 작은 문제를 만드는 데서 끝나지 않고 각 결과를 다시 연결해 전체 문제를 해결하는 사고다."],
+    ["대학 축제 준비를 같은 수준의 하위 문제로 나눈 것은?", ["장소 관리·포스터 글자색·예산 관리", "장소·일정, 부스 운영, 안전 관리, 홍보, 물품·예산", "성공한 일·실패한 일·보통인 일", "오늘 할 일·내일 할 일·나중에 할 일"], 2, "다섯 항목은 모두 축제 준비의 큰 기능으로 서로 비슷한 크기의 하위 문제다."],
+    ["하위 문제를 나누기 전에 목표와 조건을 먼저 확인해야 하는 이유는?", ["표를 더 크게 만들기 위해", "모든 일을 병렬로 처리하기 위해", "담당자 수를 늘리기 위해", "필요한 하위 문제와 해결 범위를 정하기 위해"], 4, "완료 기준과 제약조건이 분명해야 목표 달성에 필요한 부분만 알맞게 나눌 수 있다."],
+    ["하위 문제의 ‘입력’과 ‘출력’을 구분하는 주된 목적은?", ["각 부분이 필요한 정보와 만들어 내는 결과를 분명히 하기 위해", "업무 이름을 짧게 만들기 위해", "모든 업무를 독립적으로 만들기 위해", "처리 순서를 없애기 위해"], 1, "입력과 출력을 밝히면 각 부분의 역할과 다음 부분으로 전달되는 결과가 분명해진다."],
+    ["좋은 문제 분해인지 확인하는 기준에 해당하지 않는 것은?", ["누락된 부분이 없는가", "같은 일을 중복해서 다루지 않는가", "각 부분을 서로 다른 사람이 맡았는가", "부분 결과를 합치면 전체 목표가 달성되는가"], 3, "역할을 몇 명이 맡는지는 분해의 품질 기준이 아니다. 누락·중복·크기·결합·명확성을 점검한다."],
+    ["‘일정 관리·예산 관리·포스터 제목 색상 변경’이라는 분해의 문제점은?", ["모든 항목이 지나치게 크다", "서로 크기와 수준이 다른 항목을 같은 단계에 놓았다", "항목 사이에 중복이 전혀 없다", "시간 순서가 완전히 같다"], 2, "일정과 예산은 큰 기능이지만 제목 색상 변경은 홍보물 제작 아래에 놓일 세부 작업이다."],
+    ["문제 분해와 역할 분담의 관계를 가장 정확하게 설명한 것은?", ["문제의 작업과 관계를 먼저 분해한 뒤 필요하면 역할을 나눈다", "두 개념은 언제나 같다", "혼자 해결하면 문제 분해가 필요 없다", "역할부터 정한 뒤 문제를 만든다"], 1, "문제 분해는 문제의 구조를 나누는 사고이고, 역할 분담은 그 결과를 사람에게 배정하는 일이다."],
+    ["패턴 인식이 수열 규칙 찾기보다 넓은 개념인 이유는?", ["숫자를 사용하지 않기 때문에", "모든 문제의 정답을 같게 만들기 때문에", "차이점과 예외를 무시하기 때문에", "대상의 특징뿐 아니라 처리 과정과 해결 전략의 공통성도 찾기 때문에"], 4, "패턴 인식은 데이터의 모양뿐 아니라 반복되는 절차와 문제 구조까지 대상으로 한다."],
+    ["공통 패턴을 찾은 뒤에도 각 업무의 차이점을 확인해야 하는 까닭은?", ["패턴을 사용하지 않기 위해", "업무마다 승인 기준과 예외 조건이 다를 수 있기 때문에", "모든 업무의 이름을 같게 만들기 위해", "공통 절차를 삭제하기 위해"], 2, "공통 구조는 재사용하되 부스 수, 공연 시간처럼 업무별 조건과 예외는 따로 반영해야 한다."],
+    ["일반화에 대한 설명으로 가장 적절한 것은?", ["한 사례의 숫자를 그대로 외우는 것", "예외 사례를 모두 제거하는 것", "공통 해결 구조를 새로운 문제에 맞게 재사용하는 것", "큰 문제를 담당자별로 배정하는 것"], 3, "일반화는 발견한 공통 구조를 유지하면서 새로운 문제의 조건에 맞게 고쳐 적용하는 과정이다."],
+    ["‘모든 축제 신청은 선착순으로 승인한다’는 규칙을 검증하는 가장 좋은 방법은?", ["규칙을 더 짧게 쓴다", "신청자 수를 숨긴다", "선착순 결과만 반복해서 확인한다", "심사나 추첨이 필요한 신청 사례에도 적용해 본다"], 4, "예외가 될 수 있는 사례에 규칙을 적용해 봐야 공통 구조는 유지되는지, 기준은 고쳐야 하는지 알 수 있다."],
+    ["문제 분해와 패턴 인식의 관계를 가장 정확하게 설명한 것은?", ["분해는 패턴 인식이 끝난 뒤 한 번만 한다", "분해로 반복 구조를 찾고, 발견한 패턴으로 분해를 다시 개선할 수 있다", "두 사고는 서로 관련이 없다", "패턴을 찾으면 분해 결과를 결합하지 않아도 된다"], 2, "두 사고는 한 방향으로만 진행되지 않으며 서로의 결과를 이용해 반복적으로 개선할 수 있다."],
+    ["축제 문제 해결안을 최종 검토할 때 가장 적절한 질문은?", ["부분 결과를 합쳤을 때 전체 목표와 제약조건을 충족하는가", "하위 문제의 이름이 모두 같은 길이인가", "표에 가능한 한 많은 항목을 적었는가", "모든 작업을 한 사람이 처리하는가"], 1, "좋은 해결안은 부분 결과를 다시 결합했을 때 처음 정한 목표를 제약조건 안에서 달성해야 한다."],
+    ["문제를 작은 문제로 나누는 정도에 대한 설명으로 가장 정확한 것은?", ["무조건 잘게 나눌수록 항상 좋다", "한 번 나눈 분해는 절대 고치지 않는다", "이해하고 실행·검증할 수 있는 수준까지만 나누는 것이 좋다", "나눈 부분은 다시 합칠 필요가 없다"], 3, "지나치게 잘게 쪼개면 전체 그림을 잃는다. 이해·실행·검증이 가능한 수준까지만 나눈다."],
+    ["비슷해 보이는 문제에 이미 만든 해결 방법을 사용할 때 옳은 태도는?", ["구조가 비슷하면 조건까지 그대로 복사한다", "공통 구조는 재사용하되 달라진 조건과 예외를 확인해 고친다", "조금이라도 다르면 처음부터 새로 만든다", "예외 상황은 무시하고 규칙을 그대로 적용한다"], 2, "공통 구조는 다시 쓸 수 있지만 문제마다 조건과 예외가 다르므로 달라진 부분을 확인해 고쳐야 한다."],
+    ["카페 개점 준비 작업 중, 앞 작업의 결과가 있어야 다음 작업을 시작할 수 있는(순차 관계) 작업 쌍은?", ["간판 불 켜기 → 의자 정리", "의자 정리 → 원두 갈기", "간판 불 켜기 → 원두 갈기", "원두 갈기 → 에스프레소 내리기"], 4, "에스프레소는 갈아 둔 원두가 있어야 내릴 수 있어 두 작업은 순차 관계다. 나머지는 서로 결과가 필요 없어 순서를 바꾸거나 동시에 할 수 있다."],
+    ["도서관 세미나실 예약, 체육관 코트 예약, 학교 버스 좌석 예약에서 공통으로 재사용할 수 있는 처리 구조는?", ["청소 → 개방 → 요금 인상 → 폐쇄", "예약 취소 → 조건 삭제 → 무조건 승인", "신청 접수 → 이용 가능 여부 확인 → 배정·대기 결정 → 결과 안내", "촬영 → 홍보 → 만족도 조사 → 예산 편성"], 3, "세 예약 업무는 대상이 달라도 ‘접수 → 가능 여부 확인 → 배정·대기 결정 → 안내’ 구조를 공유한다. 이 공통 구조를 새 문제에 다시 쓰는 것이 일반화다."],
+    ["‘동아리 MT 준비’를 같은 수준의 하위 문제로 알맞게 나눈 것은?", ["숙소 예약, 교통 준비, 식사 계획, 예산 관리, 프로그램 구성", "숙소 예약, 교통 준비, 김밥 재료 색깔 고르기", "즐거운 일·귀찮은 일·어려운 일", "1일차·2일차·집에 온 뒤"], 1, "다섯 항목은 모두 MT 준비의 큰 기능으로 크기가 비슷하다. ‘김밥 재료 색깔’은 식사 계획 아래의 세부 작업이고, 나머지 보기는 기능이 아니라 감정·시간으로만 나눈 분류다."]
+  ];
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week02-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, c) => `<label class="quiz-option"><input type="radio" name="q${index + 1}" value="${c + 1}">${marks[c]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week02");
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+  document.getElementById("check-week02").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked"); question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector("input:checked");
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+  document.getElementById("reset-week02").addEventListener("click", () => {
+    questions.forEach((question) => { question.classList.remove("checked", "unanswered"); question.querySelectorAll("input").forEach(i => i.checked = false); question.querySelectorAll(".quiz-option").forEach(o => o.classList.remove("selected", "is-correct", "is-incorrect")); });
+    score.textContent = "";
+  });
+});
+</script>
+```

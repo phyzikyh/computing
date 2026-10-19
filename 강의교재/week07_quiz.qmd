@@ -1,212 +1,72 @@
-# 연습문제 {#sec-ch7-quiz}
+# 연습문제 {.unnumbered #sec-ch7-quiz}
 
----
+<div id="week07-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week07">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week07">다시 풀기</button><span class="quiz-score" id="score-week07" aria-live="polite"></span></div>
 
-**1.** 컴퓨터 메모리에서 여러 개의 연관된 데이터를 하나의 묶음으로 구조화하여 관리하는 방식을 무엇이라 하는가?
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["여러 값을 일정한 규칙에 따라 묶어 저장하고 다루는 방식을 무엇이라 하는가?", ["컴파일러", "중앙처리장치", "자료구조", "인덱스"], 3, "여러 값을 일정한 규칙으로 묶어 저장·관리하는 방식을 자료구조라 한다. 리스트·튜플·딕셔너리가 대표적이다."],
+    ["리스트에 대한 설명으로 옳은 것은?", ["대괄호 <code>[ ]</code>로 만들고 순서가 있으며 값을 추가·수정·삭제할 수 있다", "소괄호로 만들고 값을 바꿀 수 없다", "키로만 값을 찾는다", "값의 순서가 없다"], 1, "리스트는 대괄호로 만들고 순서가 있으며, 가변 자료형이라 추가·수정·삭제가 가능하다."],
+    ["<code>booths = [\"김밥\", \"떡볶이\", \"음료\", \"솜사탕\"]</code>일 때 <code>booths[-1]</code>의 값은?", ["<code>\"음료\"</code>", "<code>\"솜사탕\"</code>", "<code>\"김밥\"</code>", "<code>\"떡볶이\"</code>"], 2, "음수 인덱스 -1은 리스트의 마지막 값을 가리키므로 솜사탕이다."],
+    ["<code>sales = [120000, 85000, 96000, 110000, 73000]</code>일 때 <code>sales[1:3]</code>의 결과는?", ["<code>[85000, 96000, 110000]</code>", "<code>[120000, 85000]</code>", "<code>[96000, 110000]</code>", "<code>[85000, 96000]</code>"], 4, "슬라이싱 [1:3]은 인덱스 1과 2를 포함하고 끝 인덱스 3은 포함하지 않는다."],
+    ["리스트 맨 뒤에 값 하나를 붙일 때 쓰는 메서드는?", ["<code>append()</code>", "<code>insert()</code>", "<code>pop()</code>", "<code>remove()</code>"], 1, "append()는 리스트 맨 뒤에 값을 추가한다. insert()는 위치 지정 삽입, pop()은 꺼내며 삭제, remove()는 값으로 삭제한다."],
+    ["<code>result = sales.sort()</code>를 실행하면 <code>result</code>에 담기는 것은?", ["정렬된 새 리스트", "오류", "<code>None</code>", "원본 리스트의 복사본"], 3, "sort()는 리스트를 제자리에서 정렬하고 아무것도 돌려주지 않으므로 None이 담긴다. 정렬된 새 리스트가 필요하면 sorted()를 쓴다."],
+    ["원본 리스트를 그대로 두고 정렬된 새 리스트를 얻으려면?", ["<code>sales.sort()</code>", "<code>del sales</code>", "<code>sales.append()</code>", "<code>sorted(sales)</code>"], 4, "sorted()는 정렬된 새 리스트를 돌려주고 원본은 바꾸지 않는다. sort()는 원본을 제자리에서 정렬한다."],
+    ["<code>a = [1, 2]</code>, <code>b = a</code>, <code>b.append(3)</code>을 실행한 뒤 <code>a</code>의 값은?", ["<code>[1, 2]</code>", "<code>[1, 2, 3]</code>", "<code>[3]</code>", "오류"], 2, "b = a는 복사가 아니라 같은 리스트에 이름을 하나 더 붙인 별칭이다. b를 바꾸면 a도 함께 바뀐다."],
+    ["리스트 <code>a</code>와 따로 움직이는 사본을 만들려면?", ["<code>b = a</code>", "<code>b is a</code>", "<code>b = a.copy()</code>", "<code>b == a</code>"], 3, "copy()(또는 a[:], list(a))는 같은 값을 가진 새 리스트를 만든다. b = a는 별칭일 뿐 사본이 아니다."],
+    ["리스트를 함수에 넘겨 함수 안에서 <code>append()</code>하면 원본 리스트는?", ["함께 바뀐다", "바뀌지 않는다", "오류가 난다", "<code>None</code>이 된다"], 1, "함수의 매개변수는 넘겨받은 리스트의 또 다른 이름이므로, 함수 안에서 append()하면 원본도 바뀐다."],
+    ["튜플에 대한 설명으로 옳은 것은?", ["만든 뒤 값을 자유롭게 바꿀 수 있다", "키로만 값을 찾는다", "중복 값을 담을 수 없다", "한 번 만들면 값을 바꿀 수 없는 불변 자료형이다"], 4, "튜플은 소괄호로 만들고 순서가 있으나, 한 번 만들면 값을 바꿀 수 없는 불변 자료형이다."],
+    ["<code>b = (5,)</code>일 때 <code>type(b)</code>의 결과는?", ["<code>&lt;class 'int'&gt;</code>", "<code>&lt;class 'tuple'&gt;</code>", "<code>&lt;class 'list'&gt;</code>", "오류"], 2, "값이 하나인 튜플은 쉼표를 붙여 (5,)로 쓴다. 괄호만 쓴 (5)는 정수로 취급된다."],
+    ["<code>x, y = (3, 7)</code>을 실행하면 <code>y</code>의 값은?", ["<code>7</code>", "<code>3</code>", "<code>(3, 7)</code>", "<code>10</code>"], 1, "튜플 언패킹으로 x에 3, y에 7이 나누어 담긴다."],
+    ["<code>menu = {\"김밥\": 3000, \"떡볶이\": 4000}</code>일 때 <code>menu[\"떡볶이\"]</code>의 값은?", ["<code>3000</code>", "<code>\"떡볶이\"</code>", "오류", "<code>4000</code>"], 4, "딕셔너리는 키로 값을 찾는다. menu[\"떡볶이\"]는 연결된 값 4000을 돌려준다."],
+    ["<code>menu[\"솜사탕\"] = 2500</code>처럼 대입할 때, 키 <code>\"솜사탕\"</code>이 딕셔너리에 없으면?", ["오류가 난다", "기존 값이 삭제된다", "새 키와 값이 추가된다", "아무 일도 일어나지 않는다"], 3, "대입할 때 키가 없으면 새로 추가되고, 있으면 기존 값이 수정된다."],
+    ["딕셔너리에 없는 키를 조회해도 오류 없이 기본값을 돌려받으려면?", ["<code>menu[\"어묵\"]</code>", "<code>menu.get(\"어묵\", 0)</code>", "<code>del menu[\"어묵\"]</code>", "<code>menu.append(\"어묵\")</code>"], 2, "get()은 키가 없으면 None(또는 두 번째 인수로 준 기본값)을 돌려준다. 대괄호 조회는 없는 키면 오류가 난다."],
+    ["딕셔너리 <code>menu</code>에서 <code>menu[0]</code>처럼 번호로 값을 꺼내려 하면?", ["첫 번째 값이 나온다", "마지막 값이 나온다", "항상 <code>None</code>이 나온다", "키가 0인 값을 찾으며, 그런 키가 없으면 오류가 난다"], 4, "딕셔너리에는 위치 번호가 없다. menu[0]은 키가 0인 값을 찾는다는 뜻이어서, 그런 키가 없으면 오류가 난다."],
+    ["딕셔너리에서 키와 값을 함께 꺼내며 순회할 때 쓰는 것은?", ["<code>items()</code>", "<code>keys()</code>", "<code>values()</code>", "<code>sort()</code>"], 1, "items()는 (키, 값) 쌍을 하나씩 내주어 언패킹으로 키와 값을 함께 받는다."],
+    ["<code>booths = [{\"name\": \"김밥\", \"sales\": 120000}, {\"name\": \"떡볶이\", \"sales\": 85000}]</code>일 때 <code>booths[1][\"name\"]</code>의 값은?", ["<code>\"김밥\"</code>", "<code>\"떡볶이\"</code>", "<code>120000</code>", "<code>85000</code>"], 2, "booths[1]은 인덱스 1의 딕셔너리이고, 거기서 키 \"name\"의 값을 꺼내면 떡볶이다."],
+    ["<code>import math</code>로 불러온 뒤 49의 제곱근을 구하는 올바른 코드는?", ["<code>sqrt(49)</code>", "<code>math.sqrt[49]</code>", "<code>math.sqrt(49)</code>", "<code>math(49).sqrt</code>"], 3, "import 모듈이름으로 불러오면 모듈이름.함수이름() 형태로 쓴다. 따라서 math.sqrt(49)이다."]
+  ];
 
-① 자료구조 (Data Structure)  
-② 중앙처리장치  
-③ 하드디스크 파티션  
-④ 컴파일러
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week07-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w7q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
 
----
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week07");
 
-**2.** 파이썬의 리스트(List)에 대한 설명으로 옳지 **않은** 것은?
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
 
-① 대괄호(`[]`)를 사용하여 정의한다  
-② 원소의 추가, 수정, 삭제가 가능한 가변(Mutable) 시퀀스이다  
-③ 서로 다른 자료형의 원소를 함께 담을 수 없다  
-④ 0부터 시작하는 인덱스로 접근한다
+  document.getElementById("check-week07").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
 
----
-
-**3.** 리스트 `nums = [10, 20, 30, 40]`에서 맨 마지막 원소 `40`에 접근하는 가장 간결한 음수 인덱스 표현은?
-
-① `nums[-1]`  
-② `nums[-0]`  
-③ `nums[4]`  
-④ `nums[-4]`
-
----
-
-**4.** 슬라이싱 `data = [0, 1, 2, 3, 4, 5]`에서 `data[1:4]`의 결과는?
-
-① `[1, 2, 3, 4]`  
-② `[1, 2, 3]`  
-③ `[0, 1, 2, 3]`  
-④ `[2, 3, 4]`
-
----
-
-**5.** 리스트의 맨 끝에 새로운 원소 하나를 추가할 때 사용하는 메서드는?
-
-① `insert()`  
-② `append()`  
-③ `extend()`  
-④ `add()`
-
----
-
-**6.** 리스트의 특정 인덱스에 있는 원소를 꺼내서 반환하고 리스트에서 삭제하는 메서드는?
-
-① `pop()`  
-② `remove()`  
-③ `delete()`  
-④ `clear()`
-
----
-
-**7.** 튜플(Tuple)의 결정적인 특성으로 옳은 것은?
-
-① 소괄호(`()`)를 사용하며, 한 번 생성되면 원소를 수정·추가·삭제할 수 없는 불변(Immutable) 객체이다  
-② 항상 대괄호(`[]`)를 쓴다  
-③ 중복된 값을 담을 수 없다  
-④ 리스트보다 실행 속도가 항상 느리다
-
----
-
-**8.** 딕셔너리(Dictionary)의 내부 저장 방식으로 옳은 것은?
-
-① `Key: Value` 쌍(Pair)으로 구성되며, 고유한 Key를 통해 Value에 초고속 접근한다  
-② 오직 0, 1, 2 숫자로만 인덱싱된다  
-③ 중복된 Key를 무제한으로 허용한다  
-④ 모든 데이터가 정렬된 순서로만 저장된다
-
----
-
-**9.** 아래 코드의 출력 결과는?
-
-```python
-student = {"name": "김민수", "age": 20}
-student["age"] = 21
-student["major"] = "컴공"
-print(len(student))
+  document.getElementById("reset-week07").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
+});
+</script>
 ```
-
-① 2  
-② 3  
-③ 4  
-④ 21
-
----
-
-**10.** 딕셔너리에서 존재하지 않는 키를 조회할 때 `KeyError` 발생을 방지하고 안전하게 기본값을 가져오는 메서드는?
-
-① `dict.get(key, default)`  
-② `dict.find(key)`  
-③ `dict.search(key)`  
-④ `dict.pop(key)`
-
----
-
-**11.** 아래 코드의 출력 결과는?
-
-```python
-scores = [90, 70, 100, 80]
-scores.sort()
-print(scores[0])
-```
-
-① 70  
-② 90  
-③ 100  
-④ 80
-
----
-
-**12.** 리스트 `nums = [10, 20, 30, 40, 50]`에서 `nums[::-1]`을 실행했을 때의 결과는?
-
-① `[50, 40, 30, 20, 10]`  
-② `[10, 20, 30, 40, 50]`  
-③ `[50]`  
-④ `[-10, -20, -30, -40, -50]`
-
----
-
-**13.** 튜플 언패킹(Tuple Unpacking)의 올바른 예시는?
-
-```python
-point = (100, 200)
-x, y = point
-```
-
-위 코드가 실행된 후 `x + y`의 값은?
-
-① 100  
-② 200  
-③ 300  
-④ (100, 200)
-
----
-
-**14.** 딕셔너리의 모든 '키(Key)'들만 모아서 조회할 때 사용하는 메서드는?
-
-① `dict.keys()`  
-② `dict.values()`  
-③ `dict.items()`  
-④ `dict.all()`
-
----
-
-**15.** 아래 코드의 출력 결과는?
-
-```python
-items = ["사과", "바나나", "사과", "딸기"]
-items.remove("사과")
-print(items)
-```
-
-① `["바나나", "사과", "딸기"]`  
-② `["바나나", "딸기"]`  
-③ `["사과", "바나나", "딸기"]`  
-④ 에러 발생
-
----
-
-**16.** 파이썬에서 집합(Set) 자료구조의 가장 큰 특징 2가지는?
-
-① 중복 허용, 순서 보장  
-② **중복 불허(고유값만 유지), 순서 없음(Unordered)**  
-③ 수정 불가능, 인덱스 접근 가능  
-④ 키-값 매핑, 중복 허용
-
----
-
-**17.** 리스트 안의 모든 수의 합계와 평균을 구할 때 가장 편리한 내장 함수 조합은?
-
-① `sum(list) / len(list)`  
-② `total(list) / count(list)`  
-③ `avg(list)`  
-④ `max(list) - min(list)`
-
----
-
-**18.** 아래 코드의 실행 결과는?
-
-```python
-cart = {"커피": 3, "빵": 2}
-print("커피" in cart)
-```
-
-① `True`  
-② `False`  
-③ `3`  
-④ 에러
-
----
-
-**19.** 다음 중 튜플을 사용하기에 가장 적합한 상황은?
-
-① 실시간으로 상품이 추가/삭제되는 온라인 쇼핑몰 장바구니  
-② 지도 위의 고정된 GPS 위도/경도 좌표값  
-③ 매일 수정되는 사용자 게시판 댓글  
-④ 수시로 변하는 게임 플레이어 점수
-
----
-
-**20.** 딕셔너리의 키(Key)로 사용할 수 **없는** 자료형은?
-
-① 문자열 (`str`)  
-② 정수 (`int`)  
-③ 튜플 (`tuple`)  
-④ **리스트 (`list`)**

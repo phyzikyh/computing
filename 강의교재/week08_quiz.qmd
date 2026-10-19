@@ -1,0 +1,72 @@
+# 연습문제 {.unnumbered #sec-ch8-quiz}
+
+<div id="week08-quiz"></div>
+<div class="quiz-actions"><button type="button" class="quiz-button check" id="check-week08">정답 확인</button><button type="button" class="quiz-button reset" id="reset-week08">다시 풀기</button><span class="quiz-score" id="score-week08" aria-live="polite"></span></div>
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = [
+    ["코드를 쓰기 전에 입력, 출력, 제약조건을 먼저 문장으로 정리하는 가장 큰 이유는?", ["코드의 실행 속도를 높이기 위해서", "변수 이름을 짧게 만들기 위해서", "반복문을 쓰지 않고 풀기 위해서", "하위 문제를 나누고 코드가 맞는지 확인할 기준을 얻기 위해서"], 4, "규칙을 문장으로 확정해 두면 하위 문제가 나뉘고, 규칙에서 값이 바뀌는 지점이 곧 시험할 입력이 된다. 요청 한 줄인 채로 코드를 쓰면 규칙이 정해질 때마다 처음부터 다시 고치게 된다."],
+    ["문제를 푸는 순서로 알맞은 것은?", ["문제 파악 → 구현 → 분해 → 알고리즘 작성 → 패턴 찾기와 일반화 → 테스트와 검토", "문제 파악 → 분해 → 패턴 찾기와 일반화 → 알고리즘 작성 → 구현 → 테스트와 검토", "분해 → 문제 파악 → 알고리즘 작성 → 패턴 찾기와 일반화 → 구현 → 테스트와 검토", "문제 파악 → 분해 → 패턴 찾기와 일반화 → 알고리즘 작성 → 테스트와 검토 → 구현"], 2, "무엇을 입력받아 무엇을 만들지 먼저 파악한 뒤 분해하고, 반복되는 패턴을 찾아 일반화한 다음 알고리즘을 적고 구현한다. 구현한 코드를 테스트하고 검토하는 것이 마지막 단계다."],
+    ["테스트에서 틀린 결과가 나왔을 때 알맞은 대응은?", ["틀린 입력을 테스트 표에서 지워 모두 통과하게 한다", "구현 코드의 숫자만 바꿔 그 입력만 통과시킨다", "구현뿐 아니라 분해나 알고리즘이 잘못되지 않았는지도 되돌아가 확인한다", "정상값을 하나 더 시험해 통과하면 그대로 넘어간다"], 3, "문제 해결 과정은 한 번에 끝나지 않는다. 틀린 부분이 나오면 구현만 고치는 것이 아니라 분해나 알고리즘까지 앞 단계로 되돌아가 점검한다."],
+    ["참가비 계산기의 세 하위 문제(입력 확인, 기본 참가비 결정, 사전 등록 할인)의 순서를 바꿀 수 없는 이유는?", ["앞 단계의 결과가 다음 단계의 입력이 되기 때문이다", "세 단계가 서로 독립이라 동시에 실행되기 때문이다", "함수 안에서는 줄 순서가 실행에 영향을 주지 않기 때문이다", "할인 금액이 작은 단계부터 처리해야 하기 때문이다"], 1, "나이가 잘못되었다면 기본 참가비를 정할 의미가 없고, 기본 참가비가 정해지지 않았다면 할인을 계산할 수 없다. 앞 단계의 결과를 다음 단계가 이어받는 순차 관계다."],
+    ["다음 코드를 실행하면 출력되는 값은?<pre><code>def entry_fee(age, pre_registered):\n    if age &lt; 0 or age &gt; 120:\n        return None\n\n    if age &lt;= 7:\n        fee = 0\n    elif age &lt;= 19:\n        fee = 8000\n    else:\n        fee = 15000\n\n    if pre_registered:\n        fee = fee - 2000\n        if fee &lt; 0:\n            fee = 0\n\n    return fee\n\nprint(entry_fee(8, True))</code></pre>", ["8000", "0", "6000", "None"], 3, "나이 8은 8세 이상 19세 이하라 기본 참가비가 8,000원이다. 사전 등록자(<code>True</code>)이므로 2,000원을 빼 6,000원이 되고, 0보다 작지 않아 그대로 반환된다."],
+    ["7세 이하를 <code>age &lt; 7</code>로 잘못 쓴 함수의 오류를 가장 잘 드러내는 시험 입력 묶음은?", ["25, 30, 40", "7, 8", "50, 60, 70", "100, 110, 120"], 2, "규칙이 바뀌는 지점인 7과 8이 경계값이다. 25 같은 흔한 값만 시험하면 이 오류는 드러나지 않고, 나이 7에서야 0원 대신 8,000원이 나와 기대와 다른 결과가 확인된다."],
+    ["참가비 계산기가 나이 121에 대해 금액 대신 <code>None</code>을 돌려주는 이유는?", ["121은 20 이상이어서 15,000원이 되기 때문이다", "사전 등록을 하지 않았기 때문이다", "7 이하 조건에 걸리기 때문이다", "120을 넘는 나이는 잘못된 입력이라 금액을 계산하지 않기 때문이다"], 4, "나이가 0 미만이거나 120을 넘으면 잘못된 입력으로 보고 계산하지 않는다. <code>None</code>을 돌려주면 정상적인 금액과 구별할 수 있다."],
+    ["나이 19, 사전 등록 안 함(기대 결과 8,000원)이라는 시험 입력은 어떤 종류의 값인가?", ["경계값", "정상값", "예외값", "시험할 필요가 없는 값"], 1, "19는 8,000원 구간과 15,000원 구간이 갈리는 지점(19와 20)에 놓인 값이므로 경계값이다. 경계에서 판단이 어긋나는 오류는 이런 값으로 시험해야 드러난다."],
+    ["<code>totals[booth] = totals.get(booth, 0) + amount</code>에서 <code>get()</code>의 두 번째 인수 0이 쓰이는 경우는?", ["금액이 0원일 때", "그 부스가 처음 나와서 더할 합계가 아직 없을 때", "딕셔너리가 가득 차서 값을 지워야 할 때", "합계를 처음부터 다시 계산할 때"], 2, "처음 나온 부스는 딕셔너리에 키가 없으므로 <code>get()</code>이 기본값 0을 돌려주어 0에서 더하기를 시작한다. 이미 나온 부스는 지금까지의 합계에 금액을 더한다."],
+    ["순위를 매기려고 <code>pairs.append((money, booth))</code>처럼 (금액, 이름) 순서로 튜플을 만든 이유는?", ["이름이 금액보다 중요하기 때문이다", "튜플은 만든 뒤 정렬할 수 없기 때문이다", "튜플을 정렬하면 첫 번째 값인 금액을 기준으로 비교하기 때문이다", "딕셔너리의 키가 금액이기 때문이다"], 3, "튜플끼리 비교할 때는 첫 번째 값부터 비교하므로 금액을 앞에 두어야 금액 순으로 정렬된다. <code>reverse=True</code>를 주면 큰 금액이 앞에 온다."],
+    ["다음 코드를 실행하면 출력되는 결과는?<pre><code>def total_by_booth(records):\n    totals = {}\n    for booth, amount in records:\n        totals[booth] = totals.get(booth, 0) + amount\n    return totals\n\ndef rank_booths(totals):\n    pairs = []\n    for booth, money in totals.items():\n        pairs.append((money, booth))\n    pairs.sort(reverse=True)\n    return pairs\n\nprint(rank_booths(total_by_booth([])))</code></pre>", ["[]", "오류가 발생한다", "None", "[0]"], 1, "기록이 하나도 없으면 반복문이 한 번도 실행되지 않아 <code>totals</code>가 빈 딕셔너리로 남고, 순위 목록도 빈 리스트가 된다. 오류 없이 빈 리스트가 돌아온다."],
+    ["위 11번의 <code>rank_booths(total_by_booth([]))</code> 결과를 <code>ranking</code>에 받은 뒤 <code>print(ranking[0])</code>을 덧붙이면 어떻게 되는가?", ["0이 출력된다", "<code>None</code>이 출력된다", "빈 리스트가 출력된다", "빈 리스트에서 첫 번째 값을 꺼내려 해 오류가 발생한다"], 4, "빈 리스트에는 0번 값이 없으므로 <code>ranking[0]</code>에서 오류가 난다. 이런 위험은 코드를 쓸 때보다 기록이 없는 예외값으로 시험할 때 발견된다."],
+    ["공유 공간 문제에서 한 변의 길이 후보를 큰 값부터 하나씩 내려가며 찾는 이유는?", ["작은 값부터 올라가면 반복문이 오류를 내기 때문이다", "처음으로 조건을 만족하는 값이 곧 최댓값이어서 찾으면 바로 멈출 수 있기 때문이다", "<code>range()</code>는 값이 줄어드는 방향으로만 쓸 수 있기 때문이다", "큰 값일수록 나누어떨어질 가능성이 항상 높기 때문이다"], 2, "큰 후보부터 확인하면 조건을 처음 만족하는 값이 가장 큰 값이다. 작은 값부터 올라가면 처음 찾은 값은 1처럼 가장 작은 약수일 뿐 최댓값이 아니다."],
+    ["공유 공간 함수의 조건을 <code>and</code>에서 <code>or</code>로 바꾼 다음 코드를 실행하면 출력되는 값은?<pre><code>def largest_square(width, height):\n    for size in range(min(width, height), 0, -1):\n        if width % size == 0 or height % size == 0:\n            return size\n\nprint(largest_square(18, 12))</code></pre>", ["12", "6", "9", "1"], 1, "후보 12에서 <code>18 % 12</code>는 6이지만 <code>12 % 12</code>는 0이다. <code>or</code>는 하나만 참이어도 만족하므로 가장 먼저 12가 반환된다. 두 변이 모두 나누어떨어져야 하는 문제에는 <code>and</code>가 알맞다."],
+    ["가로 10, 세로 10인 공간을 같은 크기의 정사각형 구역으로 남김없이 나눌 때 한 변의 최대 길이와 구역 수는?", ["한 변 1, 구역 100", "한 변 5, 구역 4", "한 변 2, 구역 25", "한 변 10, 구역 1"], 4, "가로와 세로가 같으면 후보 10에서 바로 조건을 만족해 한 변이 10이 되고, 구역 수는 (10÷10)×(10÷10) = 1이다. 가로와 세로가 같은 경우는 경계값으로 시험할 만하다."],
+    ["<code>range(min(width, height), 0, -1)</code>로 반복하면 양수 입력에서 함수가 항상 값을 돌려주는 이유는?", ["후보에 0이 항상 포함되기 때문이다", "첫 번째 후보가 항상 조건을 만족하기 때문이다", "1은 어떤 수도 나누어떨어지게 하므로 늦어도 1에서 조건을 만족하기 때문이다", "반복 횟수가 정해져 있어 <code>return</code>이 없어도 되기 때문이다"], 3, "후보가 1까지 내려가고, 1은 가로와 세로를 모두 나누어떨어지게 한다. 그래서 반복은 늦어도 1에서 끝나며 어떤 양수 입력에서도 값이 돌아온다."],
+    ["다음 코드를 실행하면 출력되는 결과는?<pre><code>def mask_name(name):\n    if len(name) &lt; 2:\n        return None\n    if len(name) == 2:\n        return name[0] + \"*\"\n    return name[0] + \"*\" * (len(name) - 2) + name[-1]\n\nprint(mask_name(\"남궁민수\"))</code></pre>", ["남**수", "남*수", "남궁**", "남궁민수"], 1, "네 글자 이름이므로 별표 개수는 <code>len(name) - 2</code>인 2개다. 첫 글자 <code>남</code>, 별표 두 개, 마지막 글자 <code>수</code>를 이어 붙인다."],
+    ["다음 코드를 실행하면 <code>None</code>이 출력되는 이유는?<pre><code>def mask_phone(phone):\n    if len(phone) != 13 or phone[3] != \"-\" or phone[8] != \"-\":\n        return None\n    return phone[:4] + \"****\" + phone[8:]\n\nprint(mask_phone(\"01012345678\"))</code></pre>", ["번호에 숫자가 아닌 글자가 들어 있기 때문이다", "길이가 13이 아니고 하이픈 위치도 맞지 않아 정해진 형식이 아니기 때문이다", "문자열은 슬라이싱을 할 수 없기 때문이다", "<code>phone[:4]</code>가 빈 문자열이기 때문이다"], 2, "하이픈 없는 11자리 번호는 길이가 13이 아니어서 첫 조건에서 형식이 틀린 입력으로 판정되어 <code>None</code>을 돌려준다."],
+    ["<code>phone = \"010-1234-5678\"</code>일 때 <code>phone[8:]</code>의 값은?", ["5678", "1234-5678", "010-", "-5678"], 4, "인덱스 8의 글자는 두 번째 하이픈이다. <code>phone[8:]</code>은 인덱스 8부터 끝까지이므로 <code>-5678</code>이다. 마스킹 함수에서는 <code>phone[:4]</code>와 <code>phone[8:]</code> 사이에 별표를 끼운다."],
+    ["한 함수가 합계 계산, 순위 정렬, 출력을 모두 맡을 때 생기는 불편은?", ["함수를 호출할 수 없게 된다", "딕셔너리를 사용할 수 없게 된다", "틀린 결과가 나왔을 때 어느 부분이 어긋났는지 따로 확인하기 어렵다", "경계값과 예외값으로 시험할 수 없게 된다"], 3, "함수를 하위 문제별로 나누어 두면 어느 함수의 결과가 어긋났는지 따로 확인할 수 있고, 순위 기준을 바꿀 때도 합계 계산은 건드리지 않아도 된다."]
+  ];
+
+  const marks = ["①", "②", "③", "④"];
+  const root = document.getElementById("week08-quiz");
+  root.innerHTML = items.map((item, index) => `<section class="quiz-question" data-answer="${item[2]}"><p>${index + 1}. ${item[0]}</p><div class="quiz-options">${item[1].map((choice, choiceIndex) => `<label class="quiz-option"><input type="radio" name="w8q${index + 1}" value="${choiceIndex + 1}">${marks[choiceIndex]} ${choice}</label>`).join("")}</div><div class="quiz-explanation"><strong>정답 ${marks[item[2] - 1]}</strong> ${item[3]}</div></section>`).join("");
+
+  const questions = [...root.querySelectorAll(".quiz-question")];
+  const score = document.getElementById("score-week08");
+
+  root.addEventListener("change", (event) => {
+    if (!event.target.matches('input[type="radio"]')) return;
+    const question = event.target.closest(".quiz-question");
+    question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected"));
+    event.target.closest(".quiz-option").classList.add("selected");
+  });
+
+  document.getElementById("check-week08").addEventListener("click", () => {
+    let correctCount = 0;
+    questions.forEach((question) => {
+      question.classList.add("checked");
+      question.classList.remove("unanswered");
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+      const answer = question.dataset.answer;
+      const selected = question.querySelector('input[type="radio"]:checked');
+      question.querySelector(`input[value="${answer}"]`).closest(".quiz-option").classList.add("is-correct");
+      if (!selected) question.classList.add("unanswered");
+      else if (selected.value === answer) correctCount += 1;
+      else selected.closest(".quiz-option").classList.add("is-incorrect");
+    });
+    score.textContent = `점수: ${correctCount} / ${questions.length}`;
+  });
+
+  document.getElementById("reset-week08").addEventListener("click", () => {
+    questions.forEach((question) => {
+      question.classList.remove("checked", "unanswered");
+      question.querySelectorAll('input[type="radio"]').forEach(input => { input.checked = false; });
+      question.querySelectorAll(".quiz-option").forEach(option => option.classList.remove("selected", "is-correct", "is-incorrect"));
+    });
+    score.textContent = "";
+  });
+});
+</script>
+```

@@ -74,6 +74,16 @@ book:
           text: "연습문제"
         - href: week07_code.qmd
           text: "코딩실습"
+    - part: "8주차 · 컴퓨팅적 사고 기반 문제해결 종합"
+      chapters:
+        - href: week08_lecture.qmd
+          text: "이론"
+        - href: week08_quiz.qmd
+          text: "연습문제"
+        - href: week08_code.qmd
+          text: "코딩실습"
+        - href: week08_assignment.qmd
+          text: "과제"
 
 format:
   html:

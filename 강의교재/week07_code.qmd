@@ -1,117 +1,357 @@
 # 코딩실습 {#sec-ch7-lab}
 
-## 예제 1. 리스트 생성과 조회
-```python
-scores=[80,95,72]
-print(scores[0],scores[-1])
+## 리스트에서 값 꺼내기
+
+리스트는 대괄호 안에 값을 쉼표로 구분해 담습니다. 첫 번째 값의 인덱스는 `0`이고, 음수 인덱스는 뒤에서부터 셉니다.
+
+```{python}
+#| echo: true
+members = ["하늘", "바다", "나무", "구름", "은하"]
+
+print(members[0])
+print(members[3])
+print(members[-1])
+print(len(members))
 ```
-```text
-80 72
+
+`members[-1]`은 리스트 길이가 바뀌어도 언제나 마지막 값을 가리킵니다. `len()`은 담긴 값의 개수를 돌려줍니다.
+
+구간을 잘라 내려면 슬라이싱을 씁니다. `리스트[시작:끝]`에서 끝 인덱스의 값은 포함되지 않습니다.
+
+```{python}
+#| echo: true
+visitors = [34, 28, 41, 52, 47, 63, 58]    # 월요일부터 일요일까지의 방문자 수
+
+print(visitors[0:5])    # 평일
+print(visitors[5:])     # 주말
+print(visitors[::-1])   # 거꾸로
 ```
-## 예제 2. 슬라이싱
-```python
-data=[0,1,2,3,4,5]
-print(data[1:5:2])
+
+`visitors[0:5]`는 인덱스 0부터 4까지의 값입니다. 시작을 비우면 처음부터, 끝을 비우면 마지막까지 잘라 내고, 간격에 `-1`을 주면 순서가 뒤집힙니다.
+
+## 리스트에 값 추가·삭제·정렬하기
+
+`append()`는 맨 뒤에, `insert()`는 원하는 위치에 값을 넣습니다. `pop()`은 마지막 값을 꺼내며 삭제하고, `remove()`는 값을 찾아 삭제합니다.
+
+```{python}
+#| echo: true
+waiting = ["민수", "지은"]
+
+waiting.append("현우")       # 맨 뒤에 추가
+waiting.insert(0, "서윤")    # 맨 앞에 끼워 넣기
+print(waiting)
+
+called = waiting.pop()       # 마지막 값을 꺼내며 삭제
+print("호출:", called)
+
+waiting.remove("지은")       # 값을 찾아 삭제
+print(waiting)
 ```
-```text
-[1, 3]
+
+`pop()`은 지운 값을 돌려주므로 변수에 받아 쓸 수 있습니다. `remove()`는 리스트에 없는 값을 지우려 하면 오류가 납니다.
+
+정렬에는 `sorted()`와 `sort()`가 있습니다. 둘의 차이는 원본이 바뀌는지에 있습니다.
+
+```{python}
+#| echo: true
+quiz = [72, 95, 80, 68, 88]
+
+print(sorted(quiz))                 # 정렬된 새 리스트
+print(sorted(quiz, reverse=True))   # 큰 값부터
+print(quiz)                         # 원본은 그대로
+
+quiz.sort()                         # 원본을 직접 정렬
+print(quiz)
 ```
-## 예제 3. 추가와 삭제
-```python
-items=["A","B"]
-items.append("C");items.remove("A")
-print(items)
+
+`sorted()`는 원본을 지키고 정렬된 새 리스트를 돌려줍니다. `sort()`는 원본을 그 자리에서 정렬하고 아무것도 돌려주지 않으므로, 결과를 변수에 받으면 `None`이 저장됩니다.
+
+## 별칭과 복사
+
+리스트를 다른 변수에 대입하면 복사되지 않고 같은 리스트에 이름이 하나 더 붙습니다. 따로 쓸 사본이 필요하면 `copy()`를 씁니다.
+
+```{python}
+#| echo: true
+plan = ["수학", "영어"]
+alias = plan
+backup = plan.copy()
+
+alias.append("과학")
+
+print("plan:", plan)
+print("alias:", alias)
+print("backup:", backup)
+print(alias is plan, backup is plan)
 ```
-```text
-['B', 'C']
+
+`alias`에 값을 추가했는데 `plan`도 함께 바뀐 이유는 두 이름이 같은 리스트를 가리키기 때문입니다. `is`로 확인하면 `alias is plan`은 `True`입니다. `backup`은 새로 만든 리스트라서 영향을 받지 않습니다.
+
+## 튜플과 언패킹
+
+튜플은 소괄호로 만들며, 만든 뒤에는 값을 바꿀 수 없습니다. 여러 변수에 한 번에 나누어 담는 것을 언패킹이라고 합니다.
+
+```{python}
+#| echo: true
+room = (3, 204)    # 건물 번호와 호수
+
+building, number = room
+print(f"{building}호관 {number}호")
+print(room[0])
 ```
-## 예제 4. 정렬
-```python
-scores=[72,95,80]
-scores.sort(reverse=True)
-print(scores)
+
+튜플의 값을 바꾸려 하면 오류가 납니다.
+
+```{python}
+#| echo: true
+#| error: true
+room[0] = 4
 ```
-```text
-[95, 80, 72]
+
+바뀌면 안 되는 값을 튜플로 두면 실수로 고치는 일을 파이썬이 막아 줍니다. 함수가 값을 여러 개 돌려줄 때도 튜플이 쓰입니다.
+
+```{python}
+#| echo: true
+def total_and_average(scores):
+    total = 0
+    for score in scores:
+        total += score
+    return total, total / len(scores)
+
+total, average = total_and_average([72, 95, 80, 68])
+print("합계:", total)
+print("평균:", average)
 ```
-## 예제 5. 리스트 순회
-```python
-for score in [80,95,72]: print(score+5)
-```
-```text
-85
-100
-77
-```
-## 예제 6. 튜플 언패킹
-```python
-point=(35.1,129.0)
-lat,lon=point
-print(lat,lon)
-```
-```text
-35.1 129.0
-```
-## 예제 7. 딕셔너리 조회
-```python
-student={"name":"민지","score":88}
-print(student["name"],student.get("grade","미정"))
-```
-```text
-민지 미정
-```
-## 예제 8. 딕셔너리 수정
-```python
-stock={"water":10}
-stock["water"]-=2;stock["juice"]=5
+
+`return total, total / len(scores)`는 두 값을 튜플 하나로 묶어 돌려주고, 호출한 쪽에서 `total`과 `average`로 나누어 받습니다.
+
+## 딕셔너리 만들고 고치기
+
+딕셔너리는 키와 값을 짝지어 저장합니다. 값은 위치 번호가 아니라 키로 꺼냅니다.
+
+```{python}
+#| echo: true
+stock = {"볼펜": 30, "공책": 12, "형광펜": 8}
+
+print(stock["공책"])
+
+stock["공책"] = 10        # 있는 키는 값이 수정된다
+stock["스티커"] = 15      # 없는 키는 새로 추가된다
+del stock["형광펜"]       # 키와 값을 함께 삭제한다
 print(stock)
 ```
-```text
-{'water': 8, 'juice': 5}
+
+대입하는 문장은 같지만, 키가 이미 있으면 값이 수정되고 없으면 새로 추가됩니다.
+
+없는 키로 값을 꺼내면 오류가 나므로, 확실하지 않을 때는 `in`으로 확인하거나 `get()`을 씁니다.
+
+```{python}
+#| echo: true
+print("지우개" in stock)
+print(stock.get("지우개"))
+print(stock.get("지우개", 0))
 ```
-## 예제 9. 중첩 자료
-```python
-students=[{"name":"A","score":90},{"name":"B","score":80}]
-print(students[1]["score"])
+
+`get()`은 키가 없으면 `None`을, 두 번째 값을 주면 그 값을 돌려줍니다.
+
+## 딕셔너리로 개수 세기
+
+딕셔너리를 이용하면 항목별로 몇 번 나왔는지 셀 수 있습니다. `items()`는 키와 값을 함께 꺼냅니다.
+
+```{python}
+#| echo: true
+votes = ["파랑", "빨강", "파랑", "초록", "파랑", "빨강"]
+
+counts = {}
+for color in votes:
+    counts[color] = counts.get(color, 0) + 1
+
+print(counts)
+
+for color, count in counts.items():
+    print(f"{color}: {count}표")
 ```
-```text
-80
+
+`counts.get(color, 0) + 1`은 처음 나온 색이면 `0`에서, 이미 센 색이면 지금까지 센 값에서 1을 더합니다. `items()`가 내주는 `(키, 값)` 쌍은 `color, count`로 언패킹해 받습니다.
+
+## 중첩 자료구조와 함수
+
+딕셔너리를 리스트에 담으면 여러 항목의 정보를 한꺼번에 다룰 수 있습니다. 왼쪽부터 한 단계씩 들어가며 읽습니다.
+
+```{python}
+#| echo: true
+students = [
+    {"name": "서연", "score": 91},
+    {"name": "도현", "score": 74},
+    {"name": "하은", "score": 85},
+]
+
+print(students[1]["name"])
+print(students[2]["score"])
+
+for student in students:
+    print(student["name"], student["score"])
 ```
-## 예제 10. 모듈
-```python
+
+::: {.figure-compact}
+```{mermaid}
+%%| echo: false
+%%| fig-cap: "중첩 자료에서 값을 꺼내는 경로"
+flowchart LR
+    A["students<br/>리스트"] -->|인덱스 1| B["두 번째<br/>딕셔너리"]
+    B -->|키 score| C["74"]
+    classDef first fill:#e8f1ff,stroke:#2563eb,color:#172554
+    classDef mid fill:#fff4d6,stroke:#d97706,color:#451a03
+    classDef last fill:#e8f8ee,stroke:#16a34a,color:#052e16
+    class A first
+    class B mid
+    class C last
+```
+:::
+
+리스트를 함수에 넘기면 함수 안의 매개변수는 같은 리스트의 또 다른 이름이 됩니다. 그래서 함수 안에서 내용을 바꾸면 원본도 바뀝니다.
+
+```{python}
+#| echo: true
+def add_bonus(student_list, bonus):
+    for student in student_list:
+        student["score"] += bonus
+
+add_bonus(students, 5)
+print(students)
+```
+
+함수는 아무것도 돌려주지 않았지만 `students`의 점수가 모두 5점씩 올랐습니다. 원본을 지켜야 한다면 함수 안에서 사본을 만든 뒤 작업합니다.
+
+## 모듈 불러오기
+
+`import`로 모듈을 불러오면 이미 만들어진 기능을 `모듈이름.함수이름()` 형태로 쓸 수 있습니다.
+
+```{python}
+#| echo: true
 import math
-print(math.ceil(3.2),math.sqrt(16))
+
+students_count = 47
+team_size = 8
+
+print("필요한 조 수:", math.ceil(students_count / team_size))
+print("꽉 찬 조 수:", math.floor(students_count / team_size))
+print("반지름 3인 원의 넓이:", round(math.pi * 3 ** 2, 2))
 ```
-```text
-4 4.0
+
+`math.ceil()`은 소수점 아래를 올리고 `math.floor()`는 내립니다. 47명을 8명씩 묶으면 꽉 찬 조는 5개이지만, 남은 사람까지 포함하려면 조가 6개 필요합니다.
+
+필요한 기능만 가져오거나 모듈에 짧은 별칭을 붙일 수도 있습니다.
+
+```{python}
+#| echo: true
+from math import sqrt
+import random as rd
+
+rd.seed(3)
+members = ["하늘", "바다", "나무", "구름"]
+
+print("추첨 결과:", rd.choice(members))
+print("주사위 눈:", rd.randint(1, 6))
+print("제곱근:", sqrt(81))
 ```
 
-## 문제 1. 리스트 통계
-점수 리스트의 합계, 평균, 최댓값, 최솟값을 출력한다.
+`rd.seed(3)`으로 시작값을 정해 두면 실행할 때마다 같은 결과가 나옵니다. `choice()`는 리스트에서 값 하나를, `randint(1, 6)`은 1 이상 6 이하의 정수 하나를 무작위로 고릅니다.
 
-## 문제 2. 인덱스와 슬라이싱
-목록의 첫 값, 마지막 값, 짝수 위치 값, 역순을 출력한다.
+## 도서관 대출 기록 분석하기
 
-## 문제 3. 데이터 정리
-목록에 값을 추가·삽입·삭제한 뒤 오름차순으로 정렬한다.
+리스트, 딕셔너리, 튜플, 함수, 모듈을 하나의 프로그램으로 모아 봅니다. 아래 대출 기록은 교육용으로 만든 값입니다.
 
-## 문제 4. 점수 필터링
-80점 이상만 새 리스트에 저장해 내림차순으로 출력한다.
+```{python}
+#| echo: true
+import math
 
-## 문제 5. 튜플 좌표
-세 좌표 튜플을 순회하고 각 위도와 경도를 언패킹한다.
+loans = [
+    {"category": "소설", "days": 5},
+    {"category": "IT", "days": 9},
+    {"category": "소설", "days": 3},
+    {"category": "역사", "days": 12},
+    {"category": "IT", "days": 6},
+    {"category": "소설", "days": 8},
+]
 
-## 문제 6. 학생 딕셔너리
-이름·전공·점수를 저장하고 점수를 수정한 뒤 모든 항목을 출력한다.
+def summarize(loan_list):
+    total_days = 0
+    counts = {}
+    for loan in loan_list:
+        total_days += loan["days"]                  # 대출 기간 누적
+        category = loan["category"]
+        counts[category] = counts.get(category, 0) + 1   # 분야별 건수 세기
+    return total_days, counts
 
-## 문제 7. 안전한 조회
-존재하지 않는 키를 get()으로 조회해 기본값을 출력한다.
+total_days, counts = summarize(loans)
+average_days = total_days / len(loans)
 
-## 문제 8. 빈도표
-문자열의 각 문자가 나온 횟수를 딕셔너리에 저장한다.
+best_category = ""
+best_count = 0
+for category, count in counts.items():
+    if count > best_count:
+        best_category = category      # 가장 많이 빌린 분야로 갱신
+        best_count = count
 
-## 문제 9. 주문 정산
-메뉴 가격 딕셔너리와 주문 리스트로 총액을 계산한다.
+boxes = math.ceil(len(loans) / 4)     # 반납함 한 칸에 4권
 
-## 문제 10. 모듈 활용
-math와 random을 사용해 반지름이 임의로 정해진 원의 넓이를 계산한다.
+print(f"대출 건수: {len(loans)}건")
+print(f"평균 대출 기간: {average_days:.1f}일")
+print("분야별 건수:", counts)
+print(f"가장 많이 빌린 분야: {best_category} ({best_count}건)")
+print(f"반납함 칸 수: {boxes}칸")
+```
+
+리스트 안의 딕셔너리를 순회하고, 함수가 합계와 분야별 건수를 튜플로 돌려주면 언패킹해 받았습니다. 분야별 건수는 딕셔너리로 세고, 가장 많이 빌린 분야는 최댓값 갱신 방식으로 찾았으며, 반납함 칸 수는 `math.ceil()`로 올림해 구했습니다.
+
+## 실습 문제
+
+### 일주일 강수량에서 구간 꺼내기
+
+일주일 동안의 강수량 목록에서 필요한 값을 꺼내는 프로그램을 작성하세요.
+
+- 강수량 목록은 `rainfall = [0, 12, 5, 0, 30, 8, 2]`로 저장합니다.
+- 인덱스로 첫째 날과 마지막 날의 강수량을 꺼내 출력합니다.
+- 슬라이싱으로 앞의 3일과 뒤의 2일의 강수량을 각각 출력합니다.
+- 순서를 뒤집은 리스트를 출력합니다.
+- 마지막 날이 `2`, 앞의 3일이 `[0, 12, 5]`로 나오는지 확인합니다.
+
+### 상담 대기 명단 관리하기
+
+대기 명단을 고치되 처음 명단은 따로 보관하는 프로그램을 작성하세요.
+
+- 변수 이름은 대기 명단 `waiting = ["민수", "지은", "현우"]`와 보관용 사본 `backup`을 사용합니다.
+- `backup`은 `waiting.copy()`로 만들고, 이후 작업은 `waiting`에서만 합니다.
+- `"서윤"`을 맨 뒤에 추가하고, `"도윤"`을 맨 앞에 끼워 넣습니다.
+- 마지막 사람을 `pop()`으로 꺼내 호출한 이름을 출력하고, `"지은"`을 `remove()`로 지웁니다.
+- `waiting`과 `backup`을 각각 출력해 `backup`이 처음 그대로인지 확인합니다.
+
+### 좌표까지의 거리 구하기
+
+좌표 목록을 하나씩 꺼내 원점에서 떨어진 거리를 구하는 프로그램을 작성하세요.
+
+- 좌표 목록은 `points = [(3, 4), (6, 8), (5, 12)]`로 저장합니다.
+- `for` 문에서 각 튜플을 `x, y`로 언패킹합니다.
+- `math` 모듈을 불러와 `math.sqrt(x ** 2 + y ** 2)`로 거리를 계산합니다.
+- 좌표와 거리를 f-string으로 출력합니다.
+- 거리가 차례로 `5.0`, `10.0`, `13.0`으로 나오는지 확인합니다.
+
+### 문구점 재고 관리하기
+
+문구점의 재고를 딕셔너리로 관리하는 프로그램을 작성하세요.
+
+- 재고는 `stock = {"볼펜": 30, "공책": 12, "형광펜": 8}`로 저장합니다.
+- 공책이 4권 팔렸으므로 `"공책"`의 개수에서 4를 뺀 값을 다시 저장합니다.
+- 새 상품 `"스티커"`를 `15`개로 추가하고, `"형광펜"`은 삭제합니다.
+- 재고에 없는 `"지우개"`를 `get()`으로 조회하되, 없으면 `0`이 나오게 합니다.
+- `items()`로 모든 상품을 `공책: 8개`처럼 한 줄씩 출력합니다.
+
+### 합격 여부로 학생 나누기
+
+학생 목록을 기준 점수에 따라 합격자와 불합격자로 나누어 돌려주는 함수를 작성하세요.
+
+- 학생 목록은 `students = [{"name": "서연", "score": 91}, {"name": "도현", "score": 74}, {"name": "하은", "score": 85}, {"name": "지호", "score": 58}]`로 저장합니다.
+- 함수 이름은 `split_students`, 매개변수는 학생 목록 `student_list`와 기준 점수 `cutoff`를 사용합니다.
+- 함수 안에서 기준 이상인 학생의 이름은 `passed`에, 미만인 학생의 이름은 `failed`에 모읍니다.
+- `return passed, failed`로 두 리스트를 돌려주고, 호출한 쪽에서 언패킹해 출력합니다.
+- 기준 점수 `70`이면 합격 `['서연', '도현', '하은']`, 불합격 `['지호']`가 나오는지 확인하고, 기준 점수를 `80`으로 바꿔 다시 호출합니다.

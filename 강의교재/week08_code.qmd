@@ -1,0 +1,463 @@
+---
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+---
+
+# 코딩실습 {#sec-ch8-lab}
+
+## 예제 1. 헬스장 이용권 결제 금액 계산 {#sec-lab-1}
+
+이용 기간과 가입 조건에 따라 헬스장 이용권의 결제 금액을 계산합니다. 금액과 기록은 수업용으로 만든 가상의 값입니다.
+
+### 문제 파악
+
+- 이용 기간은 1, 3, 6, 12개월이며 이용료는 각각 60,000원, 150,000원, 270,000원, 480,000원입니다.
+- 학생이면 이용료에서 10%를 깎습니다.
+- 신규 가입이면 가입비 20,000원을 더합니다.
+- 이용권에 없는 기간이면 계산하지 않고 `None`을 돌려줍니다.
+
+### 구현
+
+기간별 이용료는 딕셔너리에 담고, 계산은 함수 하나로 묶습니다. `get()`은 없는 기간이면 `None`을 돌려주므로 잘못된 입력을 가장 먼저 걸러 낼 수 있습니다.
+
+```{python}
+plans = {1: 60000, 3: 150000, 6: 270000, 12: 480000}
+
+def membership_fee(months, is_student, is_new):
+    base = plans.get(months)
+    if base is None:
+        return None
+    if is_student:
+        base = base * 9 // 10
+    if is_new:
+        base += 20000
+    return base
+```
+
+사용자에게 값을 입력받는 부분은 다음과 같습니다. 입력은 모두 문자열이므로 `int()`로 바꾸어야 하고, 학생 여부와 신규 여부는 `1`인지 비교해 참·거짓으로 만듭니다.
+
+```python
+months = int(input("이용 개월 수: "))
+is_student = int(input("학생이면 1, 아니면 0: ")) == 1
+is_new = int(input("신규 가입이면 1, 아니면 0: ")) == 1
+```
+
+`input()`으로 `6`, `0`, `1`을 입력했다고 가정하고 같은 과정을 실행해 보겠습니다.
+
+```{python}
+months_text, student_text, new_text = "6", "0", "1"    # input()으로 받은 값이라고 가정
+
+months = int(months_text)
+is_student = int(student_text) == 1
+is_new = int(new_text) == 1
+
+fee = membership_fee(months, is_student, is_new)
+if fee is None:
+    print("이용할 수 없는 기간입니다.")
+else:
+    print(f"{months}개월 결제 금액: {fee:,}원")
+```
+
+6개월 이용료 270,000원에 학생 할인은 없고 가입비 20,000원이 더해져 290,000원이 됩니다.
+
+### 실행과 시험
+
+여러 신청을 반복문으로 한꺼번에 처리합니다. 처리할 수 없는 신청은 `continue`로 건너뛰고 몇 건이었는지 셉니다.
+
+```{python}
+applicants = [(3, True, False), (6, False, True), (12, True, True), (2, False, False)]
+
+total = 0
+invalid = 0
+for months, student, new in applicants:
+    fee = membership_fee(months, student, new)
+    if fee is None:
+        invalid += 1
+        continue
+    total += fee
+
+print(f"총 결제 금액: {total:,}원")
+print(f"처리하지 못한 신청: {invalid}건")
+```
+
+금액이 바뀌는 조건을 시험 목록으로 만들어 한 번에 확인합니다. 마지막 시험은 이용권에 없는 기간을 넣은 예외값입니다.
+
+```{python}
+cases = [
+    (1, False, False, 60000), (3, True, False, 135000),
+    (6, False, True, 290000), (12, True, True, 452000),
+    (2, False, False, None),
+]
+
+for months, student, new, expected in cases:
+    result = membership_fee(months, student, new)
+    if result == expected:
+        status = "통과"
+    else:
+        status = "실패"
+    print(f"{months:>2}개월 학생={student!s:<5} 신규={new!s:<5} 기대 {expected!s:>7} 결과 {result!s:>7}  {status}")
+```
+
+## 예제 2. 동호회 출석과 회비 관리 {#sec-lab-2}
+
+독서 동호회의 5주 출석 기록과 회비 납부 여부를 정리합니다. 기록은 수업용으로 만든 가상의 값이며, 출석 기록에서 `1`은 출석, `0`은 결석입니다.
+
+### 문제 파악
+
+- 회원별 출석률(%)을 구하고, 기록이 비어 있으면 `0.0`으로 봅니다.
+- 한 번도 결석하지 않은 회원은 개근, 출석률이 60% 미만인 회원은 경고 대상입니다.
+- 회비를 내지 않은 회원의 명단도 필요합니다.
+- 주차별 출석 인원과 출석률 순위를 구합니다.
+
+### 구현
+
+회원 한 명의 정보는 딕셔너리로, 회원 전체는 그 딕셔너리를 값으로 가진 딕셔너리로 담습니다. 이름으로 회원을 찾고, 그 안에서 다시 키로 출석 기록과 납부 여부를 꺼냅니다.
+
+```{python}
+club = {
+    "서연": {"attend": [1, 1, 0, 1, 1], "paid": True},
+    "도현": {"attend": [1, 0, 0, 1, 0], "paid": False},
+    "하은": {"attend": [1, 1, 1, 1, 1], "paid": True},
+    "지호": {"attend": [0, 1, 1, 0, 1], "paid": True},
+    "민재": {"attend": [0, 1, 0, 0, 0], "paid": False},
+}
+
+def attendance_rate(records):
+    if len(records) == 0:
+        return 0.0
+    return sum(records) / len(records) * 100
+
+def find_targets(club):
+    perfect = []
+    warning = []
+    unpaid = []
+    for name, data in club.items():
+        if 0 not in data["attend"]:
+            perfect.append(name)
+        if attendance_rate(data["attend"]) < 60:
+            warning.append(name)
+        if not data["paid"]:
+            unpaid.append(name)
+    return perfect, warning, unpaid
+```
+
+`find_targets()`는 리스트 세 개를 튜플 하나로 묶어 돌려주므로, 호출하는 쪽에서 언패킹해 받습니다.
+
+```{python}
+for name, data in club.items():
+    rate = attendance_rate(data["attend"])
+    if data["paid"]:
+        status = "납부"
+    else:
+        status = "미납"
+    print(f"{name}  출석률 {rate:.1f}%  {status}")
+
+perfect, warning, unpaid = find_targets(club)
+print("개근:", perfect)
+print("경고:", warning)
+print("미납:", unpaid)
+```
+
+지호의 출석률은 정확히 60.0%입니다. 조건이 `< 60`이므로 경고 대상에 들어가지 않습니다. 경계값에서 어느 쪽으로 처리되는지 확인해야 하는 이유입니다.
+
+### 실행과 시험
+
+주차별 출석 인원은 반복문 안에 반복문을 넣어 구합니다. 바깥 반복은 주를, 안쪽 반복은 회원을 맡습니다.
+
+```{python}
+weeks = 5
+weekly = []
+for w in range(weeks):
+    count = 0
+    for data in club.values():
+        count += data["attend"][w]
+    weekly.append(count)
+
+low_week = 0
+for i in range(weeks):
+    if weekly[i] < weekly[low_week]:
+        low_week = i
+
+print("주차별 출석 인원:", weekly)
+print(f"출석 인원이 가장 적은 주: {low_week + 1}번째 주 ({weekly[low_week]}명)")
+```
+
+순위는 `(출석률, 이름)` 튜플로 모아 정렬합니다. 튜플은 첫 번째 값부터 비교하므로 출석률이 높은 순서가 됩니다.
+
+```{python}
+pairs = []
+for name, data in club.items():
+    pairs.append((attendance_rate(data["attend"]), name))
+pairs.sort(reverse=True)
+
+for place, pair in enumerate(pairs, start=1):
+    rate, name = pair
+    print(f"{place}위 {name} {rate:.1f}%")
+```
+
+회비를 모두 받은 뒤 같은 함수로 다시 확인합니다. 딕셔너리 안의 값을 바꾸면 `club` 자체가 바뀝니다. 출석 기록이 없는 경우도 오류 없이 처리되는지 예외값으로 확인합니다.
+
+```{python}
+for data in club.values():
+    data["paid"] = True
+
+perfect, warning, unpaid = find_targets(club)
+print("미납:", unpaid)
+print(attendance_rate([]))
+```
+
+## 예제 3. 중고 거래 시세 분석 {#sec-lab-3}
+
+중고 거래 기록에서 품목별 시세를 구하고, 시세보다 싼 매물을 찾습니다. 가격과 기록은 수업용으로 만든 가상의 값입니다.
+
+### 문제 파악
+
+- 기록은 `(품목, 가격, 상태)` 튜플이며 상태는 `판매완료` 또는 `판매중`입니다.
+- 시세는 `판매완료` 기록으로만 구합니다. 품목별 거래 건수, 평균, 중앙값, 최저가, 최고가를 출력합니다.
+- `판매중` 매물 중 같은 품목의 시세(중앙값)보다 싼 매물을 추천합니다. 시세와 같은 가격은 추천하지 않습니다.
+- 거래 내역이 없는 품목은 시세를 알 수 없다고 알려 줍니다.
+
+### 구현
+
+판매완료 기록만 골라 품목별로 가격 리스트를 모읍니다. 품목이 처음 나오면 빈 리스트를 먼저 만들어 두어야 `append()`를 쓸 수 있습니다.
+
+```{python}
+listings = [
+    ("노트북", 450000, "판매중"), ("노트북", 520000, "판매완료"),
+    ("태블릿", 210000, "판매중"), ("노트북", 380000, "판매완료"),
+    ("태블릿", 185000, "판매완료"), ("이어폰", 60000, "판매중"),
+    ("태블릿", 230000, "판매완료"), ("이어폰", 45000, "판매완료"),
+    ("노트북", 610000, "판매중"), ("이어폰", 52000, "판매완료"),
+    ("태블릿", 999000, "판매완료"), ("키보드", 30000, "판매중"),
+]
+
+sold = {}
+for item, price, status in listings:
+    if status != "판매완료":
+        continue
+    if item not in sold:
+        sold[item] = []
+    sold[item].append(price)
+
+print(sold)
+```
+
+중앙값은 값을 크기순으로 늘어놓았을 때 가운데 값입니다. 값이 홀수 개이면 가운데 값을, 짝수 개이면 가운데 두 값의 평균을 돌려줍니다. 정렬은 `sorted()`로 해서 원래 리스트의 순서를 지킵니다.
+
+```{python}
+def median(values):
+    ordered = sorted(values)
+    n = len(ordered)
+    if n % 2 == 1:
+        return ordered[n // 2]
+    return (ordered[n // 2 - 1] + ordered[n // 2]) / 2
+
+for item, prices in sold.items():
+    average = sum(prices) / len(prices)
+    print(f"{item} {len(prices)}건 평균 {average:,.0f}원 중앙값 {median(prices):,.0f}원 "
+          f"최저 {min(prices):,}원 최고 {max(prices):,}원")
+```
+
+태블릿은 한 건이 999,000원이라 평균(471,333원)이 중앙값(230,000원)보다 크게 높아졌습니다. 값이 한두 개 유난히 크거나 작을 때는 중앙값이 시세를 더 잘 나타냅니다.
+
+### 실행과 시험
+
+`판매중` 매물을 하나씩 확인합니다. 시세가 없는 품목은 `in`으로 먼저 걸러 오류를 막습니다.
+
+```{python}
+for item, price, status in listings:
+    if status != "판매중":
+        continue
+    if item not in sold:
+        print(f"{item}: 거래 내역 없음")
+        continue
+    market = median(sold[item])
+    if price < market:
+        print(f"추천 {item} {price:,}원 (시세 {market:,.0f}원)")
+```
+
+노트북 450,000원은 시세 450,000원과 같으므로 추천에서 빠집니다. 가격이 같은 경계값이 한쪽으로 처리되는지 확인한 것입니다. 품목 이름을 입력받아 그 시세만 보여 주는 형태로도 바꿀 수 있습니다.
+
+```python
+query = input("품목: ")
+if query not in sold:
+    print("거래 내역이 없습니다.")
+else:
+    print(f"{query} 중앙값 {median(sold[query]):,.0f}원")
+```
+
+## 예제 4. 주차장 요금 정산 {#sec-lab-4}
+
+입차·출차 시각 기록으로 주차 요금을 정산합니다. 시각과 금액은 수업용으로 만든 가상의 값입니다.
+
+### 문제 파악
+
+- 기록은 `(차량번호, 입차 시각, 출차 시각)` 튜플이며 시각은 `"09:10"` 형식의 문자열입니다.
+- 0분이면 0원, 30분 이하이면 1,000원입니다. 30분을 넘으면 10분마다 500원을 더하고, 10분이 안 되는 시간도 한 번으로 셉니다.
+- 하루 최대 요금은 15,000원입니다.
+- 출차 시각이 입차 시각보다 이른 기록은 잘못된 기록입니다.
+- 총 수입, 가장 오래 주차한 차량, 요금 구간별 대수를 구합니다.
+
+### 구현
+
+문자열 `"09:10"`에서 슬라이싱으로 시와 분을 잘라 내고 `int()`로 바꾸면 하루의 몇 분째인지 계산할 수 있습니다.
+
+```{python}
+def to_minutes(text):
+    return int(text[:2]) * 60 + int(text[3:])
+
+print(to_minutes("09:10"))
+print(to_minutes("19:30"))
+```
+
+요금은 `while`로 구합니다. 30분을 넘는 시간이 남아 있는 동안 10분을 줄이면서 500원씩 더하면, 10분 미만의 남는 시간도 한 번으로 세어집니다. 상한에 닿으면 `break`로 반복을 끝냅니다.
+
+```{python}
+def parking_fee(minutes):
+    if minutes < 0:
+        return None
+    if minutes == 0:
+        return 0
+
+    fee = 1000
+    remaining = minutes - 30
+    while remaining > 0:
+        fee += 500
+        remaining -= 10
+        if fee >= 15000:
+            fee = 15000
+            break
+    return fee
+
+print(parking_fee(31))
+print(parking_fee(205))
+```
+
+### 실행과 시험
+
+기록을 하나씩 처리합니다. 잘못된 기록은 `continue`로 건너뛰고, 정상 기록으로는 총 수입을 쌓고, 가장 오래 주차한 차량을 갱신하고, 요금 구간별 대수를 딕셔너리로 셉니다.
+
+```{python}
+records = [
+    ("12가3456", "09:10", "09:40"),
+    ("34나7890", "10:00", "13:25"),
+    ("56다1234", "08:00", "19:30"),
+    ("78라5678", "12:00", "11:30"),
+    ("90마1111", "14:05", "14:05"),
+]
+
+total = 0
+longest_plate = ""
+longest_minutes = -1
+levels = {}
+
+for plate, enter, leave in records:
+    minutes = to_minutes(leave) - to_minutes(enter)
+    fee = parking_fee(minutes)
+    if fee is None:
+        print(f"{plate}  잘못된 기록")
+        continue
+
+    print(f"{plate}  {minutes // 60}시간 {minutes % 60}분  {fee:,}원")
+    total += fee
+
+    if minutes > longest_minutes:
+        longest_plate = plate
+        longest_minutes = minutes
+
+    if fee == 0:
+        level = "무료"
+    elif fee == 15000:
+        level = "최대"
+    else:
+        level = "일반"
+    levels[level] = levels.get(level, 0) + 1
+
+print(f"총 수입: {total:,}원")
+print(f"가장 오래 주차: {longest_plate} ({longest_minutes // 60}시간 {longest_minutes % 60}분)")
+print("구간별 대수:", levels)
+```
+
+요금이 바뀌는 지점과 상한의 앞뒤를 시험 목록으로 확인합니다. 30분과 31분, 300분과 301분이 경계값입니다.
+
+```{python}
+cases = [
+    (-5, None), (0, 0), (1, 1000), (30, 1000), (31, 1500),
+    (41, 2000), (300, 14500), (301, 15000), (480, 15000),
+]
+
+for minutes, expected in cases:
+    result = parking_fee(minutes)
+    if result == expected:
+        status = "통과"
+    else:
+        status = "실패"
+    print(f"{minutes:>4}분  기대 {expected!s:>6}  결과 {result!s:>6}  {status}")
+```
+
+## 실습 문제 {#sec-lab-problems}
+
+### 1. 영화 예매 요금 정산
+
+나이와 상영 시간대로 예매 요금을 계산하고, 여러 예매를 한꺼번에 정산하는 프로그램을 작성하세요.
+
+1. 코드를 쓰기 전에 처리 순서를 한국어로 세 줄 이상 적습니다.
+2. 함수 `ticket_price(age, is_morning)`을 만듭니다. 12세 이하와 65세 이상은 7,000원, 그 사이 나이는 13,000원이고, 조조 상영(`is_morning`이 `True`)이면 2,000원을 깎습니다. 나이가 0 미만이거나 120을 넘으면 `None`을 돌려줍니다.
+3. 나이는 `input()`으로 받아 `int()`로 바꾸고, 조조 상영 여부는 조조이면 `1`, 아니면 `0`을 입력받아 `True`나 `False`로 바꿉니다. 결과는 천 단위 쉼표를 넣어 `요금: 11,000원`처럼 출력하고, `None`이면 `잘못된 나이입니다.`를 출력합니다.
+4. 예매 목록을 반복문으로 처리합니다. 잘못된 예매는 `continue`로 건너뛰고 몇 건이었는지 셉니다. 정상 예매의 요금을 모두 더해 총 결제 금액과 잘못된 예매 수를 출력합니다.
+
+```python
+orders = [(30, False), (70, True), (8, False), (-5, False), (13, True)]
+```
+
+5. 아래 표를 `(나이, 조조 여부, 기대 요금)` 튜플의 리스트로 만들고, 반복문으로 한 줄씩 `통과`나 `실패`를 출력합니다. 모두 통과해야 합니다.
+
+| 나이 | 30 | 30 | 70 | 12 | 13 | 64 | 65 | -5 | 121 |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 조조 여부 | 아니오 | 예 | 예 | 아니오 | 아니오 | 아니오 | 아니오 | 아니오 | 아니오 |
+| 기대 요금 | 13,000원 | 11,000원 | 5,000원 | 7,000원 | 13,000원 | 13,000원 | 7,000원 | None | None |
+
+확인값: 총 결제 금액 36,000원 / 잘못된 예매 1건
+
+### 2. 편의점 재고 입출고 정산
+
+재고 딕셔너리와 입출고 기록으로 하루의 재고 변화를 정산하는 프로그램을 작성하세요.
+
+```python
+stock = {"생수": 40, "라면": 25, "김밥": 12, "우유": 18}
+
+log = [
+    ("판매", "생수", 15), ("입고", "김밥", 20), ("판매", "라면", 30),
+    ("판매", "우유", 5), ("판매", "과자", 3), ("입고", "라면", 10),
+    ("판매", "김밥", 30), ("판매", "생수", 25),
+]
+```
+
+1. 처리를 시작하기 전에 `before = stock.copy()`로 재고를 따로 보관합니다.
+2. `log`의 `(종류, 상품, 수량)`을 하나씩 꺼내 처리합니다. 입고이면 재고를 늘리고, 판매이면 재고를 줄입니다.
+3. 재고에 없는 상품이면 `○○: 취급하지 않는 상품`을, 판매 수량이 재고보다 많으면 `○○: 재고 부족 (재고 ○개, 판매 ○개)`를 출력하고 그 기록은 `continue`로 건너뜁니다. 건너뛴 기록의 수를 `failed`로 셉니다.
+4. 상품마다 `생수: 40 → 0`처럼 처리 전과 처리 후 재고를 출력합니다.
+5. 재고가 10개 미만인 상품을 `(재고, 상품명)` 튜플로 모아 재고가 적은 순서로 정렬해 출력합니다.
+
+확인값: 재고 부족 1건과 취급하지 않는 상품 1건이 출력되고 `failed`는 `2` / 처리 후 재고 생수 0, 라면 35, 김밥 2, 우유 13 / 재고 부족 목록 `[(0, '생수'), (2, '김밥')]`
+
+### 3. 숫자 맞히기 전략 분석
+
+1부터 100 사이의 숫자를 맞히는 전략을 만들어 시험하고, 직접 해 보는 게임도 만드는 프로그램을 작성하세요. 전략은 가능한 범위의 가운데 값을 추측하는 것입니다. 정답이 더 크면 범위의 아래쪽을 버리고, 더 작으면 위쪽을 버립니다.
+
+1. 함수 `guess_game(secret)`을 만듭니다. `secret`은 1 이상 100 이하의 정수입니다. 처음 범위는 `low = 1`, `high = 100`이고, 반복할 때마다 `mid = (low + high) // 2`를 추측합니다. 추측한 값은 리스트 `history`에 추가하고 시도 횟수 `attempts`를 1 늘립니다.
+2. 추측이 정답과 같으면 반복을 끝냅니다. 정답보다 작으면 `low = mid + 1`, 크면 `high = mid - 1`로 범위를 줄입니다.
+3. `return attempts, history`로 두 값을 돌려주고, 호출한 쪽에서 언패킹해 출력합니다. 아래 표의 정답으로 시험합니다.
+4. 정답이 `1`부터 `100`까지일 때를 반복문으로 모두 시험해, 가장 많이 걸린 시도 횟수와 평균 시도 횟수를 구합니다.
+5. 사람이 직접 하는 게임을 만듭니다. 정답을 `58`로 정해 두고 `input()`으로 숫자를 입력받습니다. 1 미만이거나 100을 넘는 입력은 `1부터 100 사이의 수를 입력하세요.`를 출력하고 시도 횟수에 세지 않습니다. 정답보다 작으면 `더 큰 수입니다.`, 크면 `더 작은 수입니다.`를 출력하고, 맞히면 `정답! ○번 만에 맞혔습니다.`를 출력하며 반복을 끝냅니다.
+
+| 정답 | 시도 횟수 | 추측 기록 |
+|:---:|:---:|:---|
+| 73 | 6 | `[50, 75, 62, 68, 71, 73]` |
+| 50 | 1 | `[50]` |
+| 1 | 6 | `[50, 25, 12, 6, 3, 1]` |
+| 100 | 7 | `[50, 75, 88, 94, 97, 99, 100]` |
+
+확인값: 1부터 100까지 모두 시험했을 때 가장 많이 걸린 횟수는 `7`, 평균은 `5.8`입니다. 직접 하는 게임에서 `50`, `75`, `0`, `60`, `58`을 차례로 입력하면 `더 큰 수입니다.`, `더 작은 수입니다.`, `1부터 100 사이의 수를 입력하세요.`, `더 작은 수입니다.`, `정답! 4번 만에 맞혔습니다.`가 출력됩니다.
