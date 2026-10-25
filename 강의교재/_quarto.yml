@@ -84,6 +84,10 @@ book:
           text: "코딩실습"
         - href: week08_assignment.qmd
           text: "과제"
+    - part: "10주차 · 데이터분석가처럼 문제 정의하기"
+      chapters:
+        - href: week10_lecture.qmd
+          text: "이론"
 
 format:
   html:

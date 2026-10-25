@@ -33,7 +33,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install Jupyter
-        run: python -m pip install --upgrade jupyter
+        run: python -m pip install --upgrade jupyter pandas
 
       - name: Render book
         run: quarto render 강의교재

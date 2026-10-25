@@ -1,0 +1,849 @@
+---
+title: "데이터분석가처럼 문제 정의하기"
+subtitle: "컴퓨팅적 사고와 논리적 문제해결"
+author: "유한대학교"
+lang: ko
+jupyter: python3
+execute:
+  echo: true
+  cache: false
+  freeze: false
+  error: false
+format:
+  revealjs:
+    theme: simple
+    embed-resources: true
+    self-contained-math: true
+    html-math-method: plain
+    css:
+      - "강의슬라이드 작성템플릿/week01-clean.css"
+      - week10-slide.css
+    width: 1280
+    height: 720
+    margin: 0.05
+    slide-number: c/t
+    controls: true
+    progress: true
+    center: false
+    transition: none
+    incremental: false
+    code-overflow: wrap
+    highlight-style: github
+footer: "컴퓨팅적 사고와 논리적 문제해결 · Week 10"
+---
+
+```{python}
+#| include: false
+import os
+os.chdir("../강의교재")
+```
+
+## 데이터 분석의 여섯 단계 {.top-slide}
+
+::: {.flow}
+::: {.step}
+문제 정의
+:::
+::: {.arrow}
+→
+:::
+::: {.step}
+데이터 수집
+:::
+::: {.arrow}
+→
+:::
+::: {.step}
+데이터 정제
+:::
+::: {.arrow}
+→
+:::
+::: {.step}
+데이터 탐색
+:::
+::: {.arrow}
+→
+:::
+::: {.step}
+데이터 분석
+:::
+::: {.arrow}
+→
+:::
+::: {.step}
+결과 보고
+:::
+:::
+
+| 오늘 다루는 단계 | 내용 | 주요 도구 |
+|:---|:---|:---|
+| 문제 정의 | 모호한 문제를 분석 질문으로 | 질문의 5요소 |
+| 데이터 정제 | 구조, 결측, 중복 확인 | `info` `isna` `drop_duplicates` |
+| 데이터 탐색 | 요약과 그룹별 비교 | `describe` `groupby` |
+
+## 문제 정의와 분석 질문 설정
+
+::: {.columns}
+::: {.column width="48%"}
+::: {.box .blue}
+**모호한 문제**
+
+"요즘 카페가 너무 느립니다"
+:::
+:::
+::: {.column width="48%"}
+::: {.box .green}
+**분석 질문**
+
+주문 시간대별 평균 대기시간은 어떻게 다른가?
+:::
+:::
+:::
+
+| 모호한 문제로 시작하면 | 결과 |
+|:---|:---|
+| 느리다의 뜻이 정해지지 않음 | 계산할 값을 모른다 |
+| 비교 기준이 없음 | 평균만 구한다 |
+| 범위가 없음 | 결론이 과장된다 |
+
+::: {.keyline}
+데이터로 답할 수 있는 질문으로 바꾼다
+:::
+
+## 질문을 이루는 다섯 가지 요소
+
+| 요소 | 스스로 묻는 질문 | 구체화한 예 |
+|:---|:---|:---|
+| 대상 | 무엇을 살펴보는가 | 주문 한 건 |
+| 측정값 | 어떤 숫자로 확인하는가 | 대기시간(분) |
+| 기준 | 무엇으로 나누어 비교하는가 | 주문 시간대 |
+| 계산 | 평균, 개수, 비율 중 무엇인가 | 평균 |
+| 범위 | 어디까지의 결론인가 | 이 자료의 5일간 |
+
+::: {.point}
+교내 카페의 주문 시간대별 평균 대기시간은 어떻게 다르며, 어느 시간대에 대기시간이 가장 긴가?
+:::
+
+## 좋은 질문인지 점검하기
+
+| 점검 | 확인할 내용 | 통과하지 못한 예 |
+|:---|:---|:---|
+| 측정할 수 있는가 | 숫자로 기록된 열이 있는가 | 손님이 얼마나 만족하는가 |
+| 비교할 수 있는가 | 나눌 기준이 있는가 | 대기시간은 얼마인가 |
+| 답이 하나로 정해지는가 | 계산하면 결과가 나오는가 | 카페를 개선해야 하는가 |
+| 범위가 분명한가 | 어느 기간, 어느 대상인가 | 항상 점심에 붐빈다 |
+
+::: {.point}
+- "개선해야 하는가"는 분석이 아니라 **사람의 판단**
+- 분석은 "12시 평균 대기시간이 더 길다"까지 확인한다
+:::
+
+## 질문을 고쳐 보기 ①
+
+::: {.columns}
+::: {.column width="48%"}
+::: {.box .blue}
+**고치기 전**
+
+점심시간에는 주문이 많다
+:::
+:::
+::: {.column width="48%"}
+::: {.box .green}
+**고친 질문**
+
+12시 주문 건수는 다른 시간대보다 많은가?
+:::
+:::
+:::
+
+| 요소 | 구체화 |
+|:---|:---|
+| 대상 | 주문 건수 |
+| 측정값 | 시간대별 주문 건수 |
+| 기준 | 주문 시간대 (12시를 점심으로 정함) |
+| 계산 | 개수 |
+| 범위 | 이 자료의 5일간 |
+
+## 질문을 고쳐 보기 ②
+
+::: {.columns}
+::: {.column width="48%"}
+::: {.box .blue}
+**고치기 전**
+
+결제 수단이 대기시간에 영향을 준다
+:::
+:::
+::: {.column width="48%"}
+::: {.box .green}
+**고친 질문**
+
+결제 수단별 평균 대기시간은 어떻게 다른가?
+:::
+:::
+:::
+
+::: {.point}
+- "영향을 준다"는 원인이므로 이 자료로 확인할 수 없다
+- 원인이 아니라 **차이**를 묻는 질문으로 낮춘다
+- "차이가 있다"와 "원인이다"를 구분해서 쓴다
+:::
+
+## 데이터의 분류
+
+| 기준 | 구분 | 예 |
+|:---|:---|:---|
+| 값의 성격 | 범주형 | 메뉴, 결제 수단, 요일 |
+| 값의 성격 | 연속형 | 대기시간, 주문 수량 |
+| 변수의 개수 | 단일 변수 / 다중 변수 | 열 1개 / 열 2개 이상 |
+
+| 데이터 | 기본 분석 | 도구 |
+|:---|:---|:---|
+| 범주형 단일 변수 | 빈도, 비율 | `value_counts()` |
+| 연속형 단일 변수 | 평균, 중앙값 | `describe()` |
+| 다중 변수 | 그룹별 비교 | `groupby()` |
+
+::: {.point}
+`order_hour`는 숫자지만 비교 기준으로 쓰면 **범주**로 다룬다
+:::
+
+## 질문에서 필요한 열과 계산 찾기
+
+| 분석 질문 | 필요한 열 | 계산 |
+|:---|:---|:---|
+| 시간대별 평균 대기시간 | `order_hour` `wait_minutes` | 평균 |
+| 메뉴별 주문 비율 | `menu_name` | 비율 |
+| 12시 주문 건수 | `order_hour` | 개수 |
+| 결제 수단별 평균 대기시간 | `payment_method` `wait_minutes` | 평균 |
+
+::: {.keyline}
+질문이 정해지면 필요한 데이터도 정해진다
+:::
+
+## 데이터가 질문에 답할 수 있는지 점검하기
+
+| 점검 | 확인 방법 | 이 데이터에서 |
+|:---|:---|:---|
+| 필요한 열이 있는가 | 열 이름 확인 | 있음 |
+| 값이 비어 있지 않은가 | 결측 개수 확인 | 1건 비어 있음 |
+| 값이 올바른 범위인가 | 최솟값, 최댓값 확인 | 45분이 매우 큼 |
+| 그룹마다 건수가 충분한가 | 그룹별 개수 확인 | 시간대마다 5~7건 |
+
+::: {.point}
+- 그룹별 건수가 적으면 평균이 크게 변한다
+- "이 5일 동안 12시가 달랐다"까지만 말할 수 있다
+:::
+
+## EDA란
+
+::: {.box .blue}
+**EDA (Exploratory Data Analysis, 탐색적 데이터 분석)**
+
+본격적인 분석에 앞서 데이터의 구조와 품질을 확인하고, 값의 분포와 그룹 간 차이를 살펴 데이터를 이해하는 과정
+:::
+
+| 구분 | EDA (탐색) | 본격적인 분석 |
+|:---|:---|:---|
+| 목적 | 데이터를 믿고 분석해도 되는지 확인 | 분석 질문의 답을 구함 |
+| 방법 | 기초 통계, 빈도, 간단한 그룹 비교 | 심화된 분석 기법 |
+| 결과 | 문제점 발견, 새로운 의문 | 결론 |
+
+## EDA의 네 가지 확인
+
+| 확인 | 질문 | 사용하는 도구 |
+|:---|:---|:---|
+| 구조 | 몇 행, 몇 열이며 자료형은 무엇인가 | `shape` `dtypes` `info()` |
+| 품질 | 비어 있거나 겹친 값은 없는가 | `isna()` `duplicated()` |
+| 분포 | 값이 어디에 몰려 있는가 | `describe()` `value_counts()` |
+| 비교 | 그룹마다 어떻게 다른가 | `groupby()` |
+
+::: {.keyline}
+구조 → 품질 → 분포 → 비교
+:::
+
+## pandas와 DataFrame
+
+::: {.columns}
+::: {.column width="48%"}
+::: {.box .blue}
+**pandas**
+
+표 형태의 데이터를 불러오고, 선택하고, 요약하는 라이브러리
+:::
+:::
+::: {.column width="48%"}
+::: {.box .green}
+**DataFrame**
+
+행과 열로 구성된 표
+:::
+:::
+:::
+
+| 코드 | 의미 |
+|:---|:---|
+| `import pandas as pd` | pandas를 `pd`로 부름 |
+| `pd.read_csv()` | CSV 파일을 DataFrame으로 읽음 |
+| 한 행 | 주문 한 건 (가상의 교육용 자료) |
+
+## 데이터 불러오기 {.code-slide}
+
+```{python}
+import pandas as pd
+
+data = pd.read_csv("data/week10_cafe_orders.csv")
+data.shape
+```
+
+::: {.point}
+- `data`에는 파일 이름이 아니라 DataFrame이 저장된다
+- 39행 8열
+:::
+
+## Series 만들기 {.code-slide .stack}
+
+```{python}
+wait = pd.Series(
+    [3.2, 4.1, 5.4, 9.2, 10.5, 7.3, 4.0, 4.8],
+    index=[1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008],
+)
+wait
+```
+
+::: {.point}
+- 왼쪽 주문 번호는 **레이블 인덱스**, 오른쪽은 값
+- Series는 열 하나(단일 변수)를 저장한다
+:::
+
+## Series 정보 확인 {.code-slide}
+
+```{python}
+print("레이블:", wait.index.tolist())
+print("값의 개수:", wait.size)
+print("형태:", wait.shape)
+print("자료형:", wait.dtype)
+```
+
+::: {.point}
+- 속성은 괄호 없이 쓴다 (`wait.size`)
+- 값이 8개인 1차원 `float64`
+:::
+
+## iloc와 loc {.code-slide}
+
+```{python}
+print(wait.iloc[0])
+print(wait.loc[1003])
+```
+
+::: {.point}
+- `iloc[0]` 절대 위치 0 → 맨 앞의 값 3.2
+- `loc[1003]` 레이블 1003 → 5.4
+- 레이블이 숫자여도 레이블로 찾을 때는 `loc`
+:::
+
+## 슬라이싱의 끝 처리 {.code-slide}
+
+```{python}
+print(wait.iloc[1:3])
+print(wait.loc[1002:1004])
+```
+
+::: {.point}
+- `iloc[1:3]` 끝 제외 → 2개
+- `loc[1002:1004]` 끝 포함 → 3개
+:::
+
+## 조건으로 값 추출 {.code-slide}
+
+```{python}
+print(wait[wait >= 9])
+print(wait[(wait >= 4) & (wait < 8)])
+```
+
+::: {.point}
+- 9분 이상은 1004, 1005번 두 건
+- 두 조건은 괄호로 묶고 `&`로 연결
+:::
+
+## 산술 연산과 통계 메서드 {.code-slide}
+
+```{python}
+wait_seconds = wait * 60
+print(wait_seconds.loc[1001])
+
+print("평균:", wait.mean())
+print("중앙값:", wait.median())
+print("최댓값:", wait.max(), "→ 주문", wait.idxmax())
+```
+
+::: {.point}
+- `wait * 60` 모든 값에 적용, 원본 `wait`는 그대로
+- `idxmax()` 가장 큰 값의 **레이블** (1005번)
+:::
+
+## 대입 대신 copy() {.code-slide .stack}
+
+```{python}
+a = pd.Series([3.2, 4.1], index=[1001, 1002])
+b = a
+c = a.copy()
+
+b.loc[1001] = 99.0
+print("a:", a.loc[1001])
+print("c:", c.loc[1001])
+```
+
+::: {.point}
+- `b = a`는 복사가 아니라 **같은 객체**
+- `b`를 바꾸자 `a`도 99.0으로 바뀜
+- 원본 보존은 `copy()`
+:::
+
+## 데이터 미리보기와 구조 확인
+
+| 코드 | 보여 주는 것 |
+|:---|:---|
+| `head()` | 처음 다섯 행 |
+| `tail()` | 마지막 행 |
+| `sample()` | 무작위로 뽑은 행 |
+
+::: {.point}
+- 각 행은 **주문 한 건**
+- 행이 39개 = 주문이 39건
+- 열: 주문 번호, 날짜, 요일, 시간대, 메뉴, 수량, 대기시간, 결제 수단
+:::
+
+## head() {.code-slide .wide-out}
+
+```{python}
+data.head()
+```
+
+::: {.point}
+- 처음 다섯 행으로 한 행의 의미를 이해한다
+:::
+
+## tail() {.code-slide .wide-out}
+
+```{python}
+data.tail(3)
+```
+
+::: {.point}
+- 1038번 주문이 **두 번** 나온다
+- 뒤에서 다시 확인한다
+:::
+
+## sample() {.code-slide .wide-out}
+
+```{python}
+data.sample(3, random_state=10)
+```
+
+::: {.point}
+- `random_state`는 같은 행을 다시 뽑도록 고정
+- 처음과 끝만 보면 중간의 문제를 놓친다
+:::
+
+## 데이터 크기와 자료형 {.code-slide}
+
+```{python}
+print("데이터 크기:", data.shape)
+print("열 이름:", data.columns.tolist())
+print(data.dtypes)
+```
+
+::: {.point}
+- `shape` (행 수, 열 수)
+- `columns` 열 이름
+- `dtypes` 열마다 자료형
+:::
+
+## info() {.code-slide .tall}
+
+```{python}
+data.info()
+```
+
+::: {.point}
+- `Non-Null Count` 비어 있지 않은 값의 수
+- `wait_minutes`만 38 non-null → 결측 1건
+- 결측(`NaN`) 때문에 `float64`
+:::
+
+## 변수 선택과 필터링 {.code-slide .wide-out .stack}
+
+```{python}
+selected = data[["order_hour", "wait_minutes"]]
+selected.head()
+```
+
+::: {.point}
+- 대괄호 안에 열 이름의 **목록**
+- 질문에 필요한 열만 가져온다
+:::
+
+## 열 하나는 Series {.code-slide}
+
+```{python}
+print(type(data["wait_minutes"]))
+print(data["menu_name"].unique())
+```
+
+::: {.point}
+- `data["열"]`은 Series → Series 도구를 그대로 사용
+- `unique()` 중복 없는 고유한 값 (메뉴 4종)
+:::
+
+## 2차원 loc와 iloc {.code-slide}
+
+```{python}
+print(data.loc[0:2, ["order_id", "menu_name"]])
+print(data.iloc[0:3, 0:2])
+```
+
+::: {.point}
+- 앞은 행, 뒤는 열
+- `loc`는 이름·끝 포함, `iloc`는 위치·끝 제외
+- 두 코드 모두 행 3개, 열은 고른 방식이 다르다
+:::
+
+## 조건으로 행 고르기 {.code-slide .wide-out .stack}
+
+```{python}
+lunch_orders = data[data["order_hour"] == 12]
+lunch_orders[["order_id", "menu_name", "wait_minutes"]]
+```
+
+::: {.point}
+- 조건식이 참인 행만 추출
+- 12시 주문 8건
+:::
+
+## 두 조건 함께 쓰기 {.code-slide .wide-out .stack}
+
+```{python}
+busy_orders = data[
+    (data["order_hour"] >= 12)
+    & (data["wait_minutes"] >= 8)
+]
+
+busy_orders[["order_hour", "menu_name", "wait_minutes"]]
+```
+
+::: {.point}
+- 조건마다 괄호, `&` 그리고 / `|` 또는
+- 결과가 비어 있으면 조건이 좁거나 사례가 없다
+:::
+
+## 새로운 열 만들기 {.code-slide .stack}
+
+```{python}
+orders = data.copy()
+orders["wait_per_item"] = (orders["wait_minutes"] / orders["order_count"]).round(2)
+
+orders[["order_id", "order_count", "wait_minutes", "wait_per_item"]].head()
+```
+
+::: {.point}
+- 같은 행의 값끼리 계산해 새 열 생성
+- 1003번은 2잔에 5.4분 → 잔당 2.7분
+:::
+
+## 정렬로 이상값 후보 확인 {.code-slide .wide-out .stack}
+
+```{python}
+data.sort_values("wait_minutes", ascending=False)[
+    ["order_id", "order_hour", "menu_name", "wait_minutes"]
+].head()
+```
+
+::: {.point}
+- `ascending=False` 큰 값부터
+- 45.0 아래는 13분대
+- 기록 오류인지는 코드로 알 수 없어 **이상값 후보**로 표시
+:::
+
+## 열 삭제하기 {.code-slide .stack}
+
+```{python}
+slim = data.drop(columns=["order_date", "weekday"])
+
+print("삭제한 결과:", slim.columns.tolist())
+print("원본       :", data.columns.tolist())
+```
+
+::: {.point}
+- `drop()`은 삭제한 **새 DataFrame**을 돌려준다
+- 저장하지 않으면 원본은 그대로
+:::
+
+## 결측값 확인 {.code-slide}
+
+```{python}
+data.isna().sum()
+```
+
+::: {.point}
+- `isna()` 값마다 비어 있는지
+- `sum()` 열마다 개수
+:::
+
+## 중복값 확인 {.code-slide .wide-out .stack}
+
+```{python}
+print("중복 행 수:", data.duplicated().sum())
+data[data.duplicated(keep=False)]
+```
+
+::: {.point}
+- `duplicated()` 앞 행과 모든 값이 같은 행
+- `keep=False` 겹친 행을 모두 표시
+:::
+
+## 처리 방법별 결과 비교 {.code-slide .stack}
+
+```{python}
+h12 = data.drop_duplicates()
+h12 = h12[h12["order_hour"] == 12]["wait_minutes"]
+
+print("행 제외        :", round(h12.mean(), 2))
+print("0으로 채움     :", round(h12.fillna(0).mean(), 2))
+print("중앙값으로 채움:", round(h12.fillna(h12.median()).mean(), 2))
+```
+
+::: {.point}
+- 같은 자료인데 처리마다 12시 평균이 다르다
+- 0으로 채우면 없던 "대기 0분" 주문이 생긴다
+- 이 장에서는 **결측 행을 제외**
+:::
+
+## 전처리 기준
+
+| 대상 | 처리 | 함수 |
+|:---|:---|:---|
+| 중복 행 | 하나만 남김 | `drop_duplicates()` |
+| 결측 행 | 제외 | `dropna()` |
+| 이상값 | 지우지 않고 별도 확인 | 조건 필터링 |
+
+::: {.point}
+- 원본 `data`는 고치지 않고 새 이름에 저장
+- 어떤 행을 왜 제외했는지 **기록**한다
+:::
+
+## 중복값과 결측값 제거하기 {.code-slide .stack}
+
+```{python}
+analysis_data = data.drop_duplicates().dropna(subset=["wait_minutes"]).copy()
+
+print("처리 전 행 수:", len(data))
+print("처리 후 행 수:", len(analysis_data))
+```
+
+::: {.point}
+- 39건 → 중복 1건, 결측 1건 제거 → 37건
+- 이후의 요약과 비교는 모두 `analysis_data`
+:::
+
+## 이상값 탐지 기준
+
+| 기준 | 계산 | 상한 | 탐지 |
+|:---|:---|:---:|:---:|
+| 사분위 범위(IQR) | Q3 + 1.5 × IQR | 13.95 | 45.0 |
+| 평균 ± 2 표준편차 | 평균 + 2 × 표준편차 | 21.05 | 45.0 |
+
+::: {.point}
+- 기준이 달라도 같은 값만 걸러진다
+- 이 수업은 계산 없이 쓸 수 있는 **30분**을 탐지 기준으로 정함
+- 실제 분석에서는 담당자와 협의해 정한다
+:::
+
+## 이상값 후보 확인 {.code-slide .wide-out}
+
+```{python}
+check_needed = analysis_data[
+    (analysis_data["wait_minutes"] < 0)
+    | (analysis_data["wait_minutes"] > 30)
+]
+
+check_needed
+```
+
+::: {.point}
+- 지우지 않고 **표시**만 한다
+- 결과에 미치는 영향은 요약에서 확인
+:::
+
+## 수치형 변수 요약 {.code-slide}
+
+```{python}
+analysis_data[["order_count", "wait_minutes"]].describe()
+```
+
+::: {.point}
+- `describe()` 개수·평균·표준편차·최솟값·사분위수·최댓값
+:::
+
+## describe() 읽는 법
+
+| 항목 (`wait_minutes`) | 값 | 읽는 법 |
+|:---|:---:|:---|
+| `count` | 37 | 계산에 쓰인 값의 개수 |
+| `mean` | 7.18 | 평균 |
+| `50%` | 5.20 | 중앙값 |
+| `75%` | 8.10 | 값의 75%는 이보다 작거나 같음 |
+| `max` | 45.00 | 최댓값 |
+
+::: {.point}
+`max` 45.0이 `75%` 8.1보다 훨씬 크다 → 큰 값 하나가 평균을 끌어올릴 수 있다
+:::
+
+## 평균과 중앙값 함께 보기 {.code-slide .stack}
+
+```{python}
+print("평균 대기시간:", round(analysis_data["wait_minutes"].mean(), 2))
+print("중앙 대기시간:", analysis_data["wait_minutes"].median())
+```
+
+::: {.point}
+- 평균(7.18) > 중앙값(5.2) → 큰 값이 평균을 끌어올린다는 신호
+- 중앙값은 순서로 정해져 덜 흔들린다
+:::
+
+## 이상값 후보를 분리하면 {.code-slide .stack}
+
+```{python}
+usual_data = analysis_data[analysis_data["wait_minutes"] <= 30]
+
+print("30분 이하:", len(usual_data), "건")
+print("평균  :", round(analysis_data["wait_minutes"].mean(), 2), "→", round(usual_data["wait_minutes"].mean(), 2))
+print("중앙값:", analysis_data["wait_minutes"].median(), "→", usual_data["wait_minutes"].median())
+```
+
+::: {.point}
+- 평균 7.18 → 6.13 (1.05분 감소)
+- 중앙값 5.2 → 5.15 (0.05분 감소)
+- 평균이 틀린 것이 아니라 **두 값을 함께** 본다
+:::
+
+## 범주형 변수 요약 {.code-slide}
+
+```{python}
+analysis_data["menu_name"].value_counts()
+```
+
+::: {.point}
+- 문자 열은 평균 대신 `value_counts()`
+- 아메리카노 16건
+:::
+
+## 범주형 비율 {.code-slide .stack}
+
+```{python}
+menu_ratio = analysis_data["menu_name"].value_counts(normalize=True) * 100
+menu_ratio.round(1)
+```
+
+::: {.point}
+- `normalize=True` 비율
+- 빈도가 높다 ≠ 선호도가 높다
+:::
+
+## 그룹별 집계와 비교 {.code-slide}
+
+```{python}
+hourly_wait = (
+    analysis_data
+    .groupby("order_hour")["wait_minutes"]
+    .agg(["count", "mean", "median"])
+    .round(2)
+    .sort_values("mean", ascending=False)
+)
+
+hourly_wait
+```
+
+::: {.point}
+- `groupby` 같은 값끼리 묶어 같은 계산을 적용
+- `count`가 5~7건인 점도 함께 읽는다
+:::
+
+## 질문의 답 {.code-slide .stack}
+
+```{python}
+busiest_hour = hourly_wait["mean"].idxmax()
+busiest_mean = hourly_wait.loc[busiest_hour, "mean"]
+
+print(f"평균 대기시간이 가장 긴 시간대는 {busiest_hour}시입니다.")
+print(f"해당 시간대의 평균 대기시간은 {busiest_mean:.2f}분입니다.")
+```
+
+::: {.point}
+- 12시, 평균 15.91분
+- 이 값에는 **45분**이 포함되어 있다
+:::
+
+## 이상값 포함과 제외 비교 {.code-slide .stack}
+
+```{python}
+with_all = analysis_data.groupby("order_hour")["wait_minutes"].mean()
+without = usual_data.groupby("order_hour")["wait_minutes"].mean()
+
+compare = pd.DataFrame({"포함": with_all, "제외": without}).round(2)
+compare["차이"] = (compare["포함"] - compare["제외"]).round(2)
+compare
+```
+
+::: {.point}
+- 45분을 빼도 **12시가 1위**는 같다
+- 12시 평균 15.91 → 11.07, 13시와의 격차 7.83 → 2.99
+- 보고서에는 두 결과를 함께 적는다
+:::
+
+## 사실과 해석 구분하기
+
+| 구분 | 의미 | 작성 예 |
+|:---|:---|:---|
+| 확인한 사실 | 데이터에서 직접 계산된 내용 | 12시 평균 대기시간이 11.07분으로 가장 길었다 |
+| 해석 | 사실이 의미하는 가능성 | 점심시간 주문 집중의 영향 가능성 |
+| 한계 | 결론이 미치지 못하는 범위 | 한 카페의 5일 자료 |
+
+## 나쁜 결론과 좋은 결론
+
+| 나쁜 결론 | 좋은 결론 |
+|:---|:---|
+| 12시에는 항상 대기가 길다 | 이 자료에서 12시의 평균 대기시간이 가장 길었다 |
+| 주문이 많아서 대기가 길어졌다 | 12시는 주문 건수와 대기시간이 모두 컸다. 원인은 확인이 필요하다 |
+| 평균 대기시간은 7.18분이다 | 평균 7.18분, 중앙값 5.2분. 45분 한 건이 평균을 높였다 |
+
+## 기초 EDA 결과 요약서
+
+::: {.columns}
+::: {.column width="50%"}
+1. 분석 질문
+2. 데이터의 행과 열
+3. 주요 변수와 자료형
+4. 결측값과 중복값, 처리 기준
+5. 이상값 후보
+:::
+::: {.column width="50%"}
+6. 수치형 변수의 기초 통계
+7. 범주형 변수의 빈도와 비율
+8. 그룹별 비교 결과
+9. 발견한 내용 세 가지
+10. 데이터의 한계
+:::
+:::
+
+## 핵심 정리
+
+| 영역 | 기억할 것 |
+|:---|:---|
+| 질문 | 대상·측정값·기준·계산·범위 |
+| EDA | 구조 → 품질 → 분포 → 비교 |
+| 처리 | 처리마다 결과가 다르므로 비교하고 기준을 기록 |
+| 요약 | 평균은 중앙값과 함께, 그룹별 건수도 함께 |
+| 보고 | 사실·해석·한계를 구분, 원인은 단정하지 않음 |
