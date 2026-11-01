@@ -1,0 +1,17 @@
+---
+jupyter: python3
+---
+
+# 이론 {.unnumbered #sec-ch11}
+
+## 실습 노트북 {.unnumbered}
+
+- [week10_lecture.ipynb](week10_lecture.ipynb){download="week10_lecture.ipynb"}
+- [week11_lecture.ipynb](week11_lecture.ipynb){download="week11_lecture.ipynb"}
+- [week10_seoul_bike_eda_practice.ipynb](week10_seoul_bike_eda_practice.ipynb){download="week10_seoul_bike_eda_practice.ipynb"}
+
+## 데이터 {.unnumbered}
+
+- [week10_cafe_orders.csv](data/week10_cafe_orders.csv){download="week10_cafe_orders.csv"} 교육용으로 만든 교내 카페 주문 데이터(가상)
+- [week11_cafe_orders.csv](data/week11_cafe_orders.csv){download="week11_cafe_orders.csv"} 교육용으로 만든 교내 카페 주문 데이터(가상)
+- [SeoulBikeData.csv](data/SeoulBikeData.csv){download="SeoulBikeData.csv"} 서울 공공자전거 대여 데이터. 출처 UCI Machine Learning Repository, Seoul Bike Sharing Demand, CC BY 4.0

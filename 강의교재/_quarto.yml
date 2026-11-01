@@ -1,6 +1,11 @@
 project:
   type: book
   output-dir: _book
+  resources:
+    - "*.ipynb"
+    - data/week10_cafe_orders.csv
+    - data/week11_cafe_orders.csv
+    - data/SeoulBikeData.csv
 
 lang: ko
 
@@ -87,6 +92,10 @@ book:
     - part: "10주차 · 데이터분석가처럼 문제 정의하기"
       chapters:
         - href: week10_lecture.qmd
+          text: "이론"
+    - part: "11주차 · 데이터 요약과 시각화"
+      chapters:
+        - href: week11_lecture.qmd
           text: "이론"
 
 format:
