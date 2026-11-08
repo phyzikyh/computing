@@ -97,6 +97,10 @@ book:
       chapters:
         - href: week11_lecture.qmd
           text: "이론"
+    - part: "12주차 · 데이터에서 패턴과 관계 찾기"
+      chapters:
+        - href: week12_lecture.qmd
+          text: "이론"
 
 format:
   html:

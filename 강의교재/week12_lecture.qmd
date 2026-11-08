@@ -1,0 +1,10 @@
+---
+jupyter: python3
+---
+
+# 이론 {.unnumbered #sec-ch12}
+
+## 실습 노트북 {.unnumbered}
+
+- [12주차 강의용 노트북](week12_lecture.ipynb){download="week12_lecture.ipynb"}
+- [서울자전거 학생용 실습](week12_seoul_bike_practice.ipynb){download="week12_seoul_bike_practice.ipynb"}
