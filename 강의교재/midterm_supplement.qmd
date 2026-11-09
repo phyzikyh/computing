@@ -9,6 +9,7 @@
 ## 코드 실습 {.unnumbered}
 
 - [중간고사 보충수업 주피터 노트북 내려받기](midterm_supplement.ipynb){download="midterm_supplement.ipynb"}
+- [서울 공공자전거 실습 정답 코드 내려받기](코드.ipynb){download="코드.ipynb"}
 
 노트북에는 자료형, 변수, 연산자, 조건문, 반복문, 함수 예제가 들어 있습니다. 코드 셀을 위에서 아래로 실행하면서 변수값과 실행 결과를 확인합니다.
 
