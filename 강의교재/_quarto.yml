@@ -3,6 +3,8 @@ project:
   output-dir: _book
   resources:
     - "*.ipynb"
+    - "*.docx"
+    - midterm_supplement_slide.html
     - data/week10_cafe_orders.csv
     - data/week11_cafe_orders.csv
     - data/SeoulBikeData.csv
@@ -101,6 +103,10 @@ book:
       chapters:
         - href: week12_lecture.qmd
           text: "이론"
+    - part: "중간고사 보충수업"
+      chapters:
+        - href: midterm_supplement.qmd
+          text: "보충수업 자료"
 
 format:
   html:

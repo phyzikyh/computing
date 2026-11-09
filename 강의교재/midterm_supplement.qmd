@@ -1,0 +1,19 @@
+# 중간고사 보충수업 {.unnumbered}
+
+1장부터 6장까지의 핵심 개념과 파이썬 코드 실행 과정을 다시 확인합니다.
+
+## 강의 슬라이드 {.unnumbered}
+
+- [중간고사 보충수업 슬라이드 열기](midterm_supplement_slide.html){target="_blank"}
+
+## 코드 실습 {.unnumbered}
+
+- [중간고사 보충수업 주피터 노트북 내려받기](midterm_supplement.ipynb){download="midterm_supplement.ipynb"}
+
+노트북에는 자료형, 변수, 연산자, 조건문, 반복문, 함수 예제가 들어 있습니다. 코드 셀을 위에서 아래로 실행하면서 변수값과 실행 결과를 확인합니다.
+
+## 연습문제 {.unnumbered}
+
+- [중간고사 대비 연습문제 내려받기](midterm_supplement_questions.docx){download="midterm_supplement_questions.docx"}
+
+연습문제는 컴퓨팅 사고의 핵심 개념과 짧은 파이썬 코드의 실행 결과를 확인하는 문제로 구성되어 있습니다.
