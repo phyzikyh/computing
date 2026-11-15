@@ -1,0 +1,17 @@
+---
+jupyter: python3
+---
+
+# 이론 {.unnumbered #sec-ch13}
+
+## 강의 노트북 {.unnumbered}
+
+- [week13_lecture.ipynb](week13_lecture.ipynb){download="week13_lecture.ipynb"}
+
+## 강의 슬라이드 {.unnumbered}
+
+- [week13_slide.html](week13_slide.html){download="week13_slide.html"}
+
+## 과제 노트북 {.unnumbered}
+
+- [week13_seoul_bike_assignment.ipynb](week13_seoul_bike_assignment.ipynb){download="week13_seoul_bike_assignment.ipynb"}

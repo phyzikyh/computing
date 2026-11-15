@@ -5,6 +5,7 @@ project:
     - "*.ipynb"
     - "*.docx"
     - midterm_supplement_slide.html
+    - week13_slide.html
     - data/week10_cafe_orders.csv
     - data/week11_cafe_orders.csv
     - data/SeoulBikeData.csv
@@ -102,6 +103,10 @@ book:
     - part: "12주차 · 데이터에서 패턴과 관계 찾기"
       chapters:
         - href: week12_lecture.qmd
+          text: "이론"
+    - part: "13주차 · 인공지능의 원리와 문제해결"
+      chapters:
+        - href: week13_lecture.qmd
           text: "이론"
     - part: "중간고사 보충수업"
       chapters:
