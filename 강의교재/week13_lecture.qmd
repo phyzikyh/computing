@@ -10,6 +10,7 @@ jupyter: python3
 
 ## 강의 슬라이드 {.unnumbered}
 
+- [슬라이드 열기](week13_slide.html){target="_blank"}
 - [week13_slide.html](week13_slide.html){download="week13_slide.html"}
 
 ## 과제 노트북 {.unnumbered}
