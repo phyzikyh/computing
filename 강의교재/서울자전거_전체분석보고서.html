@@ -1,0 +1,1473 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>서울 공공자전거 시간당 대여량 예측</title><style>
+:root{--ink:#172b43;--muted:#53667c;--blue:#245bc1;--line:#dce5ee;--paper:#fff;--bg:#eef3f8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 'Malgun Gothic',system-ui,sans-serif}
+.hero{background:#019386;color:#fff;padding:38px max(6vw,24px)}.hero h1{font-size:clamp(27px,4vw,42px);line-height:1.4;margin:0}
+.layout{display:grid;grid-template-columns:220px minmax(0,1050px);gap:28px;max-width:1370px;margin:32px auto;padding:0 24px}nav{position:sticky;top:20px;align-self:start;font-size:14px;padding:18px;background:white;border-radius:12px}nav a{display:block;padding:8px 0;color:#304f77;text-decoration:none}nav a:hover{color:var(--blue)}main{min-width:0;background:white;padding:36px 44px;border-radius:14px;border:1px solid var(--line)}main>h1{display:none}h2{font-size:25px;margin:44px 0 20px;padding-top:12px;border-top:2px solid #245bc1;scroll-margin-top:20px}h3{font-size:21px;margin:34px 0 12px;scroll-margin-top:20px}p{margin:14px 0}a{color:var(--blue)}strong{font-weight:700}li{margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0;line-height:1.6}th{background:#eaf1fa;text-align:left}th,td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:normal}tbody tr:nth-child(even){background:#f8fafc}.table-scroll{overflow-x:auto}.data-table td,.data-table th{white-space:nowrap;text-align:right}
+.executed{border:1px solid #cfdae8;border-radius:10px;margin:24px 0;overflow:hidden}.cell-label{background:#e8eef7;color:#345173;padding:8px 16px;font-size:12px;font-weight:700}.code{background:#fff;color:#000;padding:22px;margin:0;overflow-x:auto;font:16px/1.85 Consolas,monospace;tab-size:4}.result{font:13px/1.7 Consolas,'Malgun Gothic',monospace;white-space:pre-wrap;background:#f5f8fb;padding:16px;margin:12px;border-radius:5px;overflow-x:auto}.output-label{font-size:12px;font-weight:700;color:#0f766e;padding:12px 16px 0}.executed .table-scroll{padding:0 12px}.executed table{margin:12px 0}p code,li code{font:14px Consolas,monospace;background:#edf2f8;padding:2px 5px;border-radius:3px}figure{margin:18px 12px}figure img{display:block;width:auto;max-width:100%;height:auto;margin:auto}footer{max-width:1300px;margin:20px auto 50px;padding:0 24px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+@media(max-width:900px){.layout{display:block;padding:0 10px}nav{position:static;margin-bottom:16px}main{padding:24px 18px}.hero{padding:30px 20px}body{font-size:16px}.code{font-size:15px}h2{font-size:22px}}
+@media print{body{background:white}.hero{background:white;color:#172b43;padding:10px}.hero p,.hero .tag{color:#53667c}.layout{display:block;margin:0;padding:0}nav{display:none}main{border:0;padding:0}.code{white-space:pre-wrap;color:#000;background:#fff}.executed{break-inside:auto}figure{break-inside:avoid}h2,h3{break-after:avoid}footer{margin-bottom:0}}
+
+.split-visual{overflow-x:auto;margin:24px 0}.split-visual img{display:block;width:100%;min-width:850px;height:auto}@media print{.split-visual img{min-width:0}}
+.conclusion-visual{margin:24px 0;overflow-x:auto}.conclusion-visual img{display:block;width:100%;min-width:780px;height:auto}@media print{.conclusion-visual img{min-width:0}}
+.algorithm-visual{overflow-x:auto;margin:22px 0;padding:14px 8px;border:1px solid #dce5ee;border-radius:12px;background:#fcfdff}.algorithm-visual img{display:block;width:100%;min-width:820px;height:auto}@media print{.algorithm-visual img{min-width:0}}
+.tree-details{border:1px solid #dce5ee;border-radius:10px;padding:16px;margin:18px 0}.tree-details summary{cursor:pointer;font-weight:700;color:#245bc1}.tree-details p{font-size:14px}.full-tree{overflow:auto;max-height:850px;border:1px solid #e5ebf1}.full-tree img{display:block;width:5600px;max-width:none;height:auto}
+.code-explanation{background:#f5f8fc;padding:14px 20px;margin:-10px 0 28px;border-radius:0 8px 8px 0;font-size:15px;line-height:1.85}.code-explanation p{margin:0 0 8px}.code-explanation ul{padding-left:22px;margin:0}.code-explanation li{margin:7px 0}.code-explanation code{white-space:normal;overflow-wrap:anywhere}
+.algorithm-tree img{min-width:1000px}.algorithm-forest img{min-width:1100px}.algorithm-linear_four img{min-width:1000px}@media print{.algorithm-tree img,.algorithm-forest img,.algorithm-linear_four img{min-width:0}}
+.overview{max-width:1322px;margin:28px auto 0;padding:22px 24px 18px;background:white;border:1px solid var(--line);border-radius:14px}
+.overview h2{border:0;margin:0 0 14px;padding:0;font-size:22px}.overview-scroll{overflow-x:auto}.overview svg{display:block;width:100%;height:auto;min-width:900px}.overview figcaption{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
+.part-summaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0 16px}.part-summary{padding:20px;border:1px solid;border-radius:12px;font-size:15px;line-height:1.7}.part-summary h3{margin:0 0 12px;font-size:17px}.part-summary ul{margin:0;padding-left:20px}.part-summary li{margin:8px 0}.part-summary .part-question{margin:14px 0 0;padding-top:12px;border-top:1px solid currentColor;font-weight:700;font-size:14px}.part-one{background:#eff6ff;border-color:#bfdbfe}.part-one h3{color:#1d4ed8}.part-two{background:#ecfdf5;border-color:#a7f3d0}.part-two h3{color:#047857}.part-three{background:#fff7ed;border-color:#fed7aa}.part-three h3{color:#9a3412}
+.flow-parts,.part-summaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}.flow-part{min-width:0;padding:20px;border:1px solid;border-radius:12px;display:flex;flex-direction:column;position:relative}.flow-part.part-one{border-color:#bfdbfe}.flow-part.part-two{border-color:#a7f3d0}.flow-part.part-three{border-color:#fed7aa}.flow-part h3{font-size:15px;margin:0 0 20px;line-height:1.7;min-height:26px}.flow-stages{display:flex;gap:12px;flex:1;align-items:stretch}.flow-node{position:relative;background:white;border:1px solid #b9ccdf;border-radius:9px;padding:14px 7px;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;text-align:center;min-height:140px}.flow-node strong{font-size:15px;line-height:1.65;word-break:keep-all;overflow-wrap:anywhere}.flow-node span{font-size:13px;line-height:1.75;color:#475569;margin-top:10px;word-break:keep-all;overflow-wrap:anywhere}.flow-node+.flow-node:before{content:"→";position:absolute;left:-14px;top:46%;font-size:17px;color:#64748b;z-index:1;line-height:1}.flow-part>p{font-size:13px;font-weight:700;line-height:1.7;text-align:center;margin:18px 0 0;min-height:44px;display:flex;align-items:center;justify-content:center}.flow-part.part-one>p{color:#1d4ed8}.flow-part.part-two>p{color:#047857}.flow-part.part-three>p{color:#9a3412}.flow-part:not(:last-child):after{content:"→";position:absolute;right:-25px;top:48%;font-size:28px;font-weight:700;color:#64748b;z-index:2;line-height:1}
+@media(max-width:900px){.part-summaries{grid-template-columns:1fr}.part-summary{padding:16px}}
+@media(max-width:900px){.flow-parts{grid-template-columns:1fr}.flow-part{padding:16px}.flow-part:not(:last-child):after{content:"↓";top:auto;bottom:-24px;right:calc(50% - 10px);font-size:25px}.flow-node{min-height:108px}.flow-part>p{min-height:0}.flow-part h3{margin-bottom:12px}}
+@media(max-width:900px){.overview{margin:18px 10px 0;padding:18px 12px}.overview svg{min-width:1000px}}
+@media print{.overview{margin:12px 0;border:1px solid #dce5ee;break-inside:avoid}.overview svg{min-width:0}.overview-scroll{overflow:visible}}
+</style></head><body>
+<header class="hero"><h1>서울 공공자전거 시간당 대여량 예측</h1></header>
+<figure class="overview"><h2>전체 분석 흐름</h2><div class="flow-parts" role="img" aria-label="Part 1 문제 정의와 탐색적 데이터 분석(EDA), Part 2 전처리, Part 3 모델링과 평가 및 인사이트 도출">
+<section class="flow-part part-one"><h3>PART 1 - 문제 정의와 탐색적 데이터 분석(EDA)</h3><div class="flow-stages">
+<div class="flow-node"><strong>1. 예측문제 정의</strong><span>시간대, 날씨로<br>시간당 대여량 추정</span></div>
+<div class="flow-node"><strong>2. 탐색적 분석</strong><span>분포, 시간 패턴<br>기온, 강수와의 관계</span></div>
+</div><p>무엇을 예측하며, 어떤 단서가 있는가?</p></section>
+<section class="flow-part part-two"><h3>PART 2 - 전처리</h3><div class="flow-stages">
+<div class="flow-node"><strong>3. 데이터 전처리</strong><span>운영 기록, 입력 선택<br>학습/평가로 분리</span></div>
+</div><p>모델이 사용할 표와 확인할 기간 확정</p></section>
+<section class="flow-part part-three"><h3>PART 3 - 모델링과 결과 해석</h3><div class="flow-stages">
+<div class="flow-node"><strong>4. 모델링</strong><span>중앙값, 회귀, 나무<br>랜덤 포레스트 학습</span></div>
+<div class="flow-node"><strong>5. 평가</strong><span>같은 평가 자료로<br>모델별 오차 비교</span></div>
+<div class="flow-node"><strong>6. 인사이트 도출</strong><span>큰 오차 사례 확인<br>활용 방안과 한계</span></div>
+</div><p>얼마나 틀리며, 어디까지 활용할 수 있는가?</p></section>
+</div><div class="part-summaries" aria-label="파트별 분석 내용">
+<section class="part-summary part-one"><h3>Part 1 - 무엇을 살펴보나요?</h3><ul>
+<li>CSV 파일 불러오기</li>
+<li>처음 다섯 행과 행, 열의 수 확인</li>
+<li>열 이름을 짧게 바꾸기</li>
+<li>날짜를 날짜형으로 바꾸기</li>
+<li>기록의 시작일과 종료일 확인</li>
+<li>운영 여부별 기록 수 확인</li>
+<li>운영 기록을 학습 자료와 평가 자료로 나누기</li>
+<li>학습 자료만 탐색용으로 복사</li>
+<li>대여량의 기술통계, 평균과 중앙값 확인</li>
+<li>기온과 대여량의 상관계수 확인</li>
+<li>습도와 대여량의 상관계수 확인</li>
+<li>15℃ 이상 20℃ 미만 기록의 시간대별 개수와 평균 비교</li>
+<li>시간대별 평균 대여량 계산</li>
+<li>평균 대여량이 가장 높은 시각 찾기</li>
+<li>강수 여부별 기록 수와 평균 대여량 비교</li>
+<li>습도 구간별 기록 수와 평균 대여량 비교</li>
+<li>관찰한 내용과 입력 후보 및 모델 비교 계획 연결</li>
+</ul></section>
+<section class="part-summary part-two"><h3>Part 2 - 데이터를 어떻게 준비하나요?</h3><ul>
+<li>열별 결측값 개수 확인</li>
+<li>중복 행 개수 확인</li>
+<li>시각의 최솟값과 최댓값 확인</li>
+<li>습도의 최솟값과 최댓값 확인</li>
+<li>대여 건수의 최솟값 확인</li>
+<li>강수량의 최솟값 확인</li>
+<li>시간대, 기온, 습도, 강수량을 입력으로 선택</li>
+<li>실제 대여 건수를 정답으로 선택</li>
+<li>입력 표와 정답 열의 앞부분 확인</li>
+<li>학습과 예측, 평가에서 입력과 정답의 역할 구분</li>
+</ul></section>
+<section class="part-summary part-three"><h3>Part 3 - 어떻게 예측하고 판단하나요?</h3><ul>
+<li>학습 대여량의 중앙값 계산</li>
+<li>중앙값으로 평가 자료를 예측하고 평균 오차 계산</li>
+<li>기온 하나로 선형 회귀 학습</li>
+<li>기울기와 절편 확인</li>
+<li>기온 모델의 평가 예측과 평균 오차 계산</li>
+<li>기온에 시간대를 추가하여 평가 평균 오차 비교</li>
+<li>강수량을 추가하여 평가 평균 오차 비교</li>
+<li>습도를 추가하여 평가 평균 오차 비교</li>
+<li>입력을 추가한 네 선형 회귀의 오차를 표로 비교</li>
+<li>의사결정나무를 학습하고 평가 평균 오차 계산</li>
+<li>랜덤 포레스트를 학습하고 평가 평균 오차 계산</li>
+<li>방법별 평가 평균 오차를 표로 비교</li>
+<li>실제값, 예측값, 절대 오차를 표로 확인</li>
+<li>오차가 큰 다섯 기록 확인</li>
+<li>시간대별 평균 오차를 표로 확인</li>
+<li>새로운 시간대와 날씨 조건을 입력해 대여량 예측</li>
+</ul></section>
+</div></figure>
+<div class="layout"><nav aria-label="보고서 목차"><strong>분석 순서</strong><a href="#section-1">Part 1 - 문제 정의와 탐색적 데이터 분석(EDA)</a><a href="#section-2">Part 2 - 모델에 사용할 데이터 준비하기</a><a href="#section-3">Part 3 - 모델링, 평가, 인사이트 도출</a><a href="#section-4">결론</a></nav><main><h1>서울 공공자전거 시간당 대여량 예측</h1>
+<h2 id="section-1">Part 1 - 문제 정의와 탐색적 데이터 분석(EDA)</h2>
+<h3>1-1. 무엇을 예측할까요?</h3>
+<p>기온만 사용했을 때와 시간대, 강수량, 습도를 차례로 추가했을 때의 예측 오차를 비교합니다.</p>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정답</td>
+<td>실제 대여 건수</td>
+</tr>
+<tr>
+<td>대상</td>
+<td>자전거를 운영한 시간의 기록</td>
+</tr>
+<tr>
+<td>입력 후보</td>
+<td>기온, 시간대, 강수량, 습도</td>
+</tr>
+<tr>
+<td>평가</td>
+<td>실제값과 예측값의 평균적인 차이</td>
+</tr>
+</tbody>
+</table>
+<p>분석은 <strong>학습 자료에서 특징 관찰 → 입력 후보와 모델 결정 → 코드에 반영 → 평가 결과 확인</strong> 순서로 진행합니다. 모든 모델과 입력 조합을 평가 전에 정하고, 평가 결과를 보고 설정을 반복해서 바꾸지 않습니다.</p>
+<h3>1-2. 도구와 데이터 불러오기</h3>
+<p><code>pandas</code>는 표를 다룹니다. 세 모델은 입력과 정답의 관계를 학습하고, <code>mean_absolute_error</code>는 예측 오차를 계산합니다.</p>
+<section class="executed"><div class="cell-label">Python - 1</div><pre class="code"><code>import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error</code></pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>import pandas as pd</code>는 pandas를 불러와 <code>pd</code>라는 짧은 이름으로 사용합니다.</li>
+<li><code>from 도구 import 이름</code>은 필요한 모델이나 함수를 가져옵니다. 이 단계에서 모델이 학습되는 것은 아닙니다.</li>
+<li><code>LinearRegression</code>은 선형 회귀, <code>DecisionTreeRegressor</code>는 회귀나무, <code>RandomForestRegressor</code>는 여러 회귀나무의 예측을 평균하는 모델입니다.</li>
+<li><code>mean_absolute_error(실제값, 예측값)</code>은 평균 절대 오차를 숫자 하나로 반환합니다.</li>
+</ul></section>
+<section class="executed"><div class="cell-label">Python - 2</div><pre class="code"><code>raw = pd.read_csv(&quot;SeoulBikeData.csv&quot;, encoding=&quot;latin1&quot;)
+display(raw.head())
+print(&quot;행과 열의 수:&quot;, raw.shape)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Rented Bike Count</th>
+      <th>Hour</th>
+      <th>Temperature(°C)</th>
+      <th>Humidity(%)</th>
+      <th>Wind speed (m/s)</th>
+      <th>Visibility (10m)</th>
+      <th>Dew point temperature(°C)</th>
+      <th>Solar Radiation (MJ/m2)</th>
+      <th>Rainfall(mm)</th>
+      <th>Snowfall (cm)</th>
+      <th>Seasons</th>
+      <th>Holiday</th>
+      <th>Functioning Day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01/12/2017</td>
+      <td>254</td>
+      <td>0</td>
+      <td>-5.2</td>
+      <td>37</td>
+      <td>2.2</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>01/12/2017</td>
+      <td>204</td>
+      <td>1</td>
+      <td>-5.5</td>
+      <td>38</td>
+      <td>0.8</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>01/12/2017</td>
+      <td>173</td>
+      <td>2</td>
+      <td>-6.0</td>
+      <td>39</td>
+      <td>1.0</td>
+      <td>2000</td>
+      <td>-17.7</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>01/12/2017</td>
+      <td>107</td>
+      <td>3</td>
+      <td>-6.2</td>
+      <td>40</td>
+      <td>0.9</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>01/12/2017</td>
+      <td>78</td>
+      <td>4</td>
+      <td>-6.0</td>
+      <td>36</td>
+      <td>2.3</td>
+      <td>2000</td>
+      <td>-18.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table></div><pre class="result">행과 열의 수: (8760, 14)
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>pd.read_csv("파일 이름", encoding="글자 방식")</code>은 CSV 파일을 읽어 <strong>데이터프레임, 즉 표</strong>를 반환합니다. 그 결과를 <code>raw</code>에 저장합니다.</li>
+<li><code>encoding="latin1"</code>은 이 CSV의 온도 기호가 포함된 열 이름을 읽기 위한 설정입니다.</li>
+<li><code>raw.head()</code>는 앞의 다섯 행을 표로 반환합니다. <code>raw.head(3)</code>처럼 행 수를 지정할 수도 있습니다.</li>
+<li><code>display(표)</code>는 표를 화면에 표시합니다. <code>raw.shape</code>는 <code>(행 수, 열 수)</code>이고, 함수가 아니므로 뒤에 <code>()</code>를 붙이지 않습니다.</li>
+<li><code>print(값)</code>은 글자나 숫자를 출력합니다. 여기서는 <code>"행과 열의 수:"</code>라는 문장과 <code>raw.shape</code>를 함께 표시합니다.</li>
+</ul></section>
+<p>열 이름을 짧게 바꾸면 아래 코드에서 입력을 선택하기 편합니다. 값이나 행 순서는 바꾸지 않습니다.</p>
+<section class="executed"><div class="cell-label">Python - 3</div><pre class="code"><code>bike = raw.copy()
+bike.columns = [
+    &quot;date&quot;, &quot;rented_count&quot;, &quot;hour&quot;, &quot;temperature&quot;, &quot;humidity&quot;,
+    &quot;wind_speed&quot;, &quot;visibility&quot;, &quot;dew_point&quot;, &quot;solar_radiation&quot;,
+    &quot;rainfall&quot;, &quot;snowfall&quot;, &quot;season&quot;, &quot;holiday&quot;, &quot;functioning_day&quot;
+]
+display(bike.head())</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>rented_count</th>
+      <th>hour</th>
+      <th>temperature</th>
+      <th>humidity</th>
+      <th>wind_speed</th>
+      <th>visibility</th>
+      <th>dew_point</th>
+      <th>solar_radiation</th>
+      <th>rainfall</th>
+      <th>snowfall</th>
+      <th>season</th>
+      <th>holiday</th>
+      <th>functioning_day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01/12/2017</td>
+      <td>254</td>
+      <td>0</td>
+      <td>-5.2</td>
+      <td>37</td>
+      <td>2.2</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>01/12/2017</td>
+      <td>204</td>
+      <td>1</td>
+      <td>-5.5</td>
+      <td>38</td>
+      <td>0.8</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>01/12/2017</td>
+      <td>173</td>
+      <td>2</td>
+      <td>-6.0</td>
+      <td>39</td>
+      <td>1.0</td>
+      <td>2000</td>
+      <td>-17.7</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>01/12/2017</td>
+      <td>107</td>
+      <td>3</td>
+      <td>-6.2</td>
+      <td>40</td>
+      <td>0.9</td>
+      <td>2000</td>
+      <td>-17.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>01/12/2017</td>
+      <td>78</td>
+      <td>4</td>
+      <td>-6.0</td>
+      <td>36</td>
+      <td>2.3</td>
+      <td>2000</td>
+      <td>-18.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>Winter</td>
+      <td>No Holiday</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>raw.copy()</code>는 원본 표의 복사본을 반환합니다. 복사본을 <code>bike</code>에 저장해 열 이름을 바꿉니다.</li>
+<li><code>bike.columns</code>는 열 이름 모음입니다. <code>= [...]</code>로 새 이름들을 대입합니다. 이름의 개수와 순서는 원래 열과 맞춰야 합니다.</li>
+<li>대괄호 안의 쉼표로 구분된 이름들은 <strong>리스트</strong>입니다. 실제 데이터 값과 행의 순서는 바뀌지 않습니다.</li>
+<li><code>bike.head()</code>로 바뀐 이름을 확인하고 <code>display()</code>로 표시합니다.</li>
+</ul></section>
+<table>
+<thead>
+<tr>
+<th>열</th>
+<th>뜻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>날짜</td>
+</tr>
+<tr>
+<td><code>rented_count</code></td>
+<td>한 시간의 대여 건수</td>
+</tr>
+<tr>
+<td><code>hour</code></td>
+<td>시각, 0~23시</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>기온, ℃</td>
+</tr>
+<tr>
+<td><code>humidity</code></td>
+<td>습도, %</td>
+</tr>
+<tr>
+<td><code>rainfall</code></td>
+<td>강수량, mm</td>
+</tr>
+<tr>
+<td><code>functioning_day</code></td>
+<td>운영 여부, Yes 또는 No</td>
+</tr>
+</tbody>
+</table>
+<p>글자로 읽힌 날짜를 날짜형으로 바꾸고 기록 기간과 운영 여부를 확인합니다.</p>
+<section class="executed"><div class="cell-label">Python - 4</div><pre class="code"><code>bike[&quot;date&quot;] = pd.to_datetime(bike[&quot;date&quot;], format=&quot;%d/%m/%Y&quot;)
+print(&quot;처음 날짜:&quot;, bike[&quot;date&quot;].min())
+print(&quot;마지막 날짜:&quot;, bike[&quot;date&quot;].max())
+display(bike[&quot;functioning_day&quot;].value_counts())</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">처음 날짜: 2017-12-01 00:00:00
+마지막 날짜: 2018-11-30 00:00:00
+</pre><pre class="result">functioning_day
+Yes    8465
+No      295
+Name: count, dtype: int64</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>pd.to_datetime(날짜열, format="형식")</code>은 날짜 글자를 날짜 자료형으로 바꾼 열을 반환합니다. 결과를 <code>bike["date"]</code>에 다시 저장합니다.</li>
+<li><code>%d/%m/%Y</code>는 일/월/네 자리 연도 순서입니다. 예를 들어 <code>01/12/2017</code>은 2017년 12월 1일입니다.</li>
+<li>날짜 열의 <code>.min()</code>은 가장 이른 날짜, <code>.max()</code>는 가장 늦은 날짜 하나를 반환합니다.</li>
+<li><code>.value_counts()</code>는 값별 개수가 담긴 열을 반환합니다. 여기서는 운영 여부 <code>Yes</code>와 <code>No</code>가 각각 몇 행인지 셉니다.</li>
+</ul></section>
+<h3>1-3. 관계를 찾을 자료와 평가할 자료 구분하기</h3>
+<p>운영하지 않은 시간과 운영했지만 이용량이 적은 시간은 구분해야 합니다. 운영한 시간의 수요를 예측하므로 <code>Yes</code>인 기록을 선택합니다.</p>
+<p>앞선 기간을 학습 자료, 뒤 기간을 평가 자료로 나눕니다. EDA에서는 학습 자료의 복사본인 <code>explore</code>만 살펴봅니다. 평가 자료의 정답을 보며 입력을 고르면 이미 본 답에 맞춘 선택이 될 수 있기 때문입니다. 학습에 쓰지 않은 뒤 기간에서 오차를 확인해야 새로운 기록에도 적용되는지 판단할 수 있습니다.</p>
+<section class="executed"><div class="cell-label">Python - 5</div><pre class="code"><code>operating = bike[bike[&quot;functioning_day&quot;] == &quot;Yes&quot;].copy()
+train = operating[operating[&quot;date&quot;] &lt; &quot;2018-09-01&quot;].copy()
+test = operating[operating[&quot;date&quot;] &gt;= &quot;2018-09-01&quot;].copy()
+explore = train.copy()
+print(&quot;학습 기록 수:&quot;, len(train))
+print(&quot;평가 기록 수:&quot;, len(test))</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">학습 기록 수: 6528
+평가 기록 수: 1937
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>== "Yes"</code>는 각 행의 운영 여부를 참 또는 거짓으로 표시하는 조건입니다.</li>
+<li><code>표[조건]</code>은 조건이 참인 행만 담은 데이터프레임을 반환합니다. <code>copy()</code>는 그 표의 복사본을 만듭니다.</li>
+<li><code>&lt;</code>는 기준 날짜 이전, <code>&gt;=</code>는 기준 날짜와 같거나 이후입니다. 같은 날짜의 기록이 두 묶음에 섞이지 않습니다.</li>
+<li><code>len(표)</code>는 행 수를 반환합니다. 학습은 6,528행, 평가는 1,937행입니다.</li>
+<li><code>explore</code>는 학습 표의 복사본입니다. 탐색용 열을 추가해도 원래 학습 표는 바뀌지 않습니다.</li>
+</ul></section>
+<h3>1-4. 대여량을 대표값 하나로 설명할 수 있을까요?</h3>
+<p>평균과 중앙값, 최댓값을 함께 읽습니다. 큰 값이 평균에 영향을 줄 수 있으므로 한 숫자만 보고 모든 시간이 비슷하다고 판단하지 않습니다.</p>
+<section class="executed"><div class="cell-label">Python - 6</div><pre class="code"><code>display(explore[&quot;rented_count&quot;].describe())
+print(&quot;평균:&quot;, explore[&quot;rented_count&quot;].mean())
+print(&quot;중앙값:&quot;, explore[&quot;rented_count&quot;].median())</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">count    6528.000000
+mean      671.310049
+std       638.217318
+min         2.000000
+25%       189.000000
+50%       424.000000
+75%       997.250000
+max      3556.000000
+Name: rented_count, dtype: float64</pre><pre class="result">평균: 671.3100490196078
+중앙값: 424.0
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>explore["rented_count"]</code>는 대여 건수 열 하나를 <strong>시리즈</strong> 형태로 고릅니다.</li>
+<li><code>.describe()</code>는 개수, 평균, 표준편차, 최솟값, 사분위수, 최댓값이 담긴 요약 열을 반환합니다.</li>
+<li><code>.mean()</code>은 평균 숫자 하나, <code>.median()</code>은 중앙값 숫자 하나를 반환합니다. 중앙값은 크기순 가운데 값이며 개수가 짝수이면 가운데 두 값의 평균입니다.</li>
+<li><code>display()</code>는 요약 통계를, <code>print()</code>는 평균과 중앙값을 표시합니다.</li>
+</ul></section>
+<p><strong>관찰:</strong> 평균이 중앙값보다 크고 대여량의 범위가 넓습니다.</p>
+<p><strong>반영:</strong> 학습 정답의 중앙값을 모든 시간에 똑같이 예측하는 방법을 비교 기준으로 둡니다. 입력을 전혀 보지 않는 이 방법보다 모델들이 덜 틀리는지 뒤에서 확인합니다.</p>
+<h3>1-5. 기온과 대여량의 상관계수 계산하기</h3>
+<p>상관계수는 두 숫자가 함께 증가하거나 감소하는 관계를 -1~1 사이의 숫자로 요약합니다. 여기서는 기온이 높은 기록에서 대여량도 많은 경향이 있는지 확인합니다.</p>
+<table>
+<thead>
+<tr>
+<th>상관계수</th>
+<th>읽는 방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>양수</td>
+<td>한쪽이 클수록 다른 쪽도 큰 경향</td>
+</tr>
+<tr>
+<td>음수</td>
+<td>한쪽이 클수록 다른 쪽은 작은 경향</td>
+</tr>
+<tr>
+<td>0에 가까운 값</td>
+<td>일정한 직선으로 설명되는 관계가 약함</td>
+</tr>
+</tbody>
+</table>
+<p>절댓값이 1에 가까울수록 직선 관계가 뚜렷합니다. 0에 가깝다고 모든 관계가 없는 것은 아닙니다.</p>
+<p>먼저 비교할 숫자 열 두 개를 고른 뒤 <code>corr()</code>를 붙입니다. <code>explore[["temperature", "rented_count"]]</code>는 기온과 대여량을 담은 표이고, <code>.corr()</code>는 이 두 열의 상관계수 표를 계산합니다. 아래 코드는 계산한 표를 <code>temperature_relation</code>에 저장한 뒤 출력합니다.</p>
+<section class="executed"><div class="cell-label">Python - 7</div><pre class="code"><code>temperature_relation = explore[[&quot;temperature&quot;, &quot;rented_count&quot;]].corr()
+display(temperature_relation)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>temperature</th>
+      <th>rented_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>temperature</th>
+      <td>1.000000</td>
+      <td>0.596814</td>
+    </tr>
+    <tr>
+      <th>rented_count</th>
+      <td>0.596814</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>[["temperature", "rented_count"]]</code>는 두 열을 데이터프레임으로 선택합니다.</li>
+<li><code>corr()</code>는 선택한 숫자 열의 상관계수를 담은 <strong>데이터프레임</strong>을 반환합니다. 기본 계산은 직선 관계를 요약하는 피어슨 상관계수입니다.</li>
+<li>행 이름과 열 이름은 비교한 변수입니다. <code>temperature</code> 행과 <code>rented_count</code> 열이 만나는 칸을 읽으면 됩니다. 반대쪽 칸에도 같은 값이 나옵니다.</li>
+<li>대각선의 1은 자기 자신과의 관계입니다. 기온과 대여량의 관계를 확인할 때는 대각선 밖의 값을 읽습니다.</li>
+<li>기온과 대여 건수가 만나는 칸은 약 0.60입니다. 학습 기간에는 기온이 높을수록 대여가 많은 경향이 있었습니다. 이 숫자가 정확도 60%라는 뜻은 아닙니다.</li>
+<li>상관계수가 높다고 원인이 증명되거나 예측이 정확하다는 뜻은 아닙니다.</li>
+</ul></section>
+<p><strong>반영:</strong> 기온 하나를 사용하는 선형 회귀를 첫 모델로 정합니다. 이 모델은 기온이 1℃ 높아질 때 예측값이 일정한 양만큼 달라지는 식을 학습합니다.</p>
+<h3>1-6. 기온이 비슷해도 시간대별로 다를까요?</h3>
+<p>기온만으로 충분하다면 비슷한 기온에서 대여량도 비슷할 것입니다. 15℃ 이상 20℃ 미만인 기록을 골라 시간대별 평균을 비교합니다. 다른 조건까지 같게 만든 실험은 아니므로 시간대의 인과 효과를 확인하는 과정은 아닙니다.</p>
+<section class="executed"><div class="cell-label">Python - 8</div><pre class="code"><code>mild = explore[(explore[&quot;temperature&quot;] &gt;= 15) &amp; (explore[&quot;temperature&quot;] &lt; 20)]
+mild_by_hour = mild.groupby(&quot;hour&quot;)[&quot;rented_count&quot;].agg([&quot;count&quot;, &quot;mean&quot;])
+display(mild_by_hour)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+    </tr>
+    <tr>
+      <th>hour</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>32</td>
+      <td>745.031250</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>34</td>
+      <td>594.411765</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>35</td>
+      <td>427.485714</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>39</td>
+      <td>306.076923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>39</td>
+      <td>193.333333</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>38</td>
+      <td>218.157895</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>36</td>
+      <td>450.527778</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>39</td>
+      <td>894.692308</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>29</td>
+      <td>1372.241379</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>27</td>
+      <td>793.444444</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>30</td>
+      <td>713.933333</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>32</td>
+      <td>787.406250</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>28</td>
+      <td>890.750000</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>21</td>
+      <td>904.095238</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>18</td>
+      <td>920.444444</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>24</td>
+      <td>1015.000000</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>26</td>
+      <td>1157.615385</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>24</td>
+      <td>1375.000000</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>28</td>
+      <td>1812.357143</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>31</td>
+      <td>1494.096774</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>28</td>
+      <td>1376.000000</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>30</td>
+      <td>1403.900000</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>29</td>
+      <td>1221.241379</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>30</td>
+      <td>896.033333</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li>두 비교식은 각각 기온이 15 이상인지, 20 미만인지 확인합니다.</li>
+<li><code>&amp;</code>는 두 조건을 모두 만족한다는 뜻입니다. 각 조건을 괄호로 감쌉니다.</li>
+<li><code>mild</code>는 조건에 맞는 행을 담은 데이터프레임입니다. 참/거짓 조건만 저장한 시리즈와 구분합니다.</li>
+<li><code>groupby("hour")</code>는 같은 시각끼리 묶습니다. <code>agg(["count", "mean"])</code>는 묶음별 개수와 평균을 함께 계산해 표로 반환합니다.</li>
+<li>비슷한 기온에서도 새벽과 퇴근 무렵의 평균이 다릅니다. 기록 수가 적은 시간인지도 함께 확인합니다.</li>
+</ul></section>
+<p><strong>반영:</strong> 기온에 시간대를 추가한 선형 회귀를 비교합니다. 이어서 학습 기간 전체에서도 시간대별 패턴을 확인합니다.</p>
+<section class="executed"><div class="cell-label">Python - 9</div><pre class="code"><code>hour_average = explore.groupby(&quot;hour&quot;)[&quot;rented_count&quot;].mean()
+display(hour_average)
+print(&quot;평균이 가장 높은 시각:&quot;, hour_average.idxmax())</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">hour
+0      517.933824
+1      409.400735
+2      293.738971
+3      197.397059
+4      128.213235
+5      138.573529
+6      280.154412
+7      578.283088
+8      962.437500
+9      614.194853
+10     495.286765
+11     567.176471
+12     660.257353
+13     685.363971
+14     702.963235
+15     768.235294
+16     863.702206
+17    1062.363971
+18    1426.169118
+19    1152.455882
+20    1040.860294
+21    1010.735294
+22     901.742647
+23     653.801471
+Name: rented_count, dtype: float64</pre><pre class="result">평균이 가장 높은 시각: 18
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>explore.groupby("hour")</code>는 시각이 같은 행끼리 묶어 계산할 준비를 합니다.</li>
+<li><code>["rented_count"].mean()</code>은 대여 건수 열을 선택해 <strong>묶음별 평균</strong>을 구합니다. 결과는 시각을 인덱스로 갖는 시리즈이며 <code>hour_average</code>에 저장합니다.</li>
+<li><code>hour_average.idxmax()</code>는 가장 큰 평균이 있는 <strong>시각</strong>을 반환합니다. 가장 큰 평균 숫자를 구하는 <code>.max()</code>와 다릅니다.</li>
+<li><code>display()</code>로 평균 열을 보고 <code>print()</code>로 최고 시각을 확인합니다.</li>
+</ul></section>
+<p><strong>관찰:</strong> 시각이 커질수록 평균이 일정하게 증가하는 모양은 아닙니다. 아침에 높아졌다 낮아지고 저녁에 다시 높아집니다.</p>
+<p><strong>반영:</strong> 시각에 일정한 기울기를 곱하는 선형 회귀와, 시간 구간을 조건으로 나눌 수 있는 나무 모델을 모두 비교합니다.</p>
+<h3>1-7. 비가 오는 기록은 다를까요?</h3>
+<p>비가 없는 기록과 있는 기록의 개수, 평균 대여량을 비교합니다.</p>
+<section class="executed"><div class="cell-label">Python - 10</div><pre class="code"><code>dry = explore[explore[&quot;rainfall&quot;] == 0]
+rain = explore[explore[&quot;rainfall&quot;] &gt; 0]
+print(&quot;강수 없음:&quot;, len(dry), &quot;개, 평균&quot;, dry[&quot;rented_count&quot;].mean(), &quot;건&quot;)
+print(&quot;강수 있음:&quot;, len(rain), &quot;개, 평균&quot;, rain[&quot;rented_count&quot;].mean(), &quot;건&quot;)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">강수 없음: 6099 개, 평균 706.736678143958 건
+강수 있음: 429 개, 평균 167.65734265734267 건
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>explore["rainfall"] == 0</code>은 강수가 없는 행, <code>&gt; 0</code>은 강수가 있는 행을 찾는 조건입니다.</li>
+<li><code>표[조건]</code>의 결과인 두 표를 각각 <code>dry</code>와 <code>rain</code>에 저장합니다. 이 코드는 원자료를 삭제하지 않습니다.</li>
+<li><code>len(dry)</code>와 <code>len(rain)</code>은 각 집단의 행 수, <code>["rented_count"].mean()</code>은 각 집단의 평균 대여 건수입니다.</li>
+<li><code>print(값1, 값2, ...)</code>는 여러 값을 차례로 표시합니다. 집단의 크기와 평균을 함께 읽습니다.</li>
+</ul></section>
+<p><strong>관찰:</strong> 비가 있는 기록에서 평균 대여량이 낮습니다. 두 집단의 시간대와 계절 구성까지 같다는 뜻은 아니므로 이 차이를 강수의 인과 효과로 단정하지 않습니다.</p>
+<p><strong>반영:</strong> 기온과 시간대에 강수량을 추가한 모델을 비교합니다. 집단 비교에서는 강수 유무를 확인했지만 모델에는 원래 강수량 수치를 넣습니다.</p>
+<h3>1-8. 습도를 추가할 근거가 있을까요?</h3>
+<p>기온에서 사용한 계산을 습도에도 적용합니다. 선택할 열을 <code>humidity</code>와 <code>rented_count</code>로 바꾸고 같은 <code>corr()</code>를 사용합니다.</p>
+<section class="executed"><div class="cell-label">Python - 11</div><pre class="code"><code>humidity_relation = explore[[&quot;humidity&quot;, &quot;rented_count&quot;]].corr()
+display(humidity_relation)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>humidity</th>
+      <th>rented_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>humidity</th>
+      <td>1.000000</td>
+      <td>-0.147538</td>
+    </tr>
+    <tr>
+      <th>rented_count</th>
+      <td>-0.147538</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>explore[["humidity", "rented_count"]]</code>는 현재 습도와 대여 건수 두 열을 선택한 데이터프레임입니다.</li>
+<li><code>.corr()</code>로 계산한 상관계수 표를 <code>humidity_relation</code>에 저장하고 <code>display()</code>로 출력합니다.</li>
+<li><code>humidity</code>와 <code>rented_count</code>가 만나는 칸은 약 -0.15입니다. 습도가 높을수록 대여량이 적은 방향이지만 직선 관계는 뚜렷하지 않습니다.</li>
+<li>상관계수가 작다는 이유만으로 입력에서 바로 제외하지 않습니다. 아래에서는 구간별 평균을 확인하여 직선 하나로 요약하기 어려운 차이도 살펴봅니다.</li>
+</ul></section>
+<h4>습도 구간별 평균도 함께 확인하기</h4>
+<p>습도를 세 구간으로 나누어 대여량의 개수와 평균을 확인합니다. 구간별 평균 차이는 입력 후보로 검토할 근거입니다. 다른 변수와 겹치는 정보일 수도 있으므로 반드시 필요한 변수라고 미리 결론 내리지 않습니다.</p>
+<section class="executed"><div class="cell-label">Python - 12</div><pre class="code"><code>explore[&quot;humidity_group&quot;] = pd.cut(
+    explore[&quot;humidity&quot;],
+    bins=[0, 40, 70, 100],
+    labels=[&quot;0~40%&quot;, &quot;40% 초과~70%&quot;, &quot;70% 초과~100%&quot;],
+    include_lowest=True
+)
+humidity_summary = explore.groupby(&quot;humidity_group&quot;, observed=True)[&quot;rented_count&quot;].agg([&quot;count&quot;, &quot;mean&quot;])
+display(humidity_summary)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+    </tr>
+    <tr>
+      <th>humidity_group</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0~40%</th>
+      <td>1528</td>
+      <td>662.857330</td>
+    </tr>
+    <tr>
+      <th>40% 초과~70%</th>
+      <td>3072</td>
+      <td>788.093750</td>
+    </tr>
+    <tr>
+      <th>70% 초과~100%</th>
+      <td>1928</td>
+      <td>491.930498</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>pd.cut(열, bins=경계값, labels=이름)</code>은 숫자를 구간으로 나눈 범주형 시리즈를 반환합니다.</li>
+<li>기본적으로 오른쪽 경계를 포함합니다. 40은 첫 구간, 70은 둘째 구간입니다. <code>include_lowest=True</code>로 최솟값 0도 포함합니다.</li>
+<li>구간을 <code>humidity_group</code>이라는 탐색용 열에 저장합니다. 글자로 된 이 구간은 모델 입력으로 사용하지 않습니다.</li>
+<li><code>observed=True</code>는 실제 기록이 있는 구간만 집계하라는 뜻입니다.</li>
+<li><code>agg(["count", "mean"])</code>로 구간별 개수와 평균을 구합니다. 중간 구간에서 평균이 높고 높은 습도 구간에서 낮아, 단순한 감소 관계만 있는 것은 아닙니다.</li>
+</ul></section>
+<p><strong>반영:</strong> 원래 숫자 형태의 습도를 추가 입력 후보로 둡니다. 습도를 제외한 선형 회귀와 포함한 선형 회귀를 비교하여 이 조합에서 오차가 어떻게 달라지는지 확인합니다.</p>
+<h3>1-9. 관찰한 내용을 분석 계획으로 옮기기</h3>
+<table>
+<thead>
+<tr>
+<th>관찰</th>
+<th>판단</th>
+<th>코드에 반영할 내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>대여량의 평균과 중앙값이 다름</td>
+<td>대표값 하나로 설명하기 어려울 수 있음</td>
+<td>중앙값 예측을 비교 기준으로 사용</td>
+</tr>
+<tr>
+<td>기온과 대여량의 양의 관계</td>
+<td>기온을 첫 입력으로 검토</td>
+<td>기온 하나의 선형 회귀</td>
+</tr>
+<tr>
+<td>비슷한 기온에서도 시간대별 평균이 다름</td>
+<td>시간대가 추가 정보를 줄 수 있음</td>
+<td>시간대 추가</td>
+</tr>
+<tr>
+<td>강수 유무별 평균이 다름</td>
+<td>강수량도 입력 후보</td>
+<td>강수량 추가</td>
+</tr>
+<tr>
+<td>습도 구간별 평균이 다름</td>
+<td>습도가 추가 정보를 줄 가능성</td>
+<td>습도 포함과 제외 비교</td>
+</tr>
+<tr>
+<td>시간대별 평균이 일정하게 증가하지 않음</td>
+<td>일정한 기울기의 식에 한계가 있을 수 있음</td>
+<td>같은 네 입력으로 나무와 랜덤 포레스트 비교</td>
+</tr>
+</tbody>
+</table>
+<p>여기서 변수 선택은 모든 열에서 최적 조합을 찾아낸다는 뜻이 아닙니다. 관찰한 근거가 있는 네 후보로 비교 범위를 정하는 것입니다. 나머지 변수가 쓸모없다고 판단한 것도 아닙니다.</p>
+<h2 id="section-2">Part 2 - 모델에 사용할 데이터 준비하기</h2>
+<h3>2-1. 결측값, 중복 행, 값의 범위 확인하기</h3>
+<p>빈칸이나 잘못된 값이 있으면 모델 학습 전에 처리 기준을 정해야 합니다. 기준은 학습 자료에서 정하고 평가 자료에도 동일하게 적용합니다.</p>
+<section class="executed"><div class="cell-label">Python - 13</div><pre class="code"><code>display(train.isna().sum())
+print(&quot;중복 행 수:&quot;, train.duplicated().sum())
+print(&quot;시각 범위:&quot;, train[&quot;hour&quot;].min(), &quot;~&quot;, train[&quot;hour&quot;].max())
+print(&quot;습도 범위:&quot;, train[&quot;humidity&quot;].min(), &quot;~&quot;, train[&quot;humidity&quot;].max())
+print(&quot;최소 강수량:&quot;, train[&quot;rainfall&quot;].min())
+print(&quot;최소 대여 건수:&quot;, train[&quot;rented_count&quot;].min())</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">date               0
+rented_count       0
+hour               0
+temperature        0
+humidity           0
+wind_speed         0
+visibility         0
+dew_point          0
+solar_radiation    0
+rainfall           0
+snowfall           0
+season             0
+holiday            0
+functioning_day    0
+dtype: int64</pre><pre class="result">중복 행 수: 0
+시각 범위: 0 ~ 23
+습도 범위: 0 ~ 98
+최소 강수량: 0.0
+최소 대여 건수: 2
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>isna()</code>는 빈칸을 참으로 표시한 표를 반환합니다. <code>.sum()</code>을 붙이면 참을 1로 세어 열별 결측 개수를 구합니다.</li>
+<li><code>duplicated()</code>는 앞에서 나온 행과 완전히 같은 행인지 표시합니다. <code>.sum()</code>은 첫 행을 제외한 중복 행 수입니다.</li>
+<li><code>min()</code>과 <code>max()</code>는 각 열의 최솟값과 최댓값입니다. 시각은 0~23, 습도는 0~100 범위인지 확인합니다.</li>
+<li>이 학습 자료에는 결측과 완전 중복이 없어 채우기나 중복 삭제가 필요하지 않습니다.</li>
+<li>대여량이 높다는 이유만으로 오류라고 판단하거나 삭제하지 않습니다. 강수량과 대여 건수의 음수 여부도 확인합니다.</li>
+</ul></section>
+<h3>2-2. 입력 데이터와 정답 데이터</h3>
+<p>한 행의 시간대, 기온, 습도, 강수량과 같은 행의 실제 대여 건수가 한 쌍입니다.</p>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>사용하는 자료</th>
+<th>정답의 역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>학습</td>
+<td>학습 입력과 학습 정답</td>
+<td>입력과 정답의 관계를 배우기</td>
+</tr>
+<tr>
+<td>예측</td>
+<td>학습이 끝난 모델에 입력만 전달</td>
+<td>정답을 전달하지 않음</td>
+</tr>
+<tr>
+<td>평가</td>
+<td>예측값과 평가 정답 비교</td>
+<td>오차 계산</td>
+</tr>
+</tbody>
+</table>
+<p>정답이 없는 새 자료도 예측할 수 있지만 오차 계산에는 실제 정답이 필요합니다. 날짜는 기간을 나누는 데만 사용하고, 탐색용 습도 구간은 모델 입력에 넣지 않습니다.</p>
+<section class="executed"><div class="cell-label">Python - 14</div><pre class="code"><code>X_train = train[[&quot;hour&quot;, &quot;temperature&quot;, &quot;humidity&quot;, &quot;rainfall&quot;]]
+y_train = train[&quot;rented_count&quot;]
+X_test = test[[&quot;hour&quot;, &quot;temperature&quot;, &quot;humidity&quot;, &quot;rainfall&quot;]]
+y_test = test[&quot;rented_count&quot;]
+display(X_train.head())
+display(y_train.head())</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hour</th>
+      <th>temperature</th>
+      <th>humidity</th>
+      <th>rainfall</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-5.2</td>
+      <td>37</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-5.5</td>
+      <td>38</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-6.0</td>
+      <td>39</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-6.2</td>
+      <td>40</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-6.0</td>
+      <td>36</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table></div><pre class="result">0    254
+1    204
+2    173
+3    107
+4     78
+Name: rented_count, dtype: int64</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li>여러 열을 고르는 <code>[[...]]</code>는 데이터프레임을, 한 열을 고르는 <code>["rented_count"]</code>는 시리즈를 반환합니다.</li>
+<li><code>X_train</code>과 <code>X_test</code>는 입력 표, <code>y_train</code>과 <code>y_test</code>는 정답 열입니다.</li>
+<li>입력과 정답은 같은 원래 행 순서를 유지합니다. 표시된 결과에서 인덱스가 같은 행끼리 한 쌍입니다.</li>
+<li>정답인 대여 건수를 입력에 포함하지 않습니다. 네 후보를 준비한 뒤 모델마다 필요한 입력 열만 고릅니다.</li>
+<li>학습 입력과 평가 입력은 같은 열 이름과 순서여야 합니다.</li>
+</ul></section>
+<h2 id="section-3">Part 3 - 모델링, 평가, 인사이트 도출</h2>
+<h3>3-1. 중앙값으로 예측하는 기준 만들기</h3>
+<p>평균 절대 오차(MAE)는 각 기록의 실제값과 예측값 차이에서 부호를 없앤 뒤 평균한 값입니다. 실제값이 100, 200이고 예측값이 80, 230이면 차이의 크기는 20, 30이며 MAE는 25건입니다.</p>
+<p>먼저 학습 정답의 중앙값을 모든 시간에 똑같이 답합니다. 입력을 전혀 사용하지 않는 이 방법을 기준으로 둡니다.</p>
+<section class="executed"><div class="cell-label">Python - 15</div><pre class="code"><code>middle = y_train.median()
+baseline_test_pred = [middle] * len(y_test)
+baseline_test_mae = mean_absolute_error(y_test, baseline_test_pred)
+print(&quot;항상 예측할 값:&quot;, middle, &quot;건&quot;)
+print(&quot;중앙값 기준 MAE:&quot;, baseline_test_mae, &quot;건&quot;)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">항상 예측할 값: 424.0 건
+중앙값 기준 MAE: 607.6334537945277 건
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>y_train.median()</code>은 <strong>학습 정답</strong>의 중앙값 하나를 반환합니다. 평가 정답으로 기준값을 만들지 않습니다.</li>
+<li><code>[middle] * len(y_test)</code>는 같은 중앙값을 평가 행 수만큼 반복한 <strong>리스트</strong>입니다. 모든 시간에 같은 값을 예측하는 기준입니다.</li>
+<li><code>mean_absolute_error(실제값, 예측값)</code>은 행별 차이의 절댓값을 평균해 숫자 하나를 반환합니다. 실제값과 예측값의 개수, 순서를 맞춰야 합니다.</li>
+<li>계산한 오차는 <code>baseline_test_mae</code>에 저장합니다. 여기서는 단위가 건이며, 작을수록 덜 틀렸다는 뜻입니다.</li>
+</ul></section>
+<h3>3-2. 기온과의 관계를 첫 모델에 반영하기</h3>
+<p>기온과 대여량의 양의 관계를 첫 모델로 연결합니다. 선형 회귀는 <code>예측 대여량 = 절편 + 기울기 × 기온</code> 형태의 식을 학습합니다. 실제값과 예측값 차이를 제곱해 더한 값이 작아지도록 계수를 정합니다. 학습의 제곱 오차와 평가의 MAE는 서로 다른 계산입니다.</p>
+<section class="executed"><div class="cell-label">Python - 16</div><pre class="code"><code>linear_temp = LinearRegression()
+linear_temp.fit(X_train[[&quot;temperature&quot;]], y_train)
+print(&quot;기울기:&quot;, linear_temp.coef_[0])
+print(&quot;절편:&quot;, linear_temp.intercept_)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">기울기: 28.87520057651711
+절편: 311.5448661503258
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>LinearRegression()</code>은 아직 학습하지 않은 선형 회귀 모델을 만듭니다. 그 모델을 <code>linear_temp</code>에 저장합니다.</li>
+<li><code>모델.fit(입력, 정답)</code>은 규칙을 학습하고 학습된 모델 자신을 반환합니다. 예측값 배열을 반환하는 함수는 아닙니다.</li>
+<li><code>X_train[["temperature"]]</code>는 열 하나도 표 형태로 고릅니다. 이중 대괄호를 쓰는 이유입니다.</li>
+<li>학습 뒤 <code>coef_</code>에는 계수가 배열로 저장됩니다. <code>[0]</code>은 첫 계수입니다. <code>intercept_</code>는 절편입니다. 둘 다 속성이므로 뒤에 <code>()</code>를 붙이지 않습니다.</li>
+</ul></section>
+<p><code>fit(입력, 정답)</code>은 관계를 학습하고, <code>predict(입력)</code>은 학습한 관계로 답을 계산합니다. 평가 정답은 예측이 끝난 뒤 비교에만 사용합니다.</p>
+<section class="executed"><div class="cell-label">Python - 17</div><pre class="code"><code>temp_test_pred = linear_temp.predict(X_test[[&quot;temperature&quot;]])
+temp_test_mae = mean_absolute_error(y_test, temp_test_pred)
+print(&quot;기온 모델 MAE:&quot;, temp_test_mae, &quot;건&quot;)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">기온 모델 MAE: 458.0993974996406 건
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>linear_temp.predict(입력표)</code>는 각 행의 예측값이 담긴 <strong>배열</strong>을 반환합니다. 평가 입력에도 학습 때와 같은 <code>temperature</code> 열 하나를 줍니다.</li>
+<li>반환된 예측을 <code>temp_test_pred</code>에 저장합니다. <code>predict()</code>에는 실제 정답 <code>y_test</code>를 전달하지 않습니다.</li>
+<li><code>mean_absolute_error(y_test, temp_test_pred)</code>는 예측을 만든 뒤 정답과 비교해 평균 오차 숫자 하나를 반환합니다.</li>
+<li><code>print()</code>로 그 오차를 표시합니다. <code>fit()</code>은 학습, <code>predict()</code>는 예측, 오차 함수는 평가라는 역할 차이를 구분합니다.</li>
+</ul></section>
+<h3>3-3. 비슷한 기온에서도 달랐던 시간대 추가하기</h3>
+<p>15℃ 이상 20℃ 미만에서도 시간대별 대여량이 달랐습니다. 기온만으로 구별하지 못한 차이를 알려 주기 위해 시간대를 추가합니다.</p>
+<p>모델 종류와 자료는 유지하고 입력만 늘립니다. 다만 시각을 0~23의 숫자로 넣는 선형 회귀는 시간이 1시간 늘 때 예측값이 일정한 양만큼 변한다고 가정합니다. 아침과 저녁의 두 봉우리를 충분히 표현하는 것은 아닙니다.</p>
+<section class="executed"><div class="cell-label">Python - 18</div><pre class="code"><code>linear_time = LinearRegression()
+linear_time.fit(X_train[[&quot;temperature&quot;, &quot;hour&quot;]], y_train)
+time_test_pred = linear_time.predict(X_test[[&quot;temperature&quot;, &quot;hour&quot;]])
+time_test_mae = mean_absolute_error(y_test, time_test_pred)
+print(&quot;시간대 추가 전 MAE:&quot;, temp_test_mae)
+print(&quot;시간대 추가 후 MAE:&quot;, time_test_mae)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">시간대 추가 전 MAE: 458.0993974996406
+시간대 추가 후 MAE: 386.1096546915266
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>LinearRegression()</code>으로 새로운 모델을 만들고 <code>fit()</code>에 기온과 시간대 두 열을 전달합니다.</li>
+<li><code>fit()</code>은 학습을 마친 모델 자신을 반환합니다. 모델 변수에 학습 결과가 저장됩니다.</li>
+<li><code>predict()</code>에는 같은 두 열을 같은 순서로 전달합니다. 반환값은 각 행의 예측값이 담긴 배열입니다.</li>
+<li>MAE는 숫자 하나입니다. 두 출력의 차이는 같은 선형 회귀에서 시간대 입력을 추가한 비교 결과입니다.</li>
+<li>차이가 줄어도 시간대의 인과 효과나 모든 미래 기간의 개선이 증명된 것은 아닙니다.</li>
+</ul></section>
+<h3>3-4. 강수 유무에서 발견한 차이 반영하기</h3>
+<p>강수가 있는 기록의 평균 대여량이 낮았다는 관찰을 반영하여 강수량을 추가합니다. 모델에는 강수 여부의 글자 대신 원래 강수량(mm)을 넣습니다.</p>
+<section class="executed"><div class="cell-label">Python - 19</div><pre class="code"><code>linear_rain = LinearRegression()
+linear_rain.fit(X_train[[&quot;temperature&quot;, &quot;hour&quot;, &quot;rainfall&quot;]], y_train)
+rain_test_pred = linear_rain.predict(X_test[[&quot;temperature&quot;, &quot;hour&quot;, &quot;rainfall&quot;]])
+rain_test_mae = mean_absolute_error(y_test, rain_test_pred)
+print(&quot;강수량 추가 전 MAE:&quot;, time_test_mae)
+print(&quot;강수량 추가 후 MAE:&quot;, rain_test_mae)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">강수량 추가 전 MAE: 386.1096546915266
+강수량 추가 후 MAE: 373.3413218297335
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li>입력이 기온, 시간대, 강수량의 세 열로 늘었습니다. 학습과 평가의 정답은 앞과 같습니다.</li>
+<li><code>fit()</code>에는 입력과 정답을, <code>predict()</code>에는 입력만 넣습니다. <code>mean_absolute_error()</code>에서 예측 결과와 정답을 비교합니다.</li>
+<li><strong>결과 읽기:</strong> 앞의 시간대 추가 모델과 비교하여 강수량을 더했을 때 이 기간의 오차가 줄었는지 확인합니다.</li>
+<li>이 비교에서 바꾼 것은 강수량 입력입니다. 동시에 모델 종류까지 바꾸지 않아 비교 목적을 분명하게 합니다.</li>
+</ul></section>
+<h3>3-5. 습도가 추가 정보를 주는지 확인하기</h3>
+<p>습도 구간별 평균 차이를 근거로 습도를 후보에 포함했습니다. 이제 세 입력 모델과 습도를 추가한 네 입력 모델의 오차를 비교합니다. 구간별 차이는 후보를 정하는 근거이고, 아래 비교는 그 후보를 실제 예측에 반영한 결과를 확인하는 과정입니다.</p>
+<section class="executed"><div class="cell-label">Python - 20</div><pre class="code"><code>linear_four = LinearRegression()
+linear_four.fit(X_train, y_train)
+four_test_pred = linear_four.predict(X_test)
+four_test_mae = mean_absolute_error(y_test, four_test_pred)
+print(&quot;습도 제외 MAE:&quot;, rain_test_mae)
+print(&quot;습도 포함 MAE:&quot;, four_test_mae)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">습도 제외 MAE: 373.3413218297335
+습도 포함 MAE: 346.477753234996
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>X_train</code>은 시간대, 기온, 습도, 강수량 네 열입니다. 탐색용 습도 구간 이름은 입력에 넣지 않습니다.</li>
+<li>앞 모델과 같은 자료, 같은 선형 회귀를 사용하고 습도 수치를 추가했습니다.</li>
+<li>이 평가 기간에서는 습도를 포함한 모델의 MAE가 더 작습니다. 이는 특정 조합과 기간의 결과입니다.</li>
+<li>계수의 크기는 입력의 단위에 영향을 받으므로 변수 중요도로 직접 비교하지 않습니다.</li>
+<li>평가 오차를 반복해서 보며 최적 입력을 고른 것이 아니라, EDA 뒤 미리 정한 비교를 확인한 것입니다.</li>
+</ul></section>
+<section class="executed"><div class="cell-label">Python - 21</div><pre class="code"><code>input_comparison = pd.DataFrame({
+    &quot;입력&quot;: [&quot;기온&quot;, &quot;기온, 시간대&quot;, &quot;기온, 시간대, 강수량&quot;, &quot;기온, 시간대, 강수량, 습도&quot;],
+    &quot;평가 MAE&quot;: [temp_test_mae, time_test_mae, rain_test_mae, four_test_mae]
+})
+display(input_comparison)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>입력</th>
+      <th>평가 MAE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>기온</td>
+      <td>458.099397</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>기온, 시간대</td>
+      <td>386.109655</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>기온, 시간대, 강수량</td>
+      <td>373.341322</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>기온, 시간대, 강수량, 습도</td>
+      <td>346.477753</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>pd.DataFrame({열 이름: 값 목록})</code>은 같은 길이의 목록을 열로 묶어 표를 만듭니다.</li>
+<li>입력 이름 목록과 MAE 목록은 같은 순서로 적습니다.</li>
+<li>각 행에서 앞 행보다 어떤 입력이 추가되었고 오차가 어떻게 달라졌는지 읽습니다.</li>
+<li>여기까지는 모델을 선형 회귀로 고정한 비교입니다. 다음에는 네 입력을 고정하고 모델 종류를 바꿉니다.</li>
+</ul></section>
+<h3>3-6. 시간대의 복잡한 패턴을 나무로 표현하기</h3>
+<p>시간대별 평균은 아침에 높아졌다가 낮아지고 저녁에 다시 높아졌습니다. 시간에 일정한 계수를 곱하는 방식으로는 이런 굴곡을 충분히 표현하기 어렵습니다.</p>
+<p>의사결정나무는 시각이나 기온이 특정 값 이하인지 질문하며 기록을 나눕니다. 각 마지막 그룹의 학습 정답 평균을 예측값으로 사용하므로 서로 다른 구간에 서로 다른 값을 줄 수 있습니다. 깊이 6은 평가 전에 정한 설정입니다.</p>
+<section class="executed"><div class="cell-label">Python - 22</div><pre class="code"><code>tree = DecisionTreeRegressor(max_depth=6, random_state=0)
+tree.fit(X_train, y_train)
+tree_test_pred = tree.predict(X_test)
+tree_test_mae = mean_absolute_error(y_test, tree_test_pred)
+print(&quot;네 입력 선형 회귀 MAE:&quot;, four_test_mae)
+print(&quot;의사결정나무 MAE:&quot;, tree_test_mae)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">네 입력 선형 회귀 MAE: 346.477753234996
+의사결정나무 MAE: 291.24775260695543
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>DecisionTreeRegressor()</code>는 숫자를 예측하는 나무를 만듭니다. <code>max_depth=6</code>은 이어서 나눌 수 있는 최대 깊이입니다.</li>
+<li><code>random_state=0</code>은 무작위 선택을 재현하기 위한 설정입니다. 정확도를 0으로 설정하는 뜻이 아닙니다.</li>
+<li>입력 네 열과 정답은 앞의 선형 회귀와 같습니다. 이번에는 모델 종류를 바꿨습니다.</li>
+<li>나무는 네 입력 모두에서 구간별 관계를 표현하므로 오차 차이를 시간대 하나의 효과라고 해석하지 않습니다.</li>
+<li>같은 마지막 그룹에 들어간 기록은 실제값이 달라도 같은 예측값을 받습니다. 깊이가 제한되면 큰 수요를 충분히 구별하지 못할 수 있습니다.</li>
+</ul></section>
+<h3>3-7. 여러 나무의 예측을 평균하기</h3>
+<p>나무 한 개는 어떤 기록으로 학습했는지에 따라 달라질 수 있습니다. 랜덤 포레스트는 학습 기록을 중복을 허용하여 무작위로 다시 뽑아 여러 나무를 만들고 예측을 평균합니다. 세 나무가 600, 800, 700건을 예측하면 평균인 700건을 답하는 방식입니다. 아래에서는 나무 100개를 사용합니다.</p>
+<section class="executed"><div class="cell-label">Python - 23</div><pre class="code"><code>forest = RandomForestRegressor(n_estimators=100, max_depth=6, random_state=0)
+forest.fit(X_train, y_train)
+forest_test_pred = forest.predict(X_test)
+forest_test_mae = mean_absolute_error(y_test, forest_test_pred)
+print(&quot;의사결정나무 MAE:&quot;, tree_test_mae)
+print(&quot;랜덤 포레스트 MAE:&quot;, forest_test_mae)</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">의사결정나무 MAE: 291.24775260695543
+랜덤 포레스트 MAE: 266.37161554600044
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li><code>n_estimators=100</code>은 나무의 개수, <code>max_depth=6</code>은 각 나무의 최대 깊이입니다. 평가 점수를 보고 바꾸지 않는 설정입니다.</li>
+<li><code>fit()</code>은 여러 나무를 학습하고 <code>predict()</code>는 나무들의 예측을 평균한 배열을 반환합니다.</li>
+<li>별도 설정이 없으면 scikit-learn의 회귀 랜덤 포레스트는 각 분할에서 전체 입력을 후보로 검토합니다. 여기서 나무마다 차이를 만드는 주요 무작위성은 학습 기록의 재추출입니다.</li>
+<li>여러 나무를 평균한다고 언제나 더 정확한 것은 아닙니다. 같은 평가 자료에서 계산한 두 MAE를 비교합니다.</li>
+</ul></section>
+<section class="executed"><div class="cell-label">Python - 24</div><pre class="code"><code>comparison = pd.DataFrame({
+    &quot;방법&quot;: [&quot;중앙값 기준&quot;, &quot;기온 선형 회귀&quot;, &quot;시간대 추가 선형 회귀&quot;, &quot;강수량 추가 선형 회귀&quot;, &quot;습도 추가 선형 회귀&quot;, &quot;의사결정나무&quot;, &quot;랜덤 포레스트&quot;],
+    &quot;평가 MAE&quot;: [baseline_test_mae, temp_test_mae, time_test_mae, rain_test_mae, four_test_mae, tree_test_mae, forest_test_mae]
+})
+display(comparison)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>방법</th>
+      <th>평가 MAE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>중앙값 기준</td>
+      <td>607.633454</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>기온 선형 회귀</td>
+      <td>458.099397</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>시간대 추가 선형 회귀</td>
+      <td>386.109655</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>강수량 추가 선형 회귀</td>
+      <td>373.341322</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>습도 추가 선형 회귀</td>
+      <td>346.477753</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>의사결정나무</td>
+      <td>291.247753</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>랜덤 포레스트</td>
+      <td>266.371616</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 결과 읽기</strong></p>
+<ul>
+<li>모든 행은 같은 평가 기간에서 계산한 MAE이며 단위는 건입니다.</li>
+<li>선형 회귀 네 행에서는 입력 추가의 결과를 읽습니다. 네 입력 선형 회귀, 나무, 랜덤 포레스트에서는 같은 입력으로 모델을 바꾼 결과를 읽습니다.</li>
+<li>작은 숫자가 이 평가 기간에서 덜 틀린 방법입니다. 모든 미래 기간의 순위로 일반화하지 않습니다.</li>
+<li>비교 후 입력이나 모델 설정을 다시 고르거나 점수를 높이기 위해 반복해서 바꾸지 않습니다.</li>
+</ul></section>
+<h3>3-8. 평균 오차 뒤에 가려진 기록 확인하기</h3>
+<p>구간별 평균을 답하는 나무의 특성을 더 살펴보기 위해 나무 예측을 자세히 확인합니다. 가장 좋은 모델을 자동 선택했다는 뜻은 아닙니다.</p>
+<p>평균 오차만 보면 어떤 기록에서 크게 틀렸는지 알 수 없습니다. 같은 행에 실제값, 예측값, 차이의 크기를 놓습니다.</p>
+<section class="executed"><div class="cell-label">Python - 25</div><pre class="code"><code>check = test[[&quot;date&quot;, &quot;hour&quot;, &quot;temperature&quot;, &quot;humidity&quot;, &quot;rainfall&quot;, &quot;rented_count&quot;]].copy()
+check[&quot;predicted&quot;] = tree_test_pred
+check[&quot;absolute_error&quot;] = (check[&quot;rented_count&quot;] - check[&quot;predicted&quot;]).abs()
+display(check.head())</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>hour</th>
+      <th>temperature</th>
+      <th>humidity</th>
+      <th>rainfall</th>
+      <th>rented_count</th>
+      <th>predicted</th>
+      <th>absolute_error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6576</th>
+      <td>2018-09-01</td>
+      <td>0</td>
+      <td>23.2</td>
+      <td>83</td>
+      <td>0.0</td>
+      <td>1075</td>
+      <td>851.651685</td>
+      <td>223.348315</td>
+    </tr>
+    <tr>
+      <th>6577</th>
+      <td>2018-09-01</td>
+      <td>1</td>
+      <td>22.7</td>
+      <td>83</td>
+      <td>0.0</td>
+      <td>975</td>
+      <td>851.651685</td>
+      <td>123.348315</td>
+    </tr>
+    <tr>
+      <th>6578</th>
+      <td>2018-09-01</td>
+      <td>2</td>
+      <td>22.0</td>
+      <td>86</td>
+      <td>0.0</td>
+      <td>785</td>
+      <td>499.927273</td>
+      <td>285.072727</td>
+    </tr>
+    <tr>
+      <th>6579</th>
+      <td>2018-09-01</td>
+      <td>3</td>
+      <td>21.6</td>
+      <td>87</td>
+      <td>0.0</td>
+      <td>514</td>
+      <td>318.537037</td>
+      <td>195.462963</td>
+    </tr>
+    <tr>
+      <th>6580</th>
+      <td>2018-09-01</td>
+      <td>4</td>
+      <td>21.2</td>
+      <td>88</td>
+      <td>0.0</td>
+      <td>338</td>
+      <td>318.537037</td>
+      <td>19.462963</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>test[[...]].copy()</code>는 평가 표에서 필요한 열들을 고른 뒤 복사한 새 표를 반환합니다.</li>
+<li><code>check["predicted"] = tree_test_pred</code>는 예측 배열을 새 열에 추가합니다. <code>predict()</code>가 평가 입력의 행 순서대로 값을 반환했으므로 같은 행끼리 대응합니다.</li>
+<li>실제값 열에서 예측값 열을 빼면 행별 차이입니다. <code>.abs()</code>는 그 차이에서 부호를 없앤 <strong>절댓값 열</strong>을 반환합니다.</li>
+<li><code>check.head()</code>와 <code>display()</code>로 앞 다섯 기록의 실제값, 예측값, 오차를 나란히 봅니다.</li>
+</ul></section>
+<p>큰 오차가 난 기록의 날짜, 시각, 날씨와 실제값을 함께 확인합니다. 오차가 크다는 이유만으로 원자료 오류라고 판단하거나 삭제하지 않습니다.</p>
+<section class="executed"><div class="cell-label">Python - 26</div><pre class="code"><code>error_order = check.sort_values(&quot;absolute_error&quot;, ascending=False)
+big_misses = error_order.head(5)
+display(big_misses)</code></pre><div class="output-label">실제 실행 결과</div><div class="table-scroll"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>hour</th>
+      <th>temperature</th>
+      <th>humidity</th>
+      <th>rainfall</th>
+      <th>rented_count</th>
+      <th>predicted</th>
+      <th>absolute_error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7688</th>
+      <td>2018-10-17</td>
+      <td>8</td>
+      <td>9.2</td>
+      <td>68</td>
+      <td>0.0</td>
+      <td>2202</td>
+      <td>576.880000</td>
+      <td>1625.120000</td>
+    </tr>
+    <tr>
+      <th>8418</th>
+      <td>2018-11-16</td>
+      <td>18</td>
+      <td>9.9</td>
+      <td>74</td>
+      <td>0.0</td>
+      <td>1956</td>
+      <td>378.800000</td>
+      <td>1577.200000</td>
+    </tr>
+    <tr>
+      <th>7712</th>
+      <td>2018-10-18</td>
+      <td>8</td>
+      <td>8.5</td>
+      <td>77</td>
+      <td>0.0</td>
+      <td>2154</td>
+      <td>576.880000</td>
+      <td>1577.120000</td>
+    </tr>
+    <tr>
+      <th>6848</th>
+      <td>2018-09-12</td>
+      <td>8</td>
+      <td>18.2</td>
+      <td>56</td>
+      <td>0.0</td>
+      <td>2391</td>
+      <td>833.738197</td>
+      <td>1557.261803</td>
+    </tr>
+    <tr>
+      <th>7664</th>
+      <td>2018-10-16</td>
+      <td>8</td>
+      <td>10.4</td>
+      <td>63</td>
+      <td>0.0</td>
+      <td>2134</td>
+      <td>576.880000</td>
+      <td>1557.120000</td>
+    </tr>
+  </tbody>
+</table></div></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>표.sort_values("기준열", ascending=False)</code>는 기준열의 값이 큰 순서로 정렬한 새 표를 반환합니다. 원래 <code>check</code>의 행 순서는 바꾸지 않습니다.</li>
+<li><code>error_order.head(5)</code>는 정렬한 표의 앞 다섯 행을 반환합니다. 따라서 오차가 가장 큰 다섯 기록입니다.</li>
+<li>결과를 <code>big_misses</code>에 저장하고 <code>display()</code>로 봅니다. <code>head(5)</code>만 원래 표에 적용하면 단순히 처음 기록 다섯 개가 되므로 정렬이 먼저입니다.</li>
+</ul></section>
+<h3>3-9. 어떤 시각의 예측을 더 확인해야 할까요?</h3>
+<p>EDA에서 시간대별 평균 대여량을 구한 방법을 이번에는 절대 오차에 적용합니다. 이용량이 많은 시간과 오차가 큰 시간이 같은지도 읽습니다.</p>
+<section class="executed"><div class="cell-label">Python - 27</div><pre class="code"><code>hour_error = check.groupby(&quot;hour&quot;)[&quot;absolute_error&quot;].mean()
+display(hour_error)
+print(&quot;평균 오차가 가장 큰 시각:&quot;, hour_error.idxmax())</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">hour
+0     242.738366
+1     196.592019
+2     113.790273
+3      93.490111
+4      75.767241
+5      77.723994
+6     206.859683
+7     420.555368
+8     829.844102
+9     299.747331
+10    175.225011
+11    188.821127
+12    193.886998
+13    235.264684
+14    232.870395
+15    286.985099
+16    284.916034
+17    303.750537
+18    802.071781
+19    449.226211
+20    344.526826
+21    322.063429
+22    382.825434
+23    217.666074
+Name: absolute_error, dtype: float64</pre><pre class="result">평균 오차가 가장 큰 시각: 8
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>check.groupby("hour")</code>는 평가 기록을 시각별로 묶습니다.</li>
+<li><code>["absolute_error"].mean()</code>은 묶음마다 절대 오차의 평균을 구합니다. 결과는 시각을 인덱스로 갖는 <strong>시리즈</strong>입니다.</li>
+<li><code>hour_error.idxmax()</code>는 평균 오차가 가장 큰 시각을 반환합니다. <code>.max()</code>를 쓰면 시각이 아니라 가장 큰 오차 숫자가 나옵니다.</li>
+<li><code>display()</code>로 모든 시각을 확인하고 <code>print()</code>로 가장 큰 오차의 시각을 표시합니다.</li>
+</ul></section>
+<p>시간대별 오차는 활용할 때 주의할 조건과 다음 분석에서 확인할 문제를 찾는 근거입니다. 이 평가 기록을 반복해서 보며 현재 모델을 조정하는 데 사용하지 않습니다.</p>
+<h3>3-10. 정답이 없는 조건으로 예측하기</h3>
+<p>18시, 기온 20℃, 습도 60%, 강수량 0mm를 입력합니다. 학습이 끝난 모델에는 입력만 주면 됩니다. 실제 정답이 없으므로 예상값은 구할 수 있지만 이 한 건의 오차는 계산할 수 없습니다.</p>
+<section class="executed"><div class="cell-label">Python - 28</div><pre class="code"><code>new_data = pd.DataFrame({
+    &quot;hour&quot;: [18], &quot;temperature&quot;: [20], &quot;humidity&quot;: [60], &quot;rainfall&quot;: [0]
+})
+new_prediction = tree.predict(new_data)
+print(&quot;의사결정나무의 예측:&quot;, new_prediction[0])</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">의사결정나무의 예측: 1915.9382183908046
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>pd.DataFrame({...})</code>으로 예측할 조건 한 행을 만듭니다. 각 값에 <code>[18]</code>처럼 대괄호를 붙여 열에 넣을 값 목록임을 표시합니다.</li>
+<li>입력 열 이름과 순서는 학습에 쓴 <code>hour</code>, <code>temperature</code>, <code>humidity</code>, <code>rainfall</code>과 같습니다.</li>
+<li><code>tree.predict(new_data)</code>는 한 행짜리 입력에 대해 예측 하나가 담긴 <strong>배열</strong>을 반환합니다.</li>
+<li><code>new_prediction[0]</code>은 배열의 첫 값을 숫자 하나로 꺼냅니다. 파이썬의 위치 번호는 0부터 시작합니다.</li>
+</ul></section>
+<section class="executed"><div class="cell-label">Python - 29</div><pre class="code"><code>forest_new_prediction = forest.predict(new_data)
+print(&quot;랜덤 포레스트의 예측:&quot;, forest_new_prediction[0])</code></pre><div class="output-label">실제 실행 결과</div><pre class="result">랜덤 포레스트의 예측: 1939.2338241942955
+</pre></section>
+<section class="code-explanation"><p><strong>코드 사용법과 반환값</strong></p>
+<ul>
+<li><code>forest.predict(new_data)</code>는 바로 앞에서 만든 <strong>같은 입력 표</strong>를 랜덤 포레스트에 전달합니다. 입력을 새로 만들거나 다시 학습하지 않습니다.</li>
+<li>반환값은 예측 하나가 담긴 배열입니다. <code>forest_new_prediction[0]</code>으로 첫 숫자를 꺼냅니다.</li>
+<li><code>print()</code>로 표시한 값을 나무 한 개의 예측과 비교합니다. 같은 조건을 두 방법이 어떻게 계산했는지 보는 것이며 이 입력의 실제 정답이 제공된 것은 아닙니다.</li>
+</ul></section>
+<p><strong>직접 확인하기:</strong> <code>hour</code>만 18에서 8로 바꾸어 실행합니다. 한 번에 한 입력만 바꾸면 모델의 답이 무엇에 따라 달라졌는지 확인하기 쉽습니다. 모델의 예측 차이가 실제 인과 효과를 뜻하지는 않습니다.</p>
+<p>평균을 바탕으로 예측하므로 소수가 나올 수 있습니다. 실제 소수 대의 자전거가 대여된다는 뜻은 아닙니다. MAE를 더하고 빼서 개별 예측의 보장 범위로 해석하지 않습니다.</p>
+<h2 id="section-4">결론</h2>
+<div class="conclusion-visual"><img alt="EDA 관찰에서 입력 추가와 모델 비교를 거쳐 오차와 활용 범위를 확인하는 흐름" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMTIwIDk2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9ImNvbmNsdXNpb24tdGl0bGUgY29uY2x1c2lvbi1kZXNjIj4KPHRpdGxlIGlkPSJjb25jbHVzaW9uLXRpdGxlIj5FREEg6rSA7LCw7JeQ7IScIOuzgOyImCDstpTqsIAsIOuqqOuNuCDruYTqtZAsIOyYpOywqCDtmZXsnbgsIO2ZnOyaqSDtjJDri6jquYzsp4A8L3RpdGxlPgo8ZGVzYyBpZD0iY29uY2x1c2lvbi1kZXNjIj7tlZnsirUg7J6Q66OM7JeQ7IScIOuwnOqyrO2VnCDqtIDqs4Trpbwg7J6F66ClIO2bhOuztOuhnCDsmK7quLDqs6AsIOyeheugpSDstpTqsIDsmYAg66qo6424IOuzgOqyveyXkCDrlLDrpbgg7Y+J6rCAIOyYpOywqOulvCDruYTqtZDtlZwg64uk7J2MIO2BsCDsmKTssKjsmYAg7Zmc7JqpIOuylOychOulvCDtmZXsnbjtlZjripQg6rO87KCV7J6F64uI64ukLjwvZGVzYz4KPGcgZm9udC1mYW1pbHk9Ik1hbGd1biBHb3RoaWMsIEFwcGxlR290aGljLCBzYW5zLXNlcmlmIiBmaWxsPSIjMjYzNDQ1Ij4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTEwMCIgaGVpZ2h0PSIxNjIiIHJ4PSIxNiIgZmlsbD0iI2VkZjJmNyIgc3Ryb2tlPSIjYTZiOGNjIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIzNCIgeT0iNDQiIGZvbnQtc2l6ZT0iMjMiIGZpbGw9IiM0MDVlN2MiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+MS4gRURBOiDtlZnsirUg7J6Q66OM7JeQ7IScIOq0gOqzhCDqtIDssLA8L3RleHQ+CjxyZWN0IHg9IjM0IiB5PSI2MiIgd2lkdGg9IjI0OCIgaGVpZ2h0PSI5MiIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjYjVjMmNlIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNTgiIHk9Ijg4IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7quLDsmKjqs7wg64yA7Jes65+JPC90ZXh0Pgo8dGV4dCB4PSIxNTgiIHk9IjExNiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7ZWo6ruYIOymneqwgO2VmOuKlCDqsr3tlqU8L3RleHQ+Cjx0ZXh0IHg9IjE1OCIgeT0iMTQxIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTg2YjdlIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7quLDsmKjsnYQg7LKrIOyeheugpeycvOuhnCDqsoDthqA8L3RleHQ+CjxyZWN0IHg9IjMwMiIgeT0iNjIiIHdpZHRoPSIyNDgiIGhlaWdodD0iOTIiIHJ4PSIxMiIgZmlsbD0id2hpdGUiIHN0cm9rZT0iI2I1YzJjZSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDI2IiB5PSI4OCIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7Iuc6rCE64yA67OEIOywqOydtDwvdGV4dD4KPHRleHQgeD0iNDI2IiB5PSIxMTYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuu5hOyKt+2VnCDquLDsmKjsl5DshJzrj4Qg7LCo7J20PC90ZXh0Pgo8dGV4dCB4PSI0MjYiIHk9IjE0MSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzU4NmI3ZSIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7Iuc6rCE64yA66W8IOy2lOqwgCDtm4Trs7TroZwg6rKA7YagPC90ZXh0Pgo8cmVjdCB4PSI1NzAiIHk9IjYyIiB3aWR0aD0iMjQ4IiBoZWlnaHQ9IjkyIiByeD0iMTIiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiNWMyY2UiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjY5NCIgeT0iODgiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuqwleyImCDsnKDrrLTrs4Qg7LCo7J20PC90ZXh0Pgo8dGV4dCB4PSI2OTQiIHk9IjExNiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+67mE6rCAIOyYrCDrlYwg7Y+J6reg7J20IOuCruydjDwvdGV4dD4KPHRleHQgeD0iNjk0IiB5PSIxNDEiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1ODZiN2UiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuqwleyImOufieydhCDstpTqsIAg7ZuE67O066GcIOqygO2GoDwvdGV4dD4KPHJlY3QgeD0iODM4IiB5PSI2MiIgd2lkdGg9IjI0OCIgaGVpZ2h0PSI5MiIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjYjVjMmNlIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5NjIiIHk9Ijg4IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7sirXrj4Qg6rWs6rCE67OEIOywqOydtDwvdGV4dD4KPHRleHQgeD0iOTYyIiB5PSIxMTYiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuq1rOqwhOuniOuLpCDtj4nqt6DsnbQg64uk66aEPC90ZXh0Pgo8dGV4dCB4PSI5NjIiIHk9IjE0MSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzU4NmI3ZSIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7Iq164+E66W8IOy2lOqwgCDtm4Trs7TroZwg6rKA7YagPC90ZXh0Pgo8cGF0aCBkPSJNNTYwIDE3MiBWMTg1IiBmaWxsPSJub25lIiBzdHJva2U9IiM3MTgzOTUiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjxwYXRoIGQ9Ik01NTQgMTg0IEw1NjAgMTk0IEw1NjYgMTg0IFoiIGZpbGw9IiM3MTgzOTUiLz4KPHJlY3QgeD0iMTAiIHk9IjE5NiIgd2lkdGg9IjExMDAiIGhlaWdodD0iMTcyIiByeD0iMTYiIGZpbGw9IiNlYWYwZjciIHN0cm9rZT0iI2E2YjhjYyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMzQiIHk9IjIzMCIgZm9udC1zaXplPSIyMyIgZmlsbD0iIzQwNWU3YyIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4yLiDsnoXroKUg7LaU6rCAOiDrqqjrjbjsnYQg7ISg7ZiVIO2ajOq3gOuhnCDqs6DsoJXtlZjsl6wg67mE6rWQPC90ZXh0Pgo8cmVjdCB4PSIzNCIgeT0iMjUyIiB3aWR0aD0iMjQ4IiBoZWlnaHQ9Ijg2IiByeD0iMTIiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiNWMyY2UiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE1OCIgeT0iMjgwIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7quLDsmKg8L3RleHQ+Cjx0ZXh0IHg9IjE1OCIgeT0iMzE2IiBmb250LXNpemU9IjIyIiBmaWxsPSIjNDA1ZTdjIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5NQUUgNDU4LjHqsbQ8L3RleHQ+CjxwYXRoIGQ9Ik0yODYgMjk1IEgyOTEiIHN0cm9rZT0iIzcxODM5NSIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yOTEgMjkwIEwyOTkgMjk1IEwyOTEgMzAwIFoiIGZpbGw9IiM3MTgzOTUiLz4KPHJlY3QgeD0iMzAyIiB5PSIyNTIiIHdpZHRoPSIyNDgiIGhlaWdodD0iODYiIHJ4PSIxMiIgZmlsbD0id2hpdGUiIHN0cm9rZT0iI2I1YzJjZSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDI2IiB5PSIyODAiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuq4sOyYqCArIOyLnOqwhOuMgDwvdGV4dD4KPHRleHQgeD0iNDI2IiB5PSIzMTYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiM0MDVlN2MiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1BRSAzODYuMeqxtDwvdGV4dD4KPHBhdGggZD0iTTU1NCAyOTUgSDU1OSIgc3Ryb2tlPSIjNzE4Mzk1IiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTU1OSAyOTAgTDU2NyAyOTUgTDU1OSAzMDAgWiIgZmlsbD0iIzcxODM5NSIvPgo8cmVjdCB4PSI1NzAiIHk9IjI1MiIgd2lkdGg9IjI0OCIgaGVpZ2h0PSI4NiIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjYjVjMmNlIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2OTQiIHk9IjI4MCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6riw7JioICsg7Iuc6rCE64yAICsg6rCV7IiY65+JPC90ZXh0Pgo8dGV4dCB4PSI2OTQiIHk9IjMxNiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzQwNWU3YyIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TUFFIDM3My4z6rG0PC90ZXh0Pgo8cGF0aCBkPSJNODIyIDI5NSBIODI3IiBzdHJva2U9IiM3MTgzOTUiIHN0cm9rZS13aWR0aD0iMiIvPgo8cGF0aCBkPSJNODI3IDI5MCBMODM1IDI5NSBMODI3IDMwMCBaIiBmaWxsPSIjNzE4Mzk1Ii8+CjxyZWN0IHg9IjgzOCIgeT0iMjUyIiB3aWR0aD0iMjQ4IiBoZWlnaHQ9Ijg2IiByeD0iMTIiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiNWMyY2UiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijk2MiIgeT0iMjgwIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7rhKQg7J6F66ClKOyKteuPhCDstpTqsIApPC90ZXh0Pgo8dGV4dCB4PSI5NjIiIHk9IjMxNiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzQwNWU3YyIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TUFFIDM0Ni416rG0PC90ZXh0Pgo8dGV4dCB4PSI1NjAiIHk9IjM1NyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzU4NmI3ZSIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7LaU6rCA7ZWcIOyeheugpeydtCDrrLTsl4fsnbjsp4DsmYAg7Y+J6regIOygiOuMgCDsmKTssKjqsIAg7Ja065a76rKMIOuLrOudvOyhjOuKlOyngOulvCDtlajqu5gg7ZmV7J24PC90ZXh0Pgo8cGF0aCBkPSJNNTYwIDM2OCBWMzgxIiBmaWxsPSJub25lIiBzdHJva2U9IiM3MTgzOTUiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjxwYXRoIGQ9Ik01NTQgMzgwIEw1NjAgMzkwIEw1NjYgMzgwIFoiIGZpbGw9IiM3MTgzOTUiLz4KPHJlY3QgeD0iMTAiIHk9IjM5MiIgd2lkdGg9IjExMDAiIGhlaWdodD0iMTcyIiByeD0iMTYiIGZpbGw9IiNlYWYzZjAiIHN0cm9rZT0iIzlkYmJiMSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMzQiIHk9IjQyNiIgZm9udC1zaXplPSIyMyIgZmlsbD0iIzNmNmI1ZiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4zLiDrqqjrjbgg67mE6rWQOiDsi5zqsITrjIDrs4Qg6rW06rOh7J2EIO2RnO2YhO2VmOuKlCDrqqjrjbjrj4Qg6rKA7YagPC90ZXh0Pgo8dGV4dCB4PSIzNCIgeT0iNDUyIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTI2YzYzIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuqwmeydgCDrhKQg7J6F66Cl6rO8IOqwmeydgCDtj4nqsIAg7J6Q66OM66W8IOyCrOyaqTwvdGV4dD4KPHJlY3QgeD0iMzQiIHk9IjQ2OSIgd2lkdGg9IjMzNiIgaGVpZ2h0PSI3NyIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjOWRiYmIxIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyMDIiIHk9IjQ5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+64SkIOyeheugpSDshKDtmJUg7ZqM6reAPC90ZXh0Pgo8dGV4dCB4PSIyMDIiIHk9IjUyOSIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzNmNmI1ZiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TUFFIDM0Ni416rG0PC90ZXh0Pgo8cmVjdCB4PSIzOTIiIHk9IjQ2OSIgd2lkdGg9IjMzNiIgaGVpZ2h0PSI3NyIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjOWRiYmIxIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI1NjAiIHk9IjQ5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+7J2Y7IKs6rKw7KCV64KY66y0PC90ZXh0Pgo8dGV4dCB4PSI1NjAiIHk9IjUyOSIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzNmNmI1ZiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TUFFIDI5MS4y6rG0PC90ZXh0Pgo8cmVjdCB4PSI3NTAiIHk9IjQ2OSIgd2lkdGg9IjMzNiIgaGVpZ2h0PSI3NyIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjOWRiYmIxIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5MTgiIHk9IjQ5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+656c642kIO2PrOugiOyKpO2KuDwvdGV4dD4KPHRleHQgeD0iOTE4IiB5PSI1MjkiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMzZjZiNWYiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1BRSAyNjYuNOqxtDwvdGV4dD4KPHBhdGggZD0iTTU2MCA1NjQgVjU3NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNzE4Mzk1IiBzdHJva2Utd2lkdGg9IjIuNSIvPgo8cGF0aCBkPSJNNTU0IDU3NiBMNTYwIDU4NiBMNTY2IDU3NiBaIiBmaWxsPSIjNzE4Mzk1Ii8+CjxyZWN0IHg9IjEwIiB5PSI1ODgiIHdpZHRoPSIxMTAwIiBoZWlnaHQ9IjE3MiIgcng9IjE2IiBmaWxsPSIjZjVlZmU2IiBzdHJva2U9IiNjNmI0OWIiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjM0IiB5PSI2MjIiIGZvbnQtc2l6ZT0iMjMiIGZpbGw9IiM3YTYyNDQiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+NC4g7Jik7LCoIO2ZleyduDog64KY66y0IOyYiOy4oeyXkOyEnCDtgazqsowg7YuA66awIOyhsOqxtCDsoJDqsoA8L3RleHQ+CjxyZWN0IHg9IjM0IiB5PSI2NDIiIHdpZHRoPSI1MTQiIGhlaWdodD0iMTAwIiByeD0iMTIiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNjNmI0OWIiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjU2IiB5PSI2NzEiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+64KY66y0IOyghOyytCBNQUU6IDI5MS4y6rG0PC90ZXh0Pgo8dGV4dCB4PSI1NiIgeT0iNzAwIiBmb250LXNpemU9IjE5IiBmaWxsPSIjN2E2MjQ0IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjjsi5wg7Y+J6regIOyYpOywqDogODI5LjjqsbQ8L3RleHQ+Cjx0ZXh0IHg9IjU2IiB5PSI3MjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+7KCE7LK0IO2Pieq3oOydtCDsnpHslYTrj4Qg7Yq57KCVIOyLnOqwhOyXkOuKlCDsmKTssKjqsIAg7YG0IOyImCDsnojsnYw8L3RleHQ+CjxyZWN0IHg9IjU3MiIgeT0iNjQyIiB3aWR0aD0iNTE0IiBoZWlnaHQ9IjEwMCIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjYzZiNDliIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI1OTQiIHk9IjY3MSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzI2MzQ0NSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7qsIDsnqUg7YGwIOygiOuMgCDsmKTssKg6IDEsNjI1LjHqsbQ8L3RleHQ+Cjx0ZXh0IHg9IjU5NCIgeT0iNzAwIiBmb250LXNpemU9IjE5IiBmaWxsPSIjN2E2MjQ0IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjIwMTgtMTAtMTcgOOyLnDwvdGV4dD4KPHRleHQgeD0iNTk0IiB5PSI3MjciIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+7Iuk7KCcIDIsMjAy6rG0IC8g7JiI7LihIDU3Ni456rG0PC90ZXh0Pgo8cGF0aCBkPSJNNTYwIDc2MCBWNzczIiBmaWxsPSJub25lIiBzdHJva2U9IiM3MTgzOTUiIHN0cm9rZS13aWR0aD0iMi41Ii8+CjxwYXRoIGQ9Ik01NTQgNzcyIEw1NjAgNzgyIEw1NjYgNzcyIFoiIGZpbGw9IiM3MTgzOTUiLz4KPHJlY3QgeD0iMTAiIHk9Ijc4NCIgd2lkdGg9IjExMDAiIGhlaWdodD0iMTU4IiByeD0iMTYiIGZpbGw9IiNlZGYyZjciIHN0cm9rZT0iI2E2YjhjYyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMzQiIHk9IjgyMCIgZm9udC1zaXplPSIyMyIgZmlsbD0iIzQwNWU3YyIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij41LiDtmZzsmqkg7YyQ64uoOiDsoITssrQg7IiY7JqU66W8IOqwgOuKoO2VmOuKlCDrs7TsobAg7KCV67O0PC90ZXh0Pgo8dGV4dCB4PSIzNCIgeT0iODU4IiBmb250LXNpemU9IjIxIiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuyLnOqwhOuMgOyZgCDrgqDslKgg7KGw6rG07JeQIOuUsOuluCDsoITssrQg64yA7Jes65+J7J2EIOy2lOygle2VmOuKlCDrjbAg7LC46rOgPC90ZXh0Pgo8dGV4dCB4PSIzNCIgeT0iODkzIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMjYzNDQ1IiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuyLpOygnCDrsLDsuZgg6rKw7KCV7JeQ64qUIOuMgOyXrOyGjOuzhCDsnqzqs6DsmYAg7JyE7LmYIOygleuztOqwgCDtlYTsmpQ8L3RleHQ+Cjx0ZXh0IHg9IjM0IiB5PSI5MjMiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMyNjM0NDUiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+7IKs7KCEIOyYiOy4oeyXkOuKlCDrgqDslKgg7JiI67O07JmAIOuLpOuluCDquLDqsITsl5DshJzsnZgg7J6s7ZmV7J24IO2VhOyalDwvdGV4dD4KPC9nPjwvc3ZnPg=="></div>
+
+<ol>
+<li>학습 자료에서 기온, 시간대, 강수량, 습도와 대여량의 관계를 확인했습니다.</li>
+<li>관찰한 내용을 근거로 입력을 추가한 선형 회귀들을 미리 정했습니다.</li>
+<li>시간대별 굴곡을 표현할 수 있는 나무와 랜덤 포레스트도 같은 네 입력으로 비교했습니다.</li>
+<li>같은 평가 자료에서 오차를 계산하여 입력 추가와 모델 변경의 결과를 구분했습니다.</li>
+<li>큰 오차와 시간대별 오차를 확인해 활용할 때 주의할 조건을 찾았습니다.</li>
+</ol>
+<p>EDA의 관찰은 입력과 모델을 검토할 근거입니다. 실제 오차 비교는 그 근거를 예측으로 옮겼을 때 어떤 결과가 나왔는지 확인하는 과정입니다. 변수 선택이 완성되었다거나 인과관계가 증명되었다는 뜻은 아닙니다.</p>
+<p>대여소별 위치와 재고 정보가 없어 어느 대여소에 몇 대를 배치할지는 정할 수 없습니다. 관측 날씨로 확인했으므로 실제 사전 예측에는 날씨 예보와 다른 기간에서의 재확인이 필요합니다.</p>
+<p>학습 기간의 평균 대여량은 <strong>18시</strong>에 가장 높았습니다. 미리 정한 기준 방법, 기온 하나의 선형 회귀, 네 입력의 선형 회귀, 의사결정나무, 랜덤 포레스트를 같은 평가 기간에서 비교했습니다.</p>
+<p>기온 하나의 선형 회귀 평균 오차는 <strong>458.1건</strong>입니다. 시간대를 추가하면 <strong>386.1건</strong>, 강수량까지 추가하면 <strong>373.3건</strong>, 습도까지 포함하면 <strong>346.5건</strong>입니다. 이 평가 기간에서는 입력을 추가한 순서대로 오차가 줄었습니다. 습도 구간별 차이를 입력 후보의 근거로 삼고, 포함한 모델과 제외한 모델을 실제 비교한 결과입니다.</p>
+<p>같은 네 입력으로 모델을 바꾸면 나무 한 개는 <strong>291.2건</strong>, 랜덤 포레스트는 <strong>266.4건</strong>입니다. 시간대별 관계가 일정한 기울기로 변하지 않는다는 관찰을 근거로 나무 모델을 비교했습니다. 다만 나무는 네 입력 모두에서 구간별 관계를 다루므로 이 개선을 시간대 하나의 효과로 해석할 수는 없습니다. 이 비교는 미리 정한 계획의 평가 결과이며, 평가 점수를 보며 최적 변수를 고른 절차는 아닙니다.</p>
+<p>평가 1,937개 시간 기록에서 나무의 평균 절대 오차는 <strong>291.2건</strong>입니다. 학습 중앙값만 반복하는 기준의 <strong>607.6건</strong>과 비교하면 <strong>52.1%</strong> 감소했습니다. 이는 미리 정한 모델과 이 평가 기간의 비교 결과이며, 모든 미래 기간의 우위를 보장하지 않습니다. 이 평가 점수를 보고 설정을 반복해서 바꾸지는 않았습니다.</p>
+<p>평가 기간에서 시간대별 평균 오차가 가장 큰 시각은 <strong>8시</strong>이고, 그 시각의 평균 절대 오차는 <strong>829.8건</strong>입니다. 가장 크게 틀린 한 기록은 <strong>2018-10-17 8시</strong>로, 실제 <strong>2,202건</strong>, 예측 <strong>576.9건</strong>, 절대 오차 <strong>1,625.1건</strong>이었습니다. 전체 평균만으로 개별 혼잡 시간의 예측 정확도를 판단하면 안 됩니다.</p>
+<p>운영 활용은 시간대별 전체 이용량을 가늠하는 보조 정보 수준이 적절합니다. 실제 배치를 결정하려면 대여소별 재고와 위치 정보가 추가로 필요하며, 사전 예측에 쓰려면 날씨 예보와 추가 기간의 기록으로 재검증해야 합니다.</p></main></div>
+<footer>데이터 SHA-256: 0ceeae88d0f6486da38bf57a9a58f5f78d17e3ce36bc6836c6bf8e9ac13fa8cc<br>실행 환경: pandas 3.0.3 - scikit-learn 1.9.0 - matplotlib 3.11.0<br>모든 그림과 스타일을 HTML 안에 포함했습니다.</footer></body></html>

@@ -6,6 +6,7 @@ project:
     - "*.docx"
     - midterm_supplement_slide.html
     - week13_slide.html
+    - 서울자전거_전체분석보고서.html
     - data/week10_cafe_orders.csv
     - data/week11_cafe_orders.csv
     - data/SeoulBikeData.csv
@@ -108,6 +109,10 @@ book:
       chapters:
         - href: week13_lecture.qmd
           text: "이론"
+    - part: "자전거 대여량 예측"
+      chapters:
+        - href: bike_prediction.qmd
+          text: "강의교안 및 학생실습"
     - part: "중간고사 보충수업"
       chapters:
         - href: midterm_supplement.qmd
